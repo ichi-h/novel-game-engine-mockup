@@ -1,0 +1,16 @@
+{
+  "name": "elmish",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bun run build.ts"
+  },
+  "files": [
+    "**/*.ts",
+    "index.d.ts",
+    "tsconfig.json",
+    "!**/*.test.ts",
+    "!**/__test__"
+  ]
+}
