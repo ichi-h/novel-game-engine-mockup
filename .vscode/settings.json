@@ -20,7 +20,6 @@
     "source.organizeImports.biome": "explicit"
   },
   "editor.defaultFormatter": "biomejs.biome",
-  "cSpell.words": [
-    "Elmish"
-  ]
+  "biome.lsp.bin": "/nix/store/cahp9z8wkr9kazb2qx54ddp1fgjgrrxa-biome-2.2.5/bin/biome",
+  "cSpell.words": ["Elmish"]
 }
