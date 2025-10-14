@@ -1,16 +1,19 @@
 {
   "name": "elmish",
-  "module": "index.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "private": true,
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
+  },
   "scripts": {
     "build": "bun run build.ts"
   },
   "files": [
-    "**/*.ts",
-    "index.d.ts",
-    "tsconfig.json",
-    "!**/*.test.ts",
-    "!**/__test__"
+    "dist"
   ]
 }
