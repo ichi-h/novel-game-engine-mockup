@@ -1,0 +1,14 @@
+{
+  "name": "novel-game-engine-mockup",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@tsconfig/bun": "^1.0.9",
+    "@tsconfig/strictest": "^2.0.6",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
