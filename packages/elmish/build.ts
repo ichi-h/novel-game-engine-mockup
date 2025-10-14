@@ -13,11 +13,13 @@ await Promise.all([
     format: 'esm',
     naming: '[dir]/[name].js',
     minify: true,
+    sourcemap: true,
   }),
   Bun.build({
     ...defaultBuildConfig,
     format: 'cjs',
     naming: '[dir]/[name].cjs',
     minify: true,
+    sourcemap: true,
   }),
 ]);
