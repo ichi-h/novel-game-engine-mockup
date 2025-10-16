@@ -2,18 +2,21 @@
   "name": "engine",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "type": "module",
-  "private": true,
+  "dependencies": {
+    "elmish": "workspace:*"
+  },
   "exports": {
     "types": "./dist/index.d.ts",
     "import": "./dist/index.js",
     "require": "./dist/index.cjs"
   },
+  "files": [
+    "dist"
+  ],
+  "private": true,
   "scripts": {
     "build": "bun run build.ts"
   },
-  "files": [
-    "dist"
-  ]
+  "type": "module",
+  "types": "./dist/index.d.ts"
 }

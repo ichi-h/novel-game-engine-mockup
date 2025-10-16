@@ -18,6 +18,9 @@
     },
     "packages/engine": {
       "name": "engine",
+      "dependencies": {
+        "elmish": "workspace:*",
+      },
     },
   },
   "packages": {
