@@ -1,4 +1,4 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
+import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '../../model';
 import { layout } from '../../objects';
 
@@ -12,7 +12,7 @@ export interface AddLayoutMessage extends BaseMessage {
 export const handleAddLayout = (
   model: NovelModel,
   msg: AddLayoutMessage,
-): ReturnModel<NovelModel, never> => {
+): NovelModel => {
   const newLayout = layout({
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),
