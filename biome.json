@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/node_modules", "!**/.direnv", "!**/out", "!**/dist"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.direnv",
+      "!**/out",
+      "!**/dist",
+      "!**/.mcp.json"
+    ]
   },
   "formatter": {
     "enabled": true,
