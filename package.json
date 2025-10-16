@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "devDependencies": {
+    "@anthropic-ai/claude-code": "^2.0.19",
     "@tsconfig/bun": "^1.0.9",
     "@tsconfig/strictest": "^2.0.6",
     "@types/bun": "latest",
