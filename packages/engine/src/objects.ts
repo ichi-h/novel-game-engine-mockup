@@ -1,15 +1,17 @@
 export interface NovelObject {
-  id: string;
+  id?: string;
   type: string;
 }
 
 export interface LayoutObject extends NovelObject {
+  id: string;
   type: 'Layout';
   style?: string;
   children: NovelObject[];
 }
 
 export interface CustomLayoutObject<Component> extends NovelObject {
+  id: string;
   type: 'CustomLayout';
   component: Component;
   children: NovelObject[];
@@ -28,6 +30,7 @@ export interface TextObject extends NovelObject {
 }
 
 export interface TextBoxObject extends NovelObject {
+  id: string;
   type: 'TextBox';
   style?: string;
   children: TextObject[];
@@ -102,7 +105,7 @@ export class NovelUI<Component = unknown> {
    */
   addObject(object: NovelObject, layoutId?: string): void {
     // Check for duplicate IDs recursively
-    if (this.hasId(object.id)) {
+    if (object.id !== undefined && this.hasId(object.id)) {
       throw new Error(`Object with id "${object.id}" already exists`);
     }
 
@@ -128,7 +131,7 @@ export class NovelUI<Component = unknown> {
    */
   addText(textObject: TextObject, textBoxId: string): void {
     // Check for duplicate IDs recursively
-    if (this.hasId(textObject.id)) {
+    if (textObject.id !== undefined && this.hasId(textObject.id)) {
       throw new Error(`Object with id "${textObject.id}" already exists`);
     }
 
