@@ -2,11 +2,15 @@
   description = "Bun Environment";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    mcp-servers-nix = {
+      url = "github:natsukium/mcp-servers-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, mcp-servers-nix }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         packages = nixpkgs.legacyPackages.${system};
@@ -18,6 +22,18 @@
               bun
               biome
             ];
+            shellHook = let
+              config = mcp-servers-nix.lib.mkConfig packages {
+                programs = {
+                  serena.enable = true;
+                };
+              };
+            in ''
+              if [ -L ".mcp.json" ]; then
+                unlink .mcp.json
+              fi
+              ln -sf ${config} .mcp.json
+            '';
           };
         };
       }
