@@ -83,10 +83,14 @@ export const text = (props: TextProps): TextObject => ({
 });
 
 export class NovelUI<Component = unknown> {
-  objects: NovelObject[];
+  private _objects: NovelObject[];
 
   constructor(objects: NovelObject[] = []) {
-    this.objects = objects;
+    this._objects = objects;
+  }
+
+  public get objects(): readonly NovelObject[] {
+    return Object.freeze(this._objects);
   }
 
   /**
@@ -98,18 +102,18 @@ export class NovelUI<Component = unknown> {
    */
   addObject(object: NovelObject, layoutId?: string): void {
     // Check for duplicate IDs recursively
-    if (this.hasId(object.id, this.objects)) {
+    if (this.hasId(object.id)) {
       throw new Error(`Object with id "${object.id}" already exists`);
     }
 
     // If no layoutId is specified, add to root objects array
     if (layoutId === undefined) {
-      this.objects.push(object);
+      this._objects.push(object);
       return;
     }
 
     // Find and add to the specified layout
-    const added = this.addToLayout(object, layoutId, this.objects);
+    const added = this.addToLayout(object, layoutId, this._objects);
     if (!added) {
       throw new Error(`Layout with id "${layoutId}" not found`);
     }
@@ -124,12 +128,12 @@ export class NovelUI<Component = unknown> {
    */
   addText(textObject: TextObject, textBoxId: string): void {
     // Check for duplicate IDs recursively
-    if (this.hasId(textObject.id, this.objects)) {
+    if (this.hasId(textObject.id)) {
       throw new Error(`Object with id "${textObject.id}" already exists`);
     }
 
     // Find and add to the specified textbox
-    const added = this.addToTextBox(textObject, textBoxId, this.objects);
+    const added = this.addToTextBox(textObject, textBoxId, this._objects);
     if (!added) {
       throw new Error(`TextBox with id "${textBoxId}" not found`);
     }
@@ -138,7 +142,15 @@ export class NovelUI<Component = unknown> {
   /**
    * Recursively checks if an ID exists in the object tree
    */
-  private hasId(id: string, objects: NovelObject[]): boolean {
+  public hasId(id: string): boolean {
+    return this.hasIdInObjects(id, this._objects);
+  }
+
+  /**
+   * Recursively checks if an ID exists in a list of objects
+   * @returns true if found, false otherwise
+   */
+  private hasIdInObjects(id: string, objects: NovelObject[]): boolean {
     for (const obj of objects) {
       if (obj.id === id) {
         return true;
@@ -146,14 +158,14 @@ export class NovelUI<Component = unknown> {
 
       // Check children for Layout and CustomLayout objects
       if (isLayout(obj) || isCustomLayout<Component>(obj)) {
-        if (this.hasId(id, obj.children)) {
+        if (this.hasIdInObjects(id, obj.children)) {
           return true;
         }
       }
 
       // Check children for TextBox objects
       if (isTextBox(obj)) {
-        if (this.hasId(id, obj.children)) {
+        if (this.hasIdInObjects(id, obj.children)) {
           return true;
         }
       }
