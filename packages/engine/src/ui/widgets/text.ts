@@ -4,6 +4,7 @@ export interface TextWidget extends NovelWidget {
   type: 'Text';
   style?: string;
   content: string;
+  speed?: number;
 }
 
 type TextProps = Omit<TextWidget, 'type'>;
