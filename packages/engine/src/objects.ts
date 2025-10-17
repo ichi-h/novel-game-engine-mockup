@@ -68,7 +68,7 @@ export const img = (props: ImageProps): ImageObject => ({
   type: 'Image',
 });
 
-type TextBoxProps = Omit<TextBoxObject, 'type' | 'texts'>;
+type TextBoxProps = Omit<TextBoxObject, 'type' | 'children'>;
 export const textBox =
   (props: TextBoxProps) =>
   (children: TextObject[]): TextBoxObject => ({
