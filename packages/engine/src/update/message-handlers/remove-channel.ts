@@ -8,7 +8,7 @@ export interface RemoveChannelMessage extends BaseMessage {
 
 export const handleRemoveChannel = (
   model: NovelModel,
-  msg: RemoveChannelMessage,
+  _msg: RemoveChannelMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

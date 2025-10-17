@@ -10,7 +10,7 @@ export interface PauseSoundMessage extends BaseMessage {
 
 export const handlePauseSound = (
   model: NovelModel,
-  msg: PauseSoundMessage,
+  _msg: PauseSoundMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

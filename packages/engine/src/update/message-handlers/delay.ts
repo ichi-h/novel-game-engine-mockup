@@ -8,7 +8,7 @@ export interface DelayMessage extends BaseMessage {
 
 export const handleDelay = (
   model: NovelModel,
-  msg: DelayMessage,
+  _msg: DelayMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

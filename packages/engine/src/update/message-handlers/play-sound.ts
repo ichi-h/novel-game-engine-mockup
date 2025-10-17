@@ -13,7 +13,7 @@ export interface PlaySoundMessage extends BaseMessage {
 
 export const handlePlaySound = (
   model: NovelModel,
-  msg: PlaySoundMessage,
+  _msg: PlaySoundMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

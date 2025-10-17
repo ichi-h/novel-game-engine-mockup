@@ -11,7 +11,7 @@ export interface ShowImageMessage extends BaseMessage {
 
 export const handleShowImage = (
   model: NovelModel,
-  msg: ShowImageMessage,
+  _msg: ShowImageMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

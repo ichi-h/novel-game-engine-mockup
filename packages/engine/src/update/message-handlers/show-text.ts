@@ -14,7 +14,7 @@ export interface ShowTextMessage extends BaseMessage {
 
 export const handleShowText = (
   model: NovelModel,
-  msg: ShowTextMessage,
+  _msg: ShowTextMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

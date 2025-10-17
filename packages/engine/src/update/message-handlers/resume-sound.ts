@@ -10,7 +10,7 @@ export interface ResumeSoundMessage extends BaseMessage {
 
 export const handleResumeSound = (
   model: NovelModel,
-  msg: ResumeSoundMessage,
+  _msg: ResumeSoundMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

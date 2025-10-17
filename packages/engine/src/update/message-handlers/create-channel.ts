@@ -15,7 +15,7 @@ export interface CreateChannelMessage extends BaseMessage {
 
 export const handleCreateChannel = (
   model: NovelModel,
-  msg: CreateChannelMessage,
+  _msg: CreateChannelMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

@@ -8,7 +8,7 @@ export interface RemoveObjectsMessage extends BaseMessage {
 
 export const handleRemoveObjects = (
   model: NovelModel,
-  msg: RemoveObjectsMessage,
+  _msg: RemoveObjectsMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;

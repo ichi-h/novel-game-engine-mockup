@@ -7,7 +7,7 @@ export interface WaitForUserMessage extends BaseMessage {
 
 export const handleWaitForUser = (
   model: NovelModel,
-  msg: WaitForUserMessage,
+  _msg: WaitForUserMessage,
 ): ReturnModel<NovelModel, never> => {
   // TODO: implement
   return model;
