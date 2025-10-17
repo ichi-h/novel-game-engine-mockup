@@ -99,6 +99,38 @@ export class WidgetManager<Component = unknown> {
   }
 
   /**
+   * Recursively find a widget by ID
+   * @returns The found widget or null if not found
+   */
+  private findById(id: string, widgets?: NovelWidget[]): NovelWidget | null {
+    const searchWidgets = widgets ?? this._widgets;
+
+    for (const obj of searchWidgets) {
+      if (obj.id === id) {
+        return obj;
+      }
+
+      // Search in children for Layout and CustomLayout widgets
+      if (isLayout(obj) || isCustomLayout<Component>(obj)) {
+        const foundInChildren = this.findById(id, obj.children);
+        if (foundInChildren) {
+          return foundInChildren;
+        }
+      }
+
+      // Search in children for TextBox widgets
+      if (isTextBox(obj)) {
+        const foundInChildren = this.findById(id, obj.children);
+        if (foundInChildren) {
+          return foundInChildren;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Add widgets to layouts with the specified ID.
    * @returns true if the layout was found and widget was added, false otherwise
    */
@@ -157,5 +189,19 @@ export class WidgetManager<Component = unknown> {
     }
 
     return false;
+  }
+
+  /**
+   * Clears all TextWidgets in the specified TextBox
+   * @param textBoxId - The ID of the TextBox to clear
+   * @throws Error if textBoxId doesn't exist
+   */
+  public clearTextBox(textBoxId: string): void {
+    const textBox = this.findById(textBoxId);
+    if (!textBox || !isTextBox(textBox)) {
+      throw new Error(`TextBox with id "${textBoxId}" not found`);
+    }
+
+    textBox.children = [];
   }
 }
