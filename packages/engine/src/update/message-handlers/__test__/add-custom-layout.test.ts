@@ -1,23 +1,11 @@
 import { describe, expect, test } from 'bun:test';
-import type { IMixer } from '../../../mixer';
 import { initModel } from '../../../model';
 import { customLayout, img, layout } from '../../../objects';
 import {
   type AddCustomLayoutMessage,
   handleAddCustomLayout,
 } from '../add-custom-layout';
-
-// Create a mock mixer
-const mockMixer: IMixer = {
-  addChannel: () => Promise.resolve(),
-  changeMasterVolume: () => void 0,
-  removeChannel: (_name) => '',
-  changeChannelVolume: () => '',
-  playChannel: () => '',
-  stopChannel: () => '',
-  pauseChannel: () => '',
-  resumeChannel: () => '',
-};
+import { mockMixer } from './test-utils';
 
 // Mock component type for testing
 interface MockComponent {

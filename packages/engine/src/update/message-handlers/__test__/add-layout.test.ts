@@ -1,20 +1,8 @@
 import { describe, expect, test } from 'bun:test';
-import type { IMixer } from '../../../mixer';
 import { initModel } from '../../../model';
 import { img, layout } from '../../../objects';
 import { type AddLayoutMessage, handleAddLayout } from '../add-layout';
-
-// Create a mock mixer
-const mockMixer: IMixer = {
-  addChannel: () => Promise.resolve(),
-  changeMasterVolume: () => void 0,
-  removeChannel: (_name) => '',
-  changeChannelVolume: () => '',
-  playChannel: () => '',
-  stopChannel: () => '',
-  pauseChannel: () => '',
-  resumeChannel: () => '',
-};
+import { mockMixer } from './test-utils';
 
 describe('handleAddLayout - normal cases', () => {
   test('adds layout to root without style', () => {

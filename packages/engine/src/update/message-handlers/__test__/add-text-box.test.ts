@@ -1,21 +1,10 @@
 import { describe, expect, test } from 'bun:test';
-import type { IMixer } from '../../../mixer';
 import { initModel } from '../../../model';
 import { img, layout } from '../../../objects';
 import { type AddTextBoxMessage, handleAddTextBox } from '../add-text-box';
+import { mockMixer } from './test-utils';
 
 // Create a mock mixer
-const mockMixer: IMixer = {
-  addChannel: () => Promise.resolve(),
-  changeMasterVolume: () => void 0,
-  removeChannel: (_name) => '',
-  changeChannelVolume: () => '',
-  playChannel: () => '',
-  stopChannel: () => '',
-  pauseChannel: () => '',
-  resumeChannel: () => '',
-};
-
 describe('handleAddTextBox - normal cases', () => {
   test('adds text box to layout', () => {
     // Arrange
