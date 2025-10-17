@@ -2,12 +2,12 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      glob: "*.{ts,js,tsx,jsx}"
+      glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
       stage_fixed: true
       run: biome lint --write
     format:
-      glob: "*.{ts,js,tsx,jsx}"
+      glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
       stage_fixed: true
       run: biome format --write
@@ -16,9 +16,10 @@ pre-push:
   parallel: true
   commands:
     test:
-      glob: "*.{ts,js,tsx,jsx}"
+      glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
       run: bun test
-
-skip_output:
-  - success
+    build:
+      glob: "*.{ts,js,tsx,jsx,css,html}"
+      root: "."
+      run: bun run build
