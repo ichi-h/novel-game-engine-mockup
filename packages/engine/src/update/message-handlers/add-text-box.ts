@@ -1,5 +1,6 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
+import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '../../model';
+import { textBox } from '../../objects';
 
 export interface AddTextBoxMessage extends BaseMessage {
   type: 'AddTextBox';
@@ -11,7 +12,11 @@ export interface AddTextBoxMessage extends BaseMessage {
 export const handleAddTextBox = (
   model: NovelModel,
   msg: AddTextBoxMessage,
-): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+): NovelModel => {
+  const newTextBox = textBox({
+    id: msg.id,
+    ...(msg.style !== undefined && { style: msg.style }),
+  })([]);
+  model.ui.addObject(newTextBox, msg.layoutId);
   return model;
 };
