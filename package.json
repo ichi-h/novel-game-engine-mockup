@@ -3,12 +3,16 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "postinstall": "lefthook install"
+  },
   "devDependencies": {
     "@anthropic-ai/claude-code": "^2.0.19",
     "@tsconfig/bun": "^1.0.9",
     "@tsconfig/strictest": "^2.0.6",
     "@types/bun": "latest",
-    "bun-plugin-dts": "^0.3.0"
+    "bun-plugin-dts": "^0.3.0",
+    "lefthook": "^1.13.6"
   },
   "peerDependencies": {
     "typescript": "^5"
