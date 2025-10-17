@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
-import { initModel } from '../../../model';
-import { img, layout } from '../../../objects';
+import { initModel } from '@/model';
+import { img, layout } from '@/ui';
 import { type AddLayoutMessage, handleAddLayout } from '../add-layout';
 import { mockMixer } from './test-utils';
 
@@ -18,7 +18,7 @@ describe('handleAddLayout - normal cases', () => {
 
     // Assert
     expect(result).toBe(model); // Returns the same model instance
-    expect(result.ui.objects).toHaveLength(1);
+    expect(result.ui.widgets).toHaveLength(1);
     expect(result.ui.hasId('layout1')).toBe(true);
   });
 
@@ -36,10 +36,10 @@ describe('handleAddLayout - normal cases', () => {
 
     // Assert
     expect(result).toBe(model);
-    expect(result.ui.objects).toHaveLength(1);
+    expect(result.ui.widgets).toHaveLength(1);
     expect(result.ui.hasId('layout2')).toBe(true);
     expect(
-      result.ui.objects[0] !== undefined && 'style' in result.ui.objects[0],
+      result.ui.widgets[0] !== undefined && 'style' in result.ui.widgets[0],
     ).toBe(true);
   });
 
@@ -48,7 +48,7 @@ describe('handleAddLayout - normal cases', () => {
     const model = initModel(mockMixer);
     // First, add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addObject(parentLayout);
+    model.ui.addWidget(parentLayout);
 
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
@@ -63,7 +63,7 @@ describe('handleAddLayout - normal cases', () => {
     // Assert
     expect(result).toBe(model);
     // Root only contains parent (child is nested)
-    expect(result.ui.objects).toHaveLength(1);
+    expect(result.ui.widgets).toHaveLength(1);
     // Verify child layout was added
     expect(result.ui.hasId('child')).toBe(true);
   });
@@ -75,7 +75,7 @@ describe('handleAddLayout - error cases', () => {
     const model = initModel(mockMixer);
     // Add existing layout
     const existingLayout = layout({ id: 'duplicate-id' })([]);
-    model.ui.addObject(existingLayout);
+    model.ui.addWidget(existingLayout);
 
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
@@ -84,11 +84,11 @@ describe('handleAddLayout - error cases', () => {
 
     // Act & Assert
     expect(() => handleAddLayout(model, msg)).toThrow(
-      'Object with id "duplicate-id" already exists',
+      'Widget with id "duplicate-id" already exists',
     );
 
     // Model is unchanged (only existing one)
-    expect(model.ui.objects).toHaveLength(1);
+    expect(model.ui.widgets).toHaveLength(1);
   });
 
   test('throws error for non-existent parent layout ID', () => {
@@ -106,23 +106,23 @@ describe('handleAddLayout - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.objects).toHaveLength(0);
+    expect(model.ui.widgets).toHaveLength(0);
   });
 
-  test('throws error when non-layout object ID is specified as parent', () => {
+  test('throws error when non-layout widget ID is specified as parent', () => {
     // Arrange
     const model = initModel(mockMixer);
-    // Add Image object
-    const imageObject = img({
+    // Add Image widget
+    const imageWidget = img({
       id: 'image1',
       src: 'test.png',
     });
-    model.ui.addObject(imageObject);
+    model.ui.addWidget(imageWidget);
 
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
       id: 'new-layout',
-      parentLayoutId: 'image1', // Specify Image object as parent
+      parentLayoutId: 'image1', // Specify Image widget as parent
     };
 
     // Act & Assert
@@ -132,7 +132,7 @@ describe('handleAddLayout - error cases', () => {
     );
 
     // Model is unchanged(Imageの1つのみ)
-    expect(model.ui.objects).toHaveLength(1);
+    expect(model.ui.widgets).toHaveLength(1);
     expect(model.ui.hasId('image1')).toBe(true);
   });
 });

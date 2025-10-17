@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
-import { initModel } from '../../../model';
-import { customLayout, img, layout } from '../../../objects';
+import { initModel } from '@/model';
+import { customLayout, img, layout } from '@/ui';
 import {
   type AddCustomLayoutMessage,
   handleAddCustomLayout,
@@ -32,7 +32,7 @@ describe('handleAddCustomLayout - normal cases', () => {
 
     // Assert
     expect(result).toBe(model); // Returns the same model instance
-    expect(result.ui.objects).toHaveLength(1);
+    expect(result.ui.widgets).toHaveLength(1);
     expect(result.ui.hasId('custom-layout-1')).toBe(true);
   });
 
@@ -41,7 +41,7 @@ describe('handleAddCustomLayout - normal cases', () => {
     const model = initModel(mockMixer);
     // First, add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addObject(parentLayout);
+    model.ui.addWidget(parentLayout);
 
     const mockComponent: MockComponent = {
       name: 'ChildComponent',
@@ -59,7 +59,7 @@ describe('handleAddCustomLayout - normal cases', () => {
     // Assert
     expect(result).toBe(model);
     // Root only contains parent (child is nested)
-    expect(result.ui.objects).toHaveLength(1);
+    expect(result.ui.widgets).toHaveLength(1);
     // Verify child custom layout was added
     expect(result.ui.hasId('custom-child')).toBe(true);
   });
@@ -74,7 +74,7 @@ describe('handleAddCustomLayout - error cases', () => {
       id: 'duplicate-id',
       component: 'ExistingComponent',
     })([]);
-    model.ui.addObject(existingLayout);
+    model.ui.addWidget(existingLayout);
 
     const msg: AddCustomLayoutMessage<string> = {
       type: 'AddCustomLayout',
@@ -84,11 +84,11 @@ describe('handleAddCustomLayout - error cases', () => {
 
     // Act & Assert
     expect(() => handleAddCustomLayout(model, msg)).toThrow(
-      'Object with id "duplicate-id" already exists',
+      'Widget with id "duplicate-id" already exists',
     );
 
     // Model is unchanged (only existing one)
-    expect(model.ui.objects).toHaveLength(1);
+    expect(model.ui.widgets).toHaveLength(1);
   });
 
   test('throws error for duplicate ID with existing layout', () => {
@@ -96,7 +96,7 @@ describe('handleAddCustomLayout - error cases', () => {
     const model = initModel(mockMixer);
     // Add existing regular layout
     const existingLayout = layout({ id: 'same-id' })([]);
-    model.ui.addObject(existingLayout);
+    model.ui.addWidget(existingLayout);
 
     const msg: AddCustomLayoutMessage<string> = {
       type: 'AddCustomLayout',
@@ -106,11 +106,11 @@ describe('handleAddCustomLayout - error cases', () => {
 
     // Act & Assert
     expect(() => handleAddCustomLayout(model, msg)).toThrow(
-      'Object with id "same-id" already exists',
+      'Widget with id "same-id" already exists',
     );
 
     // Model is unchanged
-    expect(model.ui.objects).toHaveLength(1);
+    expect(model.ui.widgets).toHaveLength(1);
   });
 
   test('throws error for non-existent parent layout ID', () => {
@@ -129,23 +129,23 @@ describe('handleAddCustomLayout - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.objects).toHaveLength(0);
+    expect(model.ui.widgets).toHaveLength(0);
   });
 
-  test('throws error when non-layout object ID is specified as parent', () => {
+  test('throws error when non-layout widget ID is specified as parent', () => {
     // Arrange
     const model = initModel(mockMixer);
-    // Add Image object
-    const imageObject = img({
+    // Add Image widget
+    const imageWidget = img({
       id: 'image1',
       src: 'test.png',
     });
-    model.ui.addObject(imageObject);
+    model.ui.addWidget(imageWidget);
 
     const msg: AddCustomLayoutMessage<string> = {
       type: 'AddCustomLayout',
       id: 'new-custom-layout',
-      parentLayoutId: 'image1', // Specify Image object as parent
+      parentLayoutId: 'image1', // Specify Image widget as parent
       component: 'Component',
     };
 
@@ -156,7 +156,7 @@ describe('handleAddCustomLayout - error cases', () => {
     );
 
     // Model is unchanged (Image only)
-    expect(model.ui.objects).toHaveLength(1);
+    expect(model.ui.widgets).toHaveLength(1);
     expect(model.ui.hasId('image1')).toBe(true);
   });
 });

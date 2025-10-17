@@ -1,12 +1,12 @@
 import type { IMixer } from './mixer';
-import { NovelUI } from './objects';
+import { WidgetManager } from './ui';
 
 export interface NovelModel {
   mixer: IMixer;
-  ui: NovelUI;
+  ui: WidgetManager;
 }
 
 export const initModel = (mixer: IMixer): NovelModel => ({
   mixer,
-  ui: new NovelUI(),
+  ui: new WidgetManager(),
 });

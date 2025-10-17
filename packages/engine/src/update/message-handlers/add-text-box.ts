@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
-import type { NovelModel } from '../../model';
-import { textBox } from '../../objects';
+import type { NovelModel } from '@/model';
+import { textBox } from '@/ui';
 
 export interface AddTextBoxMessage extends BaseMessage {
   type: 'AddTextBox';
@@ -17,6 +17,6 @@ export const handleAddTextBox = (
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),
   })([]);
-  model.ui.addObject(newTextBox, msg.layoutId);
+  model.ui.addWidget(newTextBox, msg.layoutId);
   return model;
 };
