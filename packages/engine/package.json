@@ -15,7 +15,8 @@
   ],
   "private": true,
   "scripts": {
-    "build": "bun run build.ts"
+    "build": "bun run tsc && bun run build.ts",
+    "tsc": "tsc --noEmit"
   },
   "type": "module",
   "types": "./dist/index.d.ts"

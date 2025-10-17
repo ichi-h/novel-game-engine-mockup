@@ -11,7 +11,8 @@
     "require": "./dist/index.cjs"
   },
   "scripts": {
-    "build": "bun run build.ts"
+    "build": "bun run tsc && bun run build.ts",
+    "tsc": "tsc --noEmit"
   },
   "files": [
     "dist"

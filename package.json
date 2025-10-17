@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "postinstall": "lefthook install",
-    "build": "bun run tsc && turbo build",
-    "tsc": "tsc --noEmit",
+    "build": "turbo build",
+    "tsc": "turbo tsc",
     "format": "biome format --write",
     "lint": "biome lint --write"
   },
