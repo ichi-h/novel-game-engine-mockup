@@ -5,12 +5,12 @@ pre-commit:
       glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
       stage_fixed: true
-      run: biome lint --write
+      run: bun run lint
     format:
       glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
       stage_fixed: true
-      run: biome format --write
+      run: bun run format
 
 pre-push:
   parallel: true

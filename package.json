@@ -5,7 +5,10 @@
   "private": true,
   "scripts": {
     "postinstall": "lefthook install",
-    "build": "turbo build"
+    "build": "bun run tsc && turbo build",
+    "tsc": "tsc --noEmit",
+    "format": "biome format --write",
+    "lint": "biome lint --write"
   },
   "devDependencies": {
     "@anthropic-ai/claude-code": "^2.0.19",
