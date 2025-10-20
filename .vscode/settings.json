@@ -19,6 +19,9 @@
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "editor.defaultFormatter": "biomejs.biome",
   "biome.lsp.bin": "/nix/store/cahp9z8wkr9kazb2qx54ddp1fgjgrrxa-biome-2.2.5/bin/biome",
   "cSpell.words": ["Elmish"]

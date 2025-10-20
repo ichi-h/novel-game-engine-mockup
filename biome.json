@@ -13,7 +13,9 @@
       "!**/.direnv",
       "!**/out",
       "!**/dist",
-      "!**/.mcp.json"
+      "!**/.mcp.json",
+      "!**/build.ts",
+      "!examples/react/src/index.css"
     ]
   },
   "formatter": {
