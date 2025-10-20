@@ -11,6 +11,7 @@ import {
   handleChangeMasterVolume,
   handleCreateChannel,
   handleDelay,
+  handleDelayCompleted,
   handlePauseSound,
   handlePlaySound,
   handleRemoveChannel,
@@ -43,6 +44,8 @@ export const update = <Component>(
       return handleWaitForUser(model, msg);
     case 'Delay':
       return handleDelay(model, msg);
+    case 'DelayCompleted':
+      return handleDelayCompleted(model, msg);
     case 'ChangeMasterVolume':
       return handleChangeMasterVolume(model, msg);
     case 'CreateChannel':

@@ -5,6 +5,7 @@ import type {
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
   CreateChannelMessage,
+  DelayCompletedMessage,
   DelayMessage,
   PauseSoundMessage,
   PlaySoundMessage,
@@ -26,6 +27,7 @@ export type NovelMessage<Component> =
   | RemoveWidgetsMessage
   | WaitForUserMessage
   | DelayMessage
+  | DelayCompletedMessage
   | ChangeMasterVolumeMessage
   | CreateChannelMessage
   | RemoveChannelMessage

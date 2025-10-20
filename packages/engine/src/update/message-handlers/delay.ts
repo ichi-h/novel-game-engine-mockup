@@ -6,10 +6,30 @@ export interface DelayMessage extends BaseMessage {
   durationMs: number;
 }
 
+export interface DelayCompletedMessage extends BaseMessage {
+  type: 'DelayCompleted';
+}
+
 export const handleDelay = (
   model: NovelModel,
-  _msg: DelayMessage,
-): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+  msg: DelayMessage,
+): ReturnModel<NovelModel, DelayCompletedMessage> => {
+  model.isDelaying = true;
+  return [
+    model,
+    async () =>
+      await new Promise<DelayCompletedMessage>((resolve) => {
+        setTimeout(() => {
+          resolve({ type: 'DelayCompleted' });
+        }, msg.durationMs);
+      }),
+  ];
+};
+
+export const handleDelayCompleted = (
+  model: NovelModel,
+  _msg: DelayCompletedMessage,
+): NovelModel => {
+  model.isDelaying = false;
   return model;
 };
