@@ -9,6 +9,7 @@ import {
   handleAddTextBox,
   handleChangeChannelVolume,
   handleChangeMasterVolume,
+  handleClearTextBox,
   handleCreateChannel,
   handleDelay,
   handleDelayCompleted,
@@ -48,6 +49,8 @@ export const update = <Component>(
       return handleDelayCompleted(model, msg);
     case 'ChangeMasterVolume':
       return handleChangeMasterVolume(model, msg);
+    case 'ClearTextBox':
+      return handleClearTextBox(model, msg);
     case 'CreateChannel':
       return handleCreateChannel(model, msg);
     case 'RemoveChannel':

@@ -4,6 +4,7 @@ import type {
   AddTextBoxMessage,
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
+  ClearTextBoxMessage,
   CreateChannelMessage,
   DelayCompletedMessage,
   DelayMessage,
@@ -29,6 +30,7 @@ export type NovelMessage<Component> =
   | DelayMessage
   | DelayCompletedMessage
   | ChangeMasterVolumeMessage
+  | ClearTextBoxMessage
   | CreateChannelMessage
   | RemoveChannelMessage
   | ChangeChannelVolumeMessage

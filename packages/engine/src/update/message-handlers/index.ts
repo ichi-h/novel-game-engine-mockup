@@ -3,6 +3,7 @@ export * from './add-layout';
 export * from './add-text-box';
 export * from './change-channel-volume';
 export * from './change-master-volume';
+export * from './clear-text-box';
 export * from './create-channel';
 export * from './delay';
 export * from './pause-sound';
