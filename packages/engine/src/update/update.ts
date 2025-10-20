@@ -14,7 +14,7 @@ import {
   handlePauseSound,
   handlePlaySound,
   handleRemoveChannel,
-  handleRemoveObjects,
+  handleRemoveWidgets,
   handleResumeSound,
   handleShowImage,
   handleShowText,
@@ -37,8 +37,8 @@ export const update = <Component>(
       return handleAddTextBox(model, msg);
     case 'ShowText':
       return handleShowText(model, msg);
-    case 'RemoveObjects':
-      return handleRemoveObjects(model, msg);
+    case 'RemoveWidgets':
+      return handleRemoveWidgets(model, msg);
     case 'WaitForUser':
       return handleWaitForUser(model, msg);
     case 'Delay':

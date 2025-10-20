@@ -8,7 +8,7 @@ export * from './delay';
 export * from './pause-sound';
 export * from './play-sound';
 export * from './remove-channel';
-export * from './remove-objects';
+export * from './remove-widgets';
 export * from './resume-sound';
 export * from './show-image';
 export * from './show-text';

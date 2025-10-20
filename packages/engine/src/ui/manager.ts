@@ -204,4 +204,26 @@ export class WidgetManager<Component = unknown> {
 
     textBox.children = [];
   }
+
+  public removeById(id: string): void {
+    this.removeByIdFromWidgets(id, this._widgets);
+  }
+
+  private removeByIdFromWidgets(id: string, widgets: NovelWidget[]): void {
+    const newWidgets = widgets.filter((widget) => {
+      if (widget.id === id) {
+        return false;
+      }
+      // Check children for Layout and CustomLayout widgets
+      if (isLayout(widget) || isCustomLayout<Component>(widget)) {
+        return this.removeByIdFromWidgets(id, widget.children);
+      }
+      // Check children for TextBox widgets
+      if (isTextBox(widget)) {
+        return this.removeByIdFromWidgets(id, widget.children);
+      }
+      return true;
+    });
+    this._widgets = newWidgets;
+  }
 }

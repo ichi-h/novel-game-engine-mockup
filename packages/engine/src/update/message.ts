@@ -9,7 +9,7 @@ import type {
   PauseSoundMessage,
   PlaySoundMessage,
   RemoveChannelMessage,
-  RemoveObjectsMessage,
+  RemoveWidgetsMessage,
   ResumeSoundMessage,
   ShowImageMessage,
   ShowTextMessage,
@@ -23,7 +23,7 @@ export type NovelMessage<Component> =
   | ShowImageMessage
   | AddTextBoxMessage
   | ShowTextMessage
-  | RemoveObjectsMessage
+  | RemoveWidgetsMessage
   | WaitForUserMessage
   | DelayMessage
   | ChangeMasterVolumeMessage
