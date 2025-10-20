@@ -214,7 +214,8 @@ export class WidgetManager<Component = unknown> {
     if (!this.hasId(id)) {
       throw new Error(`Widget with id "${id}" not found`);
     }
-    this.removeByIdFromWidgets(id, this._widgets);
+    const newWidgets = this.removeByIdFromWidgets(id, this._widgets);
+    this._widgets = newWidgets;
   }
 
   /**
@@ -222,21 +223,31 @@ export class WidgetManager<Component = unknown> {
    * @param id - The ID of the widget to remove
    * @param widgets - The array of widgets to remove from
    */
-  private removeByIdFromWidgets(id: string, widgets: NovelWidget[]): void {
-    const newWidgets = widgets.filter((widget) => {
+  private removeByIdFromWidgets(
+    id: string,
+    widgets: NovelWidget[],
+  ): NovelWidget[] {
+    const result: NovelWidget[] = [];
+
+    for (const widget of widgets) {
       if (widget.id === id) {
-        return false;
+        // Skip this widget to remove it
+        continue;
       }
-      // Check children for Layout and CustomLayout widgets
-      if (isLayout(widget) || isCustomLayout<Component>(widget)) {
-        return this.removeByIdFromWidgets(id, widget.children);
+
+      // Recursively remove from children for Layout, CustomLayout and TextBox widgets
+      if (
+        isLayout(widget) ||
+        isCustomLayout<Component>(widget) ||
+        isTextBox(widget)
+      ) {
+        const newChildren = this.removeByIdFromWidgets(id, widget.children);
+        widget.children = newChildren;
       }
-      // Check children for TextBox widgets
-      if (isTextBox(widget)) {
-        return this.removeByIdFromWidgets(id, widget.children);
-      }
-      return true;
-    });
-    this._widgets = newWidgets;
+
+      result.push(widget);
+    }
+
+    return result;
   }
 }
