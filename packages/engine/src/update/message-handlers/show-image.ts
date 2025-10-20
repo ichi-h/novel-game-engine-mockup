@@ -1,4 +1,5 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
+import type { BaseMessage } from 'elmish';
+import { img } from '@/ui';
 import type { NovelModel } from '../../model';
 
 export interface ShowImageMessage extends BaseMessage {
@@ -11,8 +12,13 @@ export interface ShowImageMessage extends BaseMessage {
 
 export const handleShowImage = (
   model: NovelModel,
-  _msg: ShowImageMessage,
-): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+  msg: ShowImageMessage,
+): NovelModel => {
+  const newImg = img({
+    src: msg.src,
+    ...(msg.id !== undefined && { id: msg.id }),
+    ...(msg.style !== undefined && { style: msg.style }),
+  });
+  model.ui.addWidget(newImg, msg.layoutId);
   return model;
 };
