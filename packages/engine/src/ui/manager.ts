@@ -205,10 +205,23 @@ export class WidgetManager<Component = unknown> {
     textBox.children = [];
   }
 
+  /**
+   * Removes a widget by ID
+   * @param id - The ID of the widget to remove
+   * @throws Error if the widget with the specified ID does not exist
+   */
   public removeById(id: string): void {
+    if (!this.hasId(id)) {
+      throw new Error(`Widget with id "${id}" not found`);
+    }
     this.removeByIdFromWidgets(id, this._widgets);
   }
 
+  /**
+   * Removes a widget by ID from the specified array of widgets
+   * @param id - The ID of the widget to remove
+   * @param widgets - The array of widgets to remove from
+   */
   private removeByIdFromWidgets(id: string, widgets: NovelWidget[]): void {
     const newWidgets = widgets.filter((widget) => {
       if (widget.id === id) {
