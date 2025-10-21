@@ -14,7 +14,7 @@ export class WidgetManager<Component = unknown> {
   }
 
   public get widgets(): readonly NovelWidget[] {
-    return Object.freeze(this._widgets);
+    return Object.freeze([...this._widgets]);
   }
 
   /**
