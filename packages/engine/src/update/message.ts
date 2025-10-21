@@ -20,7 +20,6 @@ import type {
   ShowTextMessage,
   StopChannelMessage,
   SuccessFetchAudioMessage,
-  WaitForUserMessage,
 } from './message-handlers';
 
 export type NovelMessage<Component> =
@@ -30,7 +29,6 @@ export type NovelMessage<Component> =
   | AddTextBoxMessage
   | ShowTextMessage
   | RemoveWidgetsMessage
-  | WaitForUserMessage
   | DelayMessage
   | DelayCompletedMessage
   | ErrorMessage

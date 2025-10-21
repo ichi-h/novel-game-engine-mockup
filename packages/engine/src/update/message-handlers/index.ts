@@ -16,4 +16,3 @@ export * from './sequence';
 export * from './show-image';
 export * from './show-text';
 export * from './stop-channel';
-export * from './wait-for-user';

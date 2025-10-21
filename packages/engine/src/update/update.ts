@@ -25,7 +25,6 @@ import {
   handleShowText,
   handleStopChannel,
   handleSuccessFetchAudio,
-  handleWaitForUser,
 } from './message-handlers';
 
 export const update = <Component>(
@@ -45,8 +44,6 @@ export const update = <Component>(
       return handleShowText(model, msg);
     case 'RemoveWidgets':
       return handleRemoveWidgets(model, msg);
-    case 'WaitForUser':
-      return handleWaitForUser(model, msg);
     case 'Delay':
       return handleDelay(model, msg);
     case 'DelayCompleted':
