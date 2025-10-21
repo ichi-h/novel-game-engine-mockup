@@ -12,6 +12,10 @@ export const handleSequence = <Component>(
   msg: SequenceMessage<Component>,
   update: Update<NovelModel, NovelMessage<Component>>,
 ): ReturnModel<NovelModel, SequenceMessage<Component>> => {
+  if (msg.messages.length === 0) {
+    return model;
+  }
+
   const messages: NovelMessage<Component>[] = [];
   const restMessages: NovelMessage<Component>[] = [];
   const delayIndex = msg.messages.findIndex((m) => m.type === 'Delay');

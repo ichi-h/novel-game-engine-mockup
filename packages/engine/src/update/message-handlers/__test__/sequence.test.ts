@@ -21,16 +21,7 @@ describe('handleSequence', () => {
       const result = handleSequence(model, msg, mockUpdate);
 
       // Assert
-      expect(Array.isArray(result)).toBe(true);
-      if (!Array.isArray(result)) return;
-
-      const [_, cmd] = result;
-      expect(typeof cmd).toBe('function');
-
-      if (!cmd) throw new Error('Expected cmd to be defined');
-      const cmdResult = await cmd();
-      expect(cmdResult.type).toBe('Sequence');
-      expect(cmdResult.messages).toHaveLength(0);
+      expect(result).toBe(model);
     });
 
     test('processes all messages when no Delay is present', async () => {
