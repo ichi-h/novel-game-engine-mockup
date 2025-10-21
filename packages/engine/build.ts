@@ -1,6 +1,8 @@
 import type { BuildConfig } from 'bun';
 import dts from 'bun-plugin-dts';
 
+const shouldMinify = process.argv.includes('--minify');
+
 const defaultBuildConfig: BuildConfig = {
   entrypoints: ['./src/index.ts'],
   outdir: './dist',
@@ -12,14 +14,14 @@ await Promise.all([
     plugins: [dts()],
     format: 'esm',
     naming: '[dir]/[name].js',
-    minify: true,
+    minify: shouldMinify,
     sourcemap: true,
   }),
   Bun.build({
     ...defaultBuildConfig,
     format: 'cjs',
     naming: '[dir]/[name].cjs',
-    minify: true,
+    minify: shouldMinify,
     sourcemap: true,
   }),
 ]);

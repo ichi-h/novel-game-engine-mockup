@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "lefthook install",
     "build": "turbo build",
+    "build:dev": "turbo build:dev",
     "tsc": "turbo tsc",
     "format": "biome format --write",
     "lint": "biome lint --write"

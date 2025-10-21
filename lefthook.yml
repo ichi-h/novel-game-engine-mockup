@@ -22,4 +22,4 @@ pre-push:
     build:
       glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
-      run: bun run build
+      run: bun run build:dev
