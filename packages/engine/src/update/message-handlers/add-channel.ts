@@ -2,10 +2,10 @@ import type { BaseMessage, ReturnModel } from 'elmish';
 import type { Samples, Volume } from '../../mixer';
 import type { NovelModel } from '../../model';
 
-export interface CreateChannelMessage extends BaseMessage {
-  type: 'CreateChannel';
+export interface AddChannelMessage extends BaseMessage {
+  type: 'AddChannel';
   name: string;
-  src: string;
+  source: ArrayBuffer;
   volume?: Volume;
   loop?: {
     start: Samples;
@@ -13,10 +13,17 @@ export interface CreateChannelMessage extends BaseMessage {
   };
 }
 
-export const handleCreateChannel = (
+export const handleAddChannel = (
   model: NovelModel,
-  _msg: CreateChannelMessage,
+  msg: AddChannelMessage,
 ): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+  model.mixer.addChannel(
+    msg.name,
+    msg.source,
+    msg.volume ?? 1.0,
+    msg.loop !== undefined,
+    msg.loop?.start,
+    msg.loop?.end,
+  );
   return model;
 };

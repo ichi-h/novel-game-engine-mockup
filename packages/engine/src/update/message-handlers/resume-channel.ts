@@ -2,16 +2,16 @@ import type { BaseMessage, ReturnModel } from 'elmish';
 import type { FadeInMs } from '../../mixer';
 import type { NovelModel } from '../../model';
 
-export interface ResumeSoundMessage extends BaseMessage {
-  type: 'ResumeSound';
+export interface ResumeChannelMessage extends BaseMessage {
+  type: 'ResumeChannel';
   channelName: string;
   fadeInMs?: FadeInMs;
 }
 
-export const handleResumeSound = (
+export const handleResumeChannel = (
   model: NovelModel,
-  _msg: ResumeSoundMessage,
+  msg: ResumeChannelMessage,
 ): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+  model.mixer.resumeChannel(msg.channelName, msg.fadeInMs);
   return model;
 };

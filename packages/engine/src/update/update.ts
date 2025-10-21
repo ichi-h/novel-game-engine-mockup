@@ -4,23 +4,23 @@ import type { NovelModel } from '../model';
 
 import type { NovelMessage } from './message';
 import {
+  handleAddChannel,
   handleAddCustomLayout,
   handleAddLayout,
   handleAddTextBox,
   handleChangeChannelVolume,
   handleChangeMasterVolume,
   handleClearTextBox,
-  handleCreateChannel,
   handleDelay,
   handleDelayCompleted,
-  handlePauseSound,
-  handlePlaySound,
+  handlePauseChannel,
+  handlePlayChannel,
   handleRemoveChannel,
   handleRemoveWidgets,
-  handleResumeSound,
+  handleResumeChannel,
   handleShowImage,
   handleShowText,
-  handleStopSound,
+  handleStopChannel,
   handleWaitForUser,
 } from './message-handlers';
 
@@ -51,20 +51,20 @@ export const update = <Component>(
       return handleChangeMasterVolume(model, msg);
     case 'ClearTextBox':
       return handleClearTextBox(model, msg);
-    case 'CreateChannel':
-      return handleCreateChannel(model, msg);
+    case 'AddChannel':
+      return handleAddChannel(model, msg);
     case 'RemoveChannel':
       return handleRemoveChannel(model, msg);
     case 'ChangeChannelVolume':
       return handleChangeChannelVolume(model, msg);
-    case 'PlaySound':
-      return handlePlaySound(model, msg);
-    case 'StopSound':
-      return handleStopSound(model, msg);
-    case 'PauseSound':
-      return handlePauseSound(model, msg);
-    case 'ResumeSound':
-      return handleResumeSound(model, msg);
+    case 'PlayChannel':
+      return handlePlayChannel(model, msg);
+    case 'StopChannel':
+      return handleStopChannel(model, msg);
+    case 'PauseChannel':
+      return handlePauseChannel(model, msg);
+    case 'ResumeChannel':
+      return handleResumeChannel(model, msg);
     default:
       return model;
   }

@@ -2,16 +2,16 @@ import type { BaseMessage, ReturnModel } from 'elmish';
 import type { FadeOutMs } from '../../mixer';
 import type { NovelModel } from '../../model';
 
-export interface StopSoundMessage extends BaseMessage {
-  type: 'StopSound';
+export interface StopChannelMessage extends BaseMessage {
+  type: 'StopChannel';
   channelName: string;
   fadeOutMs?: FadeOutMs;
 }
 
-export const handleStopSound = (
+export const handleStopChannel = (
   model: NovelModel,
-  _msg: StopSoundMessage,
+  msg: StopChannelMessage,
 ): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+  model.mixer.stopChannel(msg.channelName, msg.fadeOutMs);
   return model;
 };

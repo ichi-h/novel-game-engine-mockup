@@ -1,21 +1,21 @@
 import type {
+  AddChannelMessage,
   AddCustomLayoutMessage,
   AddLayoutMessage,
   AddTextBoxMessage,
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
   ClearTextBoxMessage,
-  CreateChannelMessage,
   DelayCompletedMessage,
   DelayMessage,
-  PauseSoundMessage,
-  PlaySoundMessage,
+  PauseChannelMessage,
+  PlayChannelMessage,
   RemoveChannelMessage,
   RemoveWidgetsMessage,
-  ResumeSoundMessage,
+  ResumeChannelMessage,
   ShowImageMessage,
   ShowTextMessage,
-  StopSoundMessage,
+  StopChannelMessage,
   WaitForUserMessage,
 } from './message-handlers';
 
@@ -31,10 +31,10 @@ export type NovelMessage<Component> =
   | DelayCompletedMessage
   | ChangeMasterVolumeMessage
   | ClearTextBoxMessage
-  | CreateChannelMessage
+  | AddChannelMessage
   | RemoveChannelMessage
   | ChangeChannelVolumeMessage
-  | PlaySoundMessage
-  | StopSoundMessage
-  | PauseSoundMessage
-  | ResumeSoundMessage;
+  | PlayChannelMessage
+  | StopChannelMessage
+  | PauseChannelMessage
+  | ResumeChannelMessage;

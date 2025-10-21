@@ -10,8 +10,8 @@ export interface ChangeMasterVolumeMessage extends BaseMessage {
 
 export const handleChangeMasterVolume = (
   model: NovelModel,
-  _msg: ChangeMasterVolumeMessage,
+  msg: ChangeMasterVolumeMessage,
 ): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+  model.mixer.changeMasterVolume(msg.masterVolume);
   return model;
 };

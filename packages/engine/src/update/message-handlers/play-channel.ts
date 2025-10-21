@@ -2,8 +2,8 @@ import type { BaseMessage, ReturnModel } from 'elmish';
 import type { DelayMs, FadeInMs, FadeOutMs, OffsetMs } from '../../mixer';
 import type { NovelModel } from '../../model';
 
-export interface PlaySoundMessage extends BaseMessage {
-  type: 'PlaySound';
+export interface PlayChannelMessage extends BaseMessage {
+  type: 'PlayChannel';
   channelName: string;
   fadeInMs?: FadeInMs;
   fadeOutMs?: FadeOutMs;
@@ -11,10 +11,16 @@ export interface PlaySoundMessage extends BaseMessage {
   offsetMs?: OffsetMs;
 }
 
-export const handlePlaySound = (
+export const handlePlayChannel = (
   model: NovelModel,
-  _msg: PlaySoundMessage,
+  msg: PlayChannelMessage,
 ): ReturnModel<NovelModel, never> => {
-  // TODO: implement
+  model.mixer.playChannel(
+    msg.channelName,
+    msg.delayMs,
+    msg.offsetMs,
+    msg.fadeInMs,
+    msg.fadeOutMs,
+  );
   return model;
 };
