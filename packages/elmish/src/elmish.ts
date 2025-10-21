@@ -19,7 +19,7 @@ export const elmish =
 
       if (!model) throw new Error('Model is not initialized');
 
-      const result = update(model, message);
+      const result = update({ ...model }, message);
       const [newModel, cmd] = Array.isArray(result)
         ? [result[0], result[1]]
         : [result, undefined];
