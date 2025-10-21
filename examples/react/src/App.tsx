@@ -1,8 +1,8 @@
 import { elmish } from 'elmish';
 import {
   type ClearTextBoxMessage,
-  type IMixer,
   initModel,
+  Mixer,
   type NovelMessage,
   type NovelModel,
   type ShowTextMessage,
@@ -13,17 +13,6 @@ import { type JSX, useState } from 'react';
 import './index.css';
 import logo from './logo.svg';
 import reactLogo from './react.svg';
-
-export const mockMixer: IMixer = {
-  addChannel: () => Promise.resolve(),
-  changeMasterVolume: () => void 0,
-  removeChannel: (_name) => '',
-  changeChannelVolume: () => '',
-  playChannel: () => '',
-  stopChannel: () => '',
-  pauseChannel: () => '',
-  resumeChannel: () => '',
-};
 
 const useElement = elmish<NovelModel, NovelMessage<JSX.Element>>();
 
@@ -56,7 +45,7 @@ const messages: NovelMessage<JSX.Element>[] = [
 
 export function App() {
   const [index, setIndex] = useState(0);
-  const [model, setModel] = useState(initModel(mockMixer));
+  const [model, setModel] = useState(initModel(new Mixer('novel')));
   const send = useElement(model, update, setModel);
 
   const onClick = () => {
