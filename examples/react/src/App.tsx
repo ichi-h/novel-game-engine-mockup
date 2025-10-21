@@ -1,7 +1,7 @@
 import { elmish } from 'elmish';
 import {
   type ClearTextBoxMessage,
-  initModel,
+  generateInitModel,
   Mixer,
   type NovelMessage,
   type NovelModel,
@@ -32,12 +32,12 @@ const clear = (textBoxId: string): ClearTextBoxMessage => ({
 const text = showText('textbox');
 
 const messages: NovelMessage<JSX.Element>[] = [
+  { type: 'AddChannel', src: bgm, name: 'bgm', volume: 0.5 },
   {
     type: 'Sequence',
     messages: [
       { type: 'AddLayout', id: 'root' },
       { type: 'AddTextBox', id: 'textbox', layoutId: 'root' },
-      { type: 'AddChannel', src: bgm, name: 'bgm', volume: 0.5 },
     ],
   },
   {
@@ -70,7 +70,7 @@ const messages: NovelMessage<JSX.Element>[] = [
 
 export function App() {
   const [index, setIndex] = useState(0);
-  const [model, setModel] = useState(initModel(new Mixer('novel')));
+  const [model, setModel] = useState(generateInitModel(new Mixer('novel')));
   const send = useElement(model, update, setModel);
 
   const next = useCallback(() => {

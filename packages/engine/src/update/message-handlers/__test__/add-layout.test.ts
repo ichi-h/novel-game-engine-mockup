@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { initModel } from '@/model';
+import { generateInitModel } from '@/model';
 import { img, layout } from '@/ui';
 import { type AddLayoutMessage, handleAddLayout } from '../add-layout';
 import { mockMixer } from './test-utils';
@@ -7,7 +7,7 @@ import { mockMixer } from './test-utils';
 describe('handleAddLayout - normal cases', () => {
   test('adds layout to root without style', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
       id: 'layout1',
@@ -24,7 +24,7 @@ describe('handleAddLayout - normal cases', () => {
 
   test('adds layout to root with style', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
       id: 'layout2',
@@ -45,7 +45,7 @@ describe('handleAddLayout - normal cases', () => {
 
   test('adds layout to parent layout', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     // First, add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -72,7 +72,7 @@ describe('handleAddLayout - normal cases', () => {
 describe('handleAddLayout - error cases', () => {
   test('throws error for duplicate ID', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     // Add existing layout
     const existingLayout = layout({ id: 'duplicate-id' })([]);
     model.ui.addWidget(existingLayout);
@@ -93,7 +93,7 @@ describe('handleAddLayout - error cases', () => {
 
   test('throws error for non-existent parent layout ID', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
       id: 'new-layout',
@@ -111,7 +111,7 @@ describe('handleAddLayout - error cases', () => {
 
   test('throws error when non-layout widget ID is specified as parent', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     // Add Image widget
     const imageWidget = img({
       id: 'image1',

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { initModel } from '@/model';
+import { generateInitModel } from '@/model';
 import { layout, text, textBox } from '@/ui';
 import {
   type ClearTextBoxMessage,
@@ -10,7 +10,7 @@ import { mockMixer } from './test-utils';
 describe('handleClearTextBox - normal cases', () => {
   test('clears empty text box', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     // Add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -34,7 +34,7 @@ describe('handleClearTextBox - normal cases', () => {
 
   test('clears text box with multiple texts', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     // Add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -67,7 +67,7 @@ describe('handleClearTextBox - normal cases', () => {
 describe('handleClearTextBox - error cases', () => {
   test('throws error for non-existent text box ID', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
 
     const msg: ClearTextBoxMessage = {
       type: 'ClearTextBox',
@@ -85,7 +85,7 @@ describe('handleClearTextBox - error cases', () => {
 
   test('throws error when ID is not a text box', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     // Add layout (not a text box)
     const layoutWidget = layout({ id: 'not-a-textbox' })([]);
     model.ui.addWidget(layoutWidget);

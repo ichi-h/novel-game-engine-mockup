@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { initModel } from '@/model';
+import { generateInitModel } from '@/model';
 import { layout } from '@/ui';
 import { handleShowImage, type ShowImageMessage } from '../show-image';
 import { mockMixer } from './test-utils';
@@ -7,7 +7,7 @@ import { mockMixer } from './test-utils';
 describe('handleShowImage - normal cases', () => {
   test('adds image with only required fields', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
 
@@ -28,7 +28,7 @@ describe('handleShowImage - normal cases', () => {
 
   test('adds image with all optional fields', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
 
@@ -51,7 +51,7 @@ describe('handleShowImage - normal cases', () => {
 
   test('adds multiple images to same layout', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
 
@@ -84,7 +84,7 @@ describe('handleShowImage - normal cases', () => {
 describe('handleShowImage - error cases', () => {
   test('throws error for duplicate image ID', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
 
@@ -115,7 +115,7 @@ describe('handleShowImage - error cases', () => {
 
   test('throws error for non-existent layoutId', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
 
     const msg: ShowImageMessage = {
       type: 'ShowImage',
@@ -134,7 +134,7 @@ describe('handleShowImage - error cases', () => {
 
   test('throws error when image ID conflicts with existing widget ID', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     // Add existing widget with id 'existing-widget'
     const existingLayout = layout({ id: 'existing-widget' })([]);
     model.ui.addWidget(existingLayout);

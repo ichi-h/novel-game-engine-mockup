@@ -9,7 +9,7 @@ export interface NovelModel {
   error: Error | null;
 }
 
-export const initModel = (mixer: IMixer): NovelModel => ({
+export const generateInitModel = (mixer: IMixer): NovelModel => ({
   mixer,
   ui: new WidgetManager(),
   isDelaying: false,

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { initModel } from '@/model';
+import { generateInitModel } from '@/model';
 import { layout, textBox } from '@/ui';
 import {
   handleRemoveWidgets,
@@ -10,7 +10,7 @@ import { mockMixer } from './test-utils';
 describe('handleRemoveWidgets - normal cases', () => {
   test('removes single widget', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const textBoxWidget = textBox({ id: 'textbox1' })([]);
@@ -32,7 +32,7 @@ describe('handleRemoveWidgets - normal cases', () => {
 
   test('removes multiple widgets', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const t1 = textBox({ id: 'textbox1' })([]);
@@ -57,7 +57,7 @@ describe('handleRemoveWidgets - normal cases', () => {
 
   test('removes parent and its children when removing parent', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const child = textBox({ id: 'childA' })([]);
@@ -79,7 +79,7 @@ describe('handleRemoveWidgets - normal cases', () => {
 
   test('no-op when ids is empty array', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const child = textBox({ id: 'childA' })([]);
@@ -104,7 +104,7 @@ describe('handleRemoveWidgets - normal cases', () => {
 describe('handleRemoveWidgets - error cases', () => {
   test('throws error for non-existent id', () => {
     // Arrange
-    const model = initModel(mockMixer);
+    const model = generateInitModel(mockMixer);
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
