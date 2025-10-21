@@ -13,6 +13,7 @@ import { type JSX, useState } from 'react';
 import './index.css';
 import logo from './logo.svg';
 import reactLogo from './react.svg';
+import bgm from './test.mp3';
 
 const useElement = elmish<NovelModel, NovelMessage<JSX.Element>>();
 
@@ -31,6 +32,8 @@ const clear = (textBoxId: string): ClearTextBoxMessage => ({
 const text = showText('textbox');
 
 const messages: NovelMessage<JSX.Element>[] = [
+  { type: 'AddChannel', src: bgm, name: 'bgm' },
+  { type: 'PlayChannel', channelName: 'bgm' },
   { type: 'AddLayout', id: 'root' },
   { type: 'AddTextBox', id: 'textbox', layoutId: 'root' },
   text('Hello, World! - 1'),
@@ -41,6 +44,7 @@ const messages: NovelMessage<JSX.Element>[] = [
   text('Hello, World! - 5'),
   text('Hello, World! - 6'),
   clear('textbox'),
+  { type: 'RemoveChannel', name: 'bgm' },
 ];
 
 export function App() {
