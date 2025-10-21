@@ -15,6 +15,7 @@ import type {
   RemoveChannelMessage,
   RemoveWidgetsMessage,
   ResumeChannelMessage,
+  SequenceMessage,
   ShowImageMessage,
   ShowTextMessage,
   StopChannelMessage,
@@ -43,4 +44,5 @@ export type NovelMessage<Component> =
   | PlayChannelMessage
   | StopChannelMessage
   | PauseChannelMessage
-  | ResumeChannelMessage;
+  | ResumeChannelMessage
+  | SequenceMessage<NovelMessage<Component>>;

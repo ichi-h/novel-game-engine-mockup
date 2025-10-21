@@ -20,6 +20,7 @@ import {
   handleRemoveChannel,
   handleRemoveWidgets,
   handleResumeChannel,
+  handleSequence,
   handleShowImage,
   handleShowText,
   handleStopChannel,
@@ -74,7 +75,11 @@ export const update = <Component>(
       return handleError(model, msg);
     case 'RecoverError':
       return handleRecoverError(model);
-    default:
-      return model;
+    case 'Sequence':
+      return handleSequence<NovelMessage<Component>>(model, msg, update);
+    default: {
+      const error = new Error(`Unhandled message type: ${JSON.stringify(msg)}`);
+      return handleError(model, { type: 'Error', value: error });
+    }
   }
 };

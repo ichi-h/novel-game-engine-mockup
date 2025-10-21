@@ -12,6 +12,7 @@ export * from './play-channel';
 export * from './remove-channel';
 export * from './remove-widgets';
 export * from './resume-channel';
+export * from './sequence';
 export * from './show-image';
 export * from './show-text';
 export * from './stop-channel';
