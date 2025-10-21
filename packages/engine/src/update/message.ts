@@ -8,14 +8,17 @@ import type {
   ClearTextBoxMessage,
   DelayCompletedMessage,
   DelayMessage,
+  ErrorMessage,
   PauseChannelMessage,
   PlayChannelMessage,
+  RecoverErrorMessage,
   RemoveChannelMessage,
   RemoveWidgetsMessage,
   ResumeChannelMessage,
   ShowImageMessage,
   ShowTextMessage,
   StopChannelMessage,
+  SuccessFetchAudioMessage,
   WaitForUserMessage,
 } from './message-handlers';
 
@@ -29,9 +32,12 @@ export type NovelMessage<Component> =
   | WaitForUserMessage
   | DelayMessage
   | DelayCompletedMessage
+  | ErrorMessage
+  | RecoverErrorMessage
   | ChangeMasterVolumeMessage
   | ClearTextBoxMessage
   | AddChannelMessage
+  | SuccessFetchAudioMessage
   | RemoveChannelMessage
   | ChangeChannelVolumeMessage
   | PlayChannelMessage

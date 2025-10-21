@@ -13,14 +13,17 @@ import {
   handleClearTextBox,
   handleDelay,
   handleDelayCompleted,
+  handleError,
   handlePauseChannel,
   handlePlayChannel,
+  handleRecoverError,
   handleRemoveChannel,
   handleRemoveWidgets,
   handleResumeChannel,
   handleShowImage,
   handleShowText,
   handleStopChannel,
+  handleSuccessFetchAudio,
   handleWaitForUser,
 } from './message-handlers';
 
@@ -53,6 +56,8 @@ export const update = <Component>(
       return handleClearTextBox(model, msg);
     case 'AddChannel':
       return handleAddChannel(model, msg);
+    case 'SuccessFetchAudio':
+      return handleSuccessFetchAudio(model, msg);
     case 'RemoveChannel':
       return handleRemoveChannel(model, msg);
     case 'ChangeChannelVolume':
@@ -65,6 +70,10 @@ export const update = <Component>(
       return handlePauseChannel(model, msg);
     case 'ResumeChannel':
       return handleResumeChannel(model, msg);
+    case 'Error':
+      return handleError(model, msg);
+    case 'RecoverError':
+      return handleRecoverError(model);
     default:
       return model;
   }

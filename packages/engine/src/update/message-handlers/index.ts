@@ -6,6 +6,7 @@ export * from './change-channel-volume';
 export * from './change-master-volume';
 export * from './clear-text-box';
 export * from './delay';
+export * from './error';
 export * from './pause-channel';
 export * from './play-channel';
 export * from './remove-channel';

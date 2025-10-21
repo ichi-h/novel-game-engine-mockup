@@ -5,10 +5,14 @@ export interface NovelModel {
   mixer: IMixer;
   ui: WidgetManager;
   isDelaying: boolean;
+  isFetching: boolean;
+  error: Error | null;
 }
 
 export const initModel = (mixer: IMixer): NovelModel => ({
   mixer,
   ui: new WidgetManager(),
   isDelaying: false,
+  isFetching: false,
+  error: null,
 });
