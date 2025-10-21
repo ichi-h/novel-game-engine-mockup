@@ -1,31 +1,40 @@
 import type { BaseMessage, Cmd, ReturnModel, Update } from 'elmish';
 import type { NovelModel } from '@/model';
+import type { NovelMessage } from '../message';
 
-export interface SequenceMessage<T extends BaseMessage> extends BaseMessage {
+export interface SequenceMessage<Component> extends BaseMessage {
   type: 'Sequence';
-  messages: T[];
+  messages: NovelMessage<Component>[];
 }
 
-export const handleSequence = <T extends BaseMessage>(
+export const handleSequence = <Component>(
   model: NovelModel,
-  msg: SequenceMessage<T>,
-  update: Update<NovelModel, T>,
-): ReturnModel<NovelModel, SequenceMessage<T>> => {
-  const result = msg.messages.reduce<{
+  msg: SequenceMessage<Component>,
+  update: Update<NovelModel, NovelMessage<Component>>,
+): ReturnModel<NovelModel, SequenceMessage<Component>> => {
+  const messages: NovelMessage<Component>[] = [];
+  const restMessages: NovelMessage<Component>[] = [];
+  const delayIndex = msg.messages.findIndex((m) => m.type === 'Delay');
+
+  if (delayIndex !== -1) {
+    messages.push(...msg.messages.slice(0, delayIndex + 1));
+    restMessages.push(...msg.messages.slice(delayIndex + 1));
+  } else {
+    messages.push(...msg.messages);
+  }
+
+  const result = messages.reduce<{
     model: NovelModel;
-    cmds: Cmd<T>[];
+    cmds: Cmd<NovelMessage<Component>>[];
   }>(
     (acc, cur) => {
-      const result = update(acc.model, cur);
-      const [nextModel, nextCmd] = Array.isArray(result)
-        ? result
-        : [result, undefined];
+      const updateResult = update(acc.model, cur);
+      const [nextModel, nextCmd] = Array.isArray(updateResult)
+        ? updateResult
+        : [updateResult, undefined];
       return {
         model: nextModel,
-        cmds: [
-          ...acc.cmds,
-          ...(nextCmd ? (Array.isArray(nextCmd) ? nextCmd : [nextCmd]) : []),
-        ],
+        cmds: [...acc.cmds, ...(nextCmd ? [nextCmd] : [])],
       };
     },
     { model, cmds: [] },
@@ -34,10 +43,10 @@ export const handleSequence = <T extends BaseMessage>(
   return [
     result.model,
     async () => {
-      const results = await Promise.all(result.cmds.map((cmd) => cmd()));
-      const msg: SequenceMessage<T> = {
+      const cmdMsgs = await Promise.all(result.cmds.map((cmd) => cmd()));
+      const msg: SequenceMessage<Component> = {
         type: 'Sequence',
-        messages: results,
+        messages: [...restMessages, ...cmdMsgs],
       };
       return msg;
     },
