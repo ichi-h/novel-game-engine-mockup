@@ -340,7 +340,7 @@ const initMessage: NovelMessage<ReactComponentDriver> = sequence([
     type: 'AddChannel',
     src: bgm,
     name: 'bgm',
-    volume: 0.3,
+    volume: 1,
     loop: { start: 0, end: 7650432 },
   },
   {
