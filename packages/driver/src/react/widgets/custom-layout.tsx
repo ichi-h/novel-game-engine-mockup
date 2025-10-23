@@ -1,9 +1,9 @@
 import type { CustomLayoutWidget } from 'engine';
 import { NovelWidgetDriver } from '../novel-widget-driver';
-import type { DriverComponent } from '../type';
+import type { ReactComponentDriver } from '../type';
 
 interface Props {
-  widget: CustomLayoutWidget<DriverComponent>;
+  widget: CustomLayoutWidget<ReactComponentDriver>;
 }
 
 export const CustomLayout = ({ widget }: Props) => {

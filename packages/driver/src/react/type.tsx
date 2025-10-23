@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 
-export type DriverComponent = ({
+export type ReactComponentDriver = ({
   children,
 }: {
   children: React.ReactNode;
