@@ -10,6 +10,13 @@ export interface RecoverErrorMessage extends BaseMessage {
   type: 'RecoverError';
 }
 
+export const error = (value: Error): ErrorMessage => {
+  return {
+    type: 'Error',
+    value,
+  };
+};
+
 export const handleError = <Component>(
   model: NovelModel<Component>,
   msg: ErrorMessage,

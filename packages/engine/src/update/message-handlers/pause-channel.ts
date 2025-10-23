@@ -8,6 +8,17 @@ export interface PauseChannelMessage extends BaseMessage {
   fadeOutMs?: FadeOutMs;
 }
 
+export const pauseChannel = (
+  channelName: string,
+  fadeOutMs?: FadeOutMs,
+): PauseChannelMessage => {
+  return {
+    type: 'PauseChannel',
+    channelName,
+    ...(fadeOutMs !== undefined ? { fadeOutMs } : {}),
+  };
+};
+
 export const handlePauseChannel = <Component>(
   model: NovelModel<Component>,
   msg: PauseChannelMessage,

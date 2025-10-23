@@ -11,6 +11,23 @@ export interface ShowTextMessage extends BaseMessage {
   speed?: number;
 }
 
+export const showText = (
+  textBoxId: string,
+  content: string,
+  id?: string,
+  style?: string,
+  speed?: number,
+): ShowTextMessage => {
+  return {
+    type: 'ShowText',
+    textBoxId,
+    content,
+    ...(id !== undefined ? { id } : {}),
+    ...(style !== undefined ? { style } : {}),
+    ...(speed !== undefined ? { speed } : {}),
+  };
+};
+
 export const handleShowText = <Component>(
   model: NovelModel<Component>,
   msg: ShowTextMessage,

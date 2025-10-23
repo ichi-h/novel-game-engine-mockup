@@ -9,6 +9,19 @@ export interface AddTextBoxMessage extends BaseMessage {
   style?: string;
 }
 
+export const addTextBox = (
+  id: string,
+  layoutId: string,
+  style?: string,
+): AddTextBoxMessage => {
+  return {
+    type: 'AddTextBox',
+    id,
+    layoutId,
+    ...(style !== undefined ? { style } : {}),
+  };
+};
+
 export const handleAddTextBox = <Component>(
   model: NovelModel<Component>,
   msg: AddTextBoxMessage,

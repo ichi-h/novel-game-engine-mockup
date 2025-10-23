@@ -20,6 +20,21 @@ export interface SuccessFetchAudioMessage
   arrayBuffer: ArrayBuffer;
 }
 
+export const addChannel = (
+  name: string,
+  src: string,
+  volume?: Volume,
+  loop?: { start: Samples; end: Samples },
+): AddChannelMessage => {
+  return {
+    type: 'AddChannel',
+    name,
+    src,
+    ...(volume !== undefined ? { volume } : {}),
+    ...(loop !== undefined ? { loop } : {}),
+  };
+};
+
 export const handleAddChannel = <Component>(
   model: NovelModel<Component>,
   msg: AddChannelMessage,

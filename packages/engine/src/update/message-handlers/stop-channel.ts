@@ -8,6 +8,17 @@ export interface StopChannelMessage extends BaseMessage {
   fadeOutMs?: FadeOutMs;
 }
 
+export const stopChannel = (
+  channelName: string,
+  fadeOutMs?: FadeOutMs,
+): StopChannelMessage => {
+  return {
+    type: 'StopChannel',
+    channelName,
+    ...(fadeOutMs !== undefined ? { fadeOutMs } : {}),
+  };
+};
+
 export const handleStopChannel = <Component>(
   model: NovelModel<Component>,
   msg: StopChannelMessage,

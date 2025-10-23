@@ -8,6 +8,17 @@ export interface ChangeMasterVolumeMessage extends BaseMessage {
   masterVolume: Volume;
 }
 
+export const changeMasterVolume = (
+  name: string,
+  masterVolume: Volume,
+): ChangeMasterVolumeMessage => {
+  return {
+    type: 'ChangeMasterVolume',
+    name,
+    masterVolume,
+  };
+};
+
 export const handleChangeMasterVolume = <Component>(
   model: NovelModel<Component>,
   msg: ChangeMasterVolumeMessage,

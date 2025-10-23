@@ -10,6 +10,21 @@ export interface ShowImageMessage extends BaseMessage {
   style?: string;
 }
 
+export const showImage = (
+  layoutId: string,
+  src: string,
+  id?: string,
+  style?: string,
+): ShowImageMessage => {
+  return {
+    type: 'ShowImage',
+    layoutId,
+    src,
+    ...(id !== undefined ? { id } : {}),
+    ...(style !== undefined ? { style } : {}),
+  };
+};
+
 export const handleShowImage = <Component>(
   model: NovelModel<Component>,
   msg: ShowImageMessage,

@@ -8,6 +8,15 @@ export interface SequenceMessage<Message extends BaseMessage>
   messages: Message[];
 }
 
+export const sequence = <Message extends BaseMessage>(
+  messages: Message[],
+): SequenceMessage<Message> => {
+  return {
+    type: 'Sequence',
+    messages,
+  };
+};
+
 export const handleSequence = <Component>(
   model: NovelModel<Component>,
   msg: SequenceMessage<NovelMessage<Component>>,

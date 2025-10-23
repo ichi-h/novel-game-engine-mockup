@@ -6,6 +6,13 @@ export interface RemoveChannelMessage extends BaseMessage {
   name: string;
 }
 
+export const removeChannel = (name: string): RemoveChannelMessage => {
+  return {
+    type: 'RemoveChannel',
+    name,
+  };
+};
+
 export const handleRemoveChannel = <Component>(
   model: NovelModel<Component>,
   msg: RemoveChannelMessage,

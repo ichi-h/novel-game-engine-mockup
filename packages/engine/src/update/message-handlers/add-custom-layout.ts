@@ -9,6 +9,19 @@ export interface AddCustomLayoutMessage<Component> extends BaseMessage {
   component: Component;
 }
 
+export const addCustomLayout = <Component>(
+  id: string,
+  component: Component,
+  parentLayoutId?: string,
+): AddCustomLayoutMessage<Component> => {
+  return {
+    type: 'AddCustomLayout',
+    id,
+    component,
+    ...(parentLayoutId !== undefined ? { parentLayoutId } : {}),
+  };
+};
+
 export const handleAddCustomLayout = <Component>(
   model: NovelModel<Component>,
   msg: AddCustomLayoutMessage<Component>,

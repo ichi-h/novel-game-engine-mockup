@@ -10,6 +10,13 @@ export interface DelayCompletedMessage extends BaseMessage {
   type: 'DelayCompleted';
 }
 
+export const delay = (durationMs: number): DelayMessage => {
+  return {
+    type: 'Delay',
+    durationMs,
+  };
+};
+
 export const handleDelay = <Component>(
   model: NovelModel<Component>,
   msg: DelayMessage,

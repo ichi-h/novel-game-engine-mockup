@@ -8,6 +8,17 @@ export interface ResumeChannelMessage extends BaseMessage {
   fadeInMs?: FadeInMs;
 }
 
+export const resumeChannel = (
+  channelName: string,
+  fadeInMs?: FadeInMs,
+): ResumeChannelMessage => {
+  return {
+    type: 'ResumeChannel',
+    channelName,
+    ...(fadeInMs !== undefined ? { fadeInMs } : {}),
+  };
+};
+
 export const handleResumeChannel = <Component>(
   model: NovelModel<Component>,
   msg: ResumeChannelMessage,

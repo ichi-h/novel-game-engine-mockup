@@ -9,6 +9,19 @@ export interface AddLayoutMessage extends BaseMessage {
   style?: string;
 }
 
+export const addLayout = (
+  id: string,
+  parentLayoutId?: string,
+  style?: string,
+): AddLayoutMessage => {
+  return {
+    type: 'AddLayout',
+    id,
+    ...(parentLayoutId !== undefined ? { parentLayoutId } : {}),
+    ...(style !== undefined ? { style } : {}),
+  };
+};
+
 export const handleAddLayout = <Component>(
   model: NovelModel<Component>,
   msg: AddLayoutMessage,

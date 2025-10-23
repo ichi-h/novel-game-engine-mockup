@@ -8,6 +8,17 @@ export interface ChangeChannelVolumeMessage extends BaseMessage {
   volume: Volume;
 }
 
+export const changeChannelVolume = (
+  channelName: string,
+  volume: Volume,
+): ChangeChannelVolumeMessage => {
+  return {
+    type: 'ChangeChannelVolume',
+    channelName,
+    volume,
+  };
+};
+
 export const handleChangeChannelVolume = <Component>(
   model: NovelModel<Component>,
   msg: ChangeChannelVolumeMessage,
