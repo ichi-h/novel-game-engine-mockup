@@ -21,6 +21,7 @@
       "version": "0.1.0",
       "dependencies": {
         "bun-plugin-tailwind": "^0.1.2",
+        "driver": "workspace:*",
         "elmish": "workspace:*",
         "engine": "workspace:*",
         "react": "^19",
