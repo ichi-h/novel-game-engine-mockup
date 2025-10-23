@@ -11,6 +11,7 @@ import { useState } from 'react';
 import './index.css';
 import { NovelWidgetDriver, type ReactComponentDriver } from 'driver';
 import bgm from './bgm.mp3';
+import homeBg from './home.jpg';
 import logo from './logo.svg';
 import reactLogo from './react.svg';
 import shoppingMallBg from './shopping_mall.jpg';
@@ -62,13 +63,6 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
       {
         type: 'ShowText',
         textBoxId: 'main-textbox',
-        content: '主人公',
-        style: 'text-purple-600 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
         content:
           '今日は休日。妹のBunちゃんと弟のReactくんと一緒にショッピングモールへ出かけることにした。',
         style: 'text-gray-800 text-3xl leading-relaxed',
@@ -84,7 +78,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
         id: 'bun-char',
         layoutId: 'character-display',
         src: logo,
-        style: 'w-96 h-96 drop-shadow-2xl select-none',
+        style: 'w-128 h-128 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowText',
@@ -111,7 +105,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
         id: 'react-char',
         layoutId: 'character-display',
         src: reactLogo,
-        style: 'w-96 h-96 drop-shadow-2xl select-none',
+        style: 'w-128 h-128 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowText',
@@ -134,11 +128,11 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
       { type: 'ClearTextBox', textBoxId: 'main-textbox' },
       { type: 'RemoveWidgets', ids: ['bun-char', 'react-char'] },
       {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: '主人公',
-        style: 'text-purple-600 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
+        type: 'ShowImage',
+        id: 'shopping-mall-bg',
+        layoutId: 'background-content-layer',
+        src: shoppingMallBg,
+        style: 'absolute inset-0 w-full h-full object-cover animate-fade-in',
       },
       {
         type: 'ShowText',
@@ -157,14 +151,14 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
         id: 'bun-char',
         layoutId: 'character-display',
         src: logo,
-        style: 'w-96 h-96 drop-shadow-2xl select-none',
+        style: 'w-128 h-128 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowImage',
         id: 'react-char',
         layoutId: 'character-display',
         src: reactLogo,
-        style: 'w-96 h-96 drop-shadow-2xl select-none',
+        style: 'w-128 h-128 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowText',
@@ -220,13 +214,13 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
       },
     ]),
 
-    // シーン9: 主人公の返事
+    // シーン9: おまえの返事
     sequence([
       { type: 'ClearTextBox', textBoxId: 'main-textbox' },
       {
         type: 'ShowText',
         textBoxId: 'main-textbox',
-        content: '主人公',
+        content: 'おまえ',
         style: 'text-purple-600 font-bold text-4xl mb-4 drop-shadow-md',
         speed: 50,
       },
@@ -245,7 +239,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
       {
         type: 'ShowText',
         textBoxId: 'main-textbox',
-        content: '主人公',
+        content: 'おまえ',
         style: 'text-purple-600 font-bold text-4xl mb-4 drop-shadow-md',
         speed: 50,
       },
@@ -302,20 +296,13 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
       {
         type: 'ShowText',
         textBoxId: 'main-textbox',
-        content: '主人公',
-        style: 'text-purple-600 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
         content: '楽しい一日だった。家族と過ごす時間は本当に大切だな。',
-        style: 'text-gray-800 text-3xl leading-relaxed italic',
+        style: 'text-gray-800 text-3xl leading-relaxed',
         speed: 50,
       },
     ]),
 
-    // シーン14: タイトル画面に戻る
+    // シーン14: おわり
     sequence([
       { type: 'StopChannel', channelName: 'bgm', fadeOutMs: 3000 },
       {
@@ -339,7 +326,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
       {
         type: 'ShowText',
         textBoxId: 'end-title',
-        content: '✨ おしまい ✨',
+        content: 'おしまい',
         style: 'drop-shadow-2xl',
         speed: 100,
       },
@@ -360,7 +347,7 @@ const initMessage: NovelMessage<ReactComponentDriver> = sequence([
     type: 'AddLayout',
     id: 'root',
     style:
-      'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden',
+      'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
   },
   {
     type: 'AddLayout',
@@ -369,11 +356,17 @@ const initMessage: NovelMessage<ReactComponentDriver> = sequence([
     style: 'absolute inset-0 flex items-center justify-center',
   },
   {
+    type: 'AddLayout',
+    id: 'background-content-layer',
+    parentLayoutId: 'background-layer',
+    style: 'relative w-full h-full',
+  },
+  {
     type: 'ShowImage',
-    id: 'shopping-mall-bg',
-    layoutId: 'background-layer',
-    src: shoppingMallBg,
-    style: 'w-full h-full object-cover',
+    id: 'home-bg',
+    layoutId: 'background-content-layer',
+    src: homeBg,
+    style: 'absolute inset-0 w-full h-full object-cover',
   },
   {
     type: 'AddLayout',
