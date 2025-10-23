@@ -11,10 +11,10 @@ export interface PlayChannelMessage extends BaseMessage {
   offsetMs?: OffsetMs;
 }
 
-export const handlePlayChannel = (
-  model: NovelModel,
+export const handlePlayChannel = <Component>(
+  model: NovelModel<Component>,
   msg: PlayChannelMessage,
-): ReturnModel<NovelModel, never> => {
+): ReturnModel<NovelModel<Component>, never> => {
   model.mixer.playChannel(
     msg.channelName,
     msg.delayMs,

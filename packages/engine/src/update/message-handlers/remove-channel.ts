@@ -6,10 +6,10 @@ export interface RemoveChannelMessage extends BaseMessage {
   name: string;
 }
 
-export const handleRemoveChannel = (
-  model: NovelModel,
+export const handleRemoveChannel = <Component>(
+  model: NovelModel<Component>,
   msg: RemoveChannelMessage,
-): ReturnModel<NovelModel, never> => {
+): ReturnModel<NovelModel<Component>, never> => {
   model.mixer.removeChannel(msg.name);
   return model;
 };

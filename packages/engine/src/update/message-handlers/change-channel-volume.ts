@@ -8,10 +8,10 @@ export interface ChangeChannelVolumeMessage extends BaseMessage {
   volume: Volume;
 }
 
-export const handleChangeChannelVolume = (
-  model: NovelModel,
+export const handleChangeChannelVolume = <Component>(
+  model: NovelModel<Component>,
   msg: ChangeChannelVolumeMessage,
-): ReturnModel<NovelModel, never> => {
+): ReturnModel<NovelModel<Component>, never> => {
   model.mixer.changeChannelVolume(msg.channelName, msg.volume);
   return model;
 };

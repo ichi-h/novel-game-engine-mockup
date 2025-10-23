@@ -9,13 +9,15 @@ describe('handleSequence', () => {
   describe('normal cases', () => {
     test('processes empty message array', async () => {
       // Arrange
-      const model = generateInitModel(mockMixer);
-      const msg: SequenceMessage<string> = {
+      const model = generateInitModel<string>(mockMixer);
+      const msg: SequenceMessage<NovelMessage<string>> = {
         type: 'Sequence',
         messages: [],
       };
-      const mockUpdate: Update<NovelModel, NovelMessage<string>> = (m, _msg) =>
-        m;
+      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+        m,
+        _msg,
+      ) => m;
 
       // Act
       const result = handleSequence(model, msg, mockUpdate);
@@ -26,10 +28,10 @@ describe('handleSequence', () => {
 
     test('processes all messages when no Delay is present', async () => {
       // Arrange
-      const model = generateInitModel(mockMixer);
+      const model = generateInitModel<string>(mockMixer);
       let callCount = 0;
 
-      const msg: SequenceMessage<string> = {
+      const msg: SequenceMessage<NovelMessage<string>> = {
         type: 'Sequence',
         messages: [
           {
@@ -45,7 +47,7 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel, NovelMessage<string>> = (
+      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
         m,
         _msg,
       ) => {
@@ -65,15 +67,18 @@ describe('handleSequence', () => {
 
       if (!cmd) throw new Error('Expected cmd to be defined');
       const cmdResult = await cmd();
-      expect(cmdResult.messages).toHaveLength(0);
+      expect(cmdResult.type).toBe('Sequence');
+      if (cmdResult.type === 'Sequence') {
+        expect(cmdResult.messages).toHaveLength(0);
+      }
     });
 
     test('stops processing at Delay message and returns remaining messages', async () => {
       // Arrange
-      const model = generateInitModel(mockMixer);
+      const model = generateInitModel<string>(mockMixer);
       const processedMessages: string[] = [];
 
-      const msg: SequenceMessage<string> = {
+      const msg: SequenceMessage<NovelMessage<string>> = {
         type: 'Sequence',
         messages: [
           {
@@ -90,7 +95,10 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel, NovelMessage<string>> = (m, msg) => {
+      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+        m,
+        msg,
+      ) => {
         processedMessages.push(msg.type);
         return m;
       };
@@ -108,16 +116,18 @@ describe('handleSequence', () => {
       if (!cmd) throw new Error('Expected cmd to be defined');
       const cmdResult = await cmd();
       expect(cmdResult.type).toBe('Sequence');
-      expect(cmdResult.messages).toHaveLength(1);
-      expect(cmdResult.messages[0]?.type).toBe('ShowText');
+      if (cmdResult.type === 'Sequence') {
+        expect(cmdResult.messages).toHaveLength(1);
+        expect(cmdResult.messages[0]?.type).toBe('ShowText');
+      }
     });
 
     test('stops at first Delay when multiple Delays are present', async () => {
       // Arrange
-      const model = generateInitModel(mockMixer);
+      const model = generateInitModel<string>(mockMixer);
       const processedMessages: string[] = [];
 
-      const msg: SequenceMessage<string> = {
+      const msg: SequenceMessage<NovelMessage<string>> = {
         type: 'Sequence',
         messages: [
           {
@@ -140,7 +150,10 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel, NovelMessage<string>> = (m, msg) => {
+      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+        m,
+        msg,
+      ) => {
         processedMessages.push(msg.type);
         return m;
       };
@@ -157,17 +170,20 @@ describe('handleSequence', () => {
 
       if (!cmd) throw new Error('Expected cmd to be defined');
       const cmdResult = await cmd();
-      expect(cmdResult.messages).toHaveLength(3);
-      expect(cmdResult.messages[0]?.type).toBe('ShowText');
-      expect(cmdResult.messages[1]?.type).toBe('Delay');
-      expect(cmdResult.messages[2]?.type).toBe('ShowText');
+      expect(cmdResult.type).toBe('Sequence');
+      if (cmdResult.type === 'Sequence') {
+        expect(cmdResult.messages).toHaveLength(3);
+        expect(cmdResult.messages[0]?.type).toBe('ShowText');
+        expect(cmdResult.messages[1]?.type).toBe('Delay');
+        expect(cmdResult.messages[2]?.type).toBe('ShowText');
+      }
     });
 
     test('correctly processes messages that return commands', async () => {
       // Arrange
-      const model = generateInitModel(mockMixer);
+      const model = generateInitModel<string>(mockMixer);
 
-      const msg: SequenceMessage<string> = {
+      const msg: SequenceMessage<NovelMessage<string>> = {
         type: 'Sequence',
         messages: [{ type: 'Delay', durationMs: 1 }],
       };
@@ -178,7 +194,7 @@ describe('handleSequence', () => {
         content: 'From command',
       });
 
-      const mockUpdate: Update<NovelModel, NovelMessage<string>> = (
+      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
         m,
         _msg,
       ) => {
@@ -196,11 +212,14 @@ describe('handleSequence', () => {
       if (!cmd) throw new Error('Expected cmd to be defined');
       const cmdResult = await cmd();
 
-      expect(cmdResult.messages).toHaveLength(1);
-      expect(cmdResult.messages[0]?.type).toBe('ShowText');
-      if (cmdResult.messages[0]?.type === 'ShowText') {
-        const showTextMsg = cmdResult.messages[0];
-        expect(showTextMsg.content).toBe('From command');
+      expect(cmdResult.type).toBe('Sequence');
+      if (cmdResult.type === 'Sequence') {
+        expect(cmdResult.messages).toHaveLength(1);
+        expect(cmdResult.messages[0]?.type).toBe('ShowText');
+        if (cmdResult.messages[0]?.type === 'ShowText') {
+          const showTextMsg = cmdResult.messages[0];
+          expect(showTextMsg.content).toBe('From command');
+        }
       }
     });
   });

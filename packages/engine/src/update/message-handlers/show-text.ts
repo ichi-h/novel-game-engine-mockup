@@ -11,10 +11,10 @@ export interface ShowTextMessage extends BaseMessage {
   speed?: number;
 }
 
-export const handleShowText = (
-  model: NovelModel,
+export const handleShowText = <Component>(
+  model: NovelModel<Component>,
   msg: ShowTextMessage,
-): NovelModel => {
+): NovelModel<Component> => {
   const newText = text({
     content: msg.content,
     ...(msg.id !== undefined && { id: msg.id }),

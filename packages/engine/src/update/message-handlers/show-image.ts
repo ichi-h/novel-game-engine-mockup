@@ -10,10 +10,10 @@ export interface ShowImageMessage extends BaseMessage {
   style?: string;
 }
 
-export const handleShowImage = (
-  model: NovelModel,
+export const handleShowImage = <Component>(
+  model: NovelModel<Component>,
   msg: ShowImageMessage,
-): NovelModel => {
+): NovelModel<Component> => {
   const newImg = img({
     src: msg.src,
     ...(msg.id !== undefined && { id: msg.id }),

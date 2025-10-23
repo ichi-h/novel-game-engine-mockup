@@ -8,10 +8,10 @@ export interface StopChannelMessage extends BaseMessage {
   fadeOutMs?: FadeOutMs;
 }
 
-export const handleStopChannel = (
-  model: NovelModel,
+export const handleStopChannel = <Component>(
+  model: NovelModel<Component>,
   msg: StopChannelMessage,
-): ReturnModel<NovelModel, never> => {
+): ReturnModel<NovelModel<Component>, never> => {
   model.mixer.stopChannel(msg.channelName, msg.fadeOutMs);
   return model;
 };

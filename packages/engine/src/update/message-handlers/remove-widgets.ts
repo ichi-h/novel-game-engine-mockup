@@ -6,10 +6,10 @@ export interface RemoveWidgetsMessage extends BaseMessage {
   ids: string[];
 }
 
-export const handleRemoveWidgets = (
-  model: NovelModel,
+export const handleRemoveWidgets = <Component>(
+  model: NovelModel<Component>,
   msg: RemoveWidgetsMessage,
-): NovelModel => {
+): NovelModel<Component> => {
   for (const id of msg.ids) {
     model.ui.removeById(id);
   }

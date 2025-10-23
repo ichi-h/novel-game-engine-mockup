@@ -9,11 +9,11 @@ export interface AddLayoutMessage extends BaseMessage {
   style?: string;
 }
 
-export const handleAddLayout = (
-  model: NovelModel,
+export const handleAddLayout = <Component>(
+  model: NovelModel<Component>,
   msg: AddLayoutMessage,
-): NovelModel => {
-  const newLayout = layout({
+): NovelModel<Component> => {
+  const newLayout = layout<Component>({
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),
   })([]);

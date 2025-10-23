@@ -9,10 +9,10 @@ export interface AddTextBoxMessage extends BaseMessage {
   style?: string;
 }
 
-export const handleAddTextBox = (
-  model: NovelModel,
+export const handleAddTextBox = <Component>(
+  model: NovelModel<Component>,
   msg: AddTextBoxMessage,
-): NovelModel => {
+): NovelModel<Component> => {
   const newTextBox = textBox({
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),

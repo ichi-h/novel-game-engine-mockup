@@ -8,10 +8,10 @@ export interface ResumeChannelMessage extends BaseMessage {
   fadeInMs?: FadeInMs;
 }
 
-export const handleResumeChannel = (
-  model: NovelModel,
+export const handleResumeChannel = <Component>(
+  model: NovelModel<Component>,
   msg: ResumeChannelMessage,
-): ReturnModel<NovelModel, never> => {
+): ReturnModel<NovelModel<Component>, never> => {
   model.mixer.resumeChannel(msg.channelName, msg.fadeInMs);
   return model;
 };

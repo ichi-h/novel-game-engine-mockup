@@ -28,9 +28,9 @@ import {
 } from './message-handlers';
 
 export const update = <Component>(
-  model: NovelModel,
+  model: NovelModel<Component>,
   msg: NovelMessage<Component>,
-): ReturnModel<NovelModel, NovelMessage<Component>> => {
+): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   switch (msg.type) {
     case 'AddLayout':
       return handleAddLayout(model, msg);
@@ -73,7 +73,7 @@ export const update = <Component>(
     case 'RecoverError':
       return handleRecoverError(model);
     case 'Sequence':
-      return handleSequence<NovelMessage<Component>>(model, msg, update);
+      return handleSequence<Component>(model, msg, update);
     default: {
       const error = new Error(`Unhandled message type: ${JSON.stringify(msg)}`);
       return handleError(model, { type: 'Error', value: error });

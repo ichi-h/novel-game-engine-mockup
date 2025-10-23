@@ -6,10 +6,10 @@ export interface ClearTextBoxMessage extends BaseMessage {
   textBoxId: string;
 }
 
-export const handleClearTextBox = (
-  model: NovelModel,
+export const handleClearTextBox = <Component>(
+  model: NovelModel<Component>,
   msg: ClearTextBoxMessage,
-): NovelModel => {
+): NovelModel<Component> => {
   model.ui.clearTextBox(msg.textBoxId);
   return model;
 };

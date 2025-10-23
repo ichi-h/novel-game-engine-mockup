@@ -20,10 +20,13 @@ export interface SuccessFetchAudioMessage
   arrayBuffer: ArrayBuffer;
 }
 
-export const handleAddChannel = (
-  model: NovelModel,
+export const handleAddChannel = <Component>(
+  model: NovelModel<Component>,
   msg: AddChannelMessage,
-): ReturnModel<NovelModel, SuccessFetchAudioMessage | ErrorMessage> => {
+): ReturnModel<
+  NovelModel<Component>,
+  SuccessFetchAudioMessage | ErrorMessage
+> => {
   return [
     { ...model, isFetching: true },
     async () => {
@@ -52,10 +55,10 @@ export const handleAddChannel = (
   ];
 };
 
-export const handleSuccessFetchAudio = (
-  model: NovelModel,
+export const handleSuccessFetchAudio = <Component>(
+  model: NovelModel<Component>,
   msg: SuccessFetchAudioMessage,
-): NovelModel => {
+): NovelModel<Component> => {
   model.mixer.addChannel(
     msg.name,
     msg.arrayBuffer,

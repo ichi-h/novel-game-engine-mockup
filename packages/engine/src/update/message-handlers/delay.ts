@@ -10,10 +10,10 @@ export interface DelayCompletedMessage extends BaseMessage {
   type: 'DelayCompleted';
 }
 
-export const handleDelay = (
-  model: NovelModel,
+export const handleDelay = <Component>(
+  model: NovelModel<Component>,
   msg: DelayMessage,
-): ReturnModel<NovelModel, DelayCompletedMessage> => {
+): ReturnModel<NovelModel<Component>, DelayCompletedMessage> => {
   model.isDelaying = true;
   return [
     model,
@@ -26,10 +26,10 @@ export const handleDelay = (
   ];
 };
 
-export const handleDelayCompleted = (
-  model: NovelModel,
+export const handleDelayCompleted = <Component>(
+  model: NovelModel<Component>,
   _msg: DelayCompletedMessage,
-): NovelModel => {
+): NovelModel<Component> => {
   model.isDelaying = false;
   return model;
 };

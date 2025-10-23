@@ -2,16 +2,17 @@ import type { BaseMessage, Cmd, ReturnModel, Update } from 'elmish';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '../message';
 
-export interface SequenceMessage<Component> extends BaseMessage {
+export interface SequenceMessage<Message extends BaseMessage>
+  extends BaseMessage {
   type: 'Sequence';
-  messages: NovelMessage<Component>[];
+  messages: Message[];
 }
 
 export const handleSequence = <Component>(
-  model: NovelModel,
-  msg: SequenceMessage<Component>,
-  update: Update<NovelModel, NovelMessage<Component>>,
-): ReturnModel<NovelModel, SequenceMessage<Component>> => {
+  model: NovelModel<Component>,
+  msg: SequenceMessage<NovelMessage<Component>>,
+  update: Update<NovelModel<Component>, NovelMessage<Component>>,
+): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   if (msg.messages.length === 0) {
     return model;
   }
@@ -28,7 +29,7 @@ export const handleSequence = <Component>(
   }
 
   const result = messages.reduce<{
-    model: NovelModel;
+    model: NovelModel<Component>;
     cmds: Cmd<NovelMessage<Component>>[];
   }>(
     (acc, cur) => {
@@ -48,7 +49,7 @@ export const handleSequence = <Component>(
     result.model,
     async () => {
       const cmdMsgs = await Promise.all(result.cmds.map((cmd) => cmd()));
-      const msg: SequenceMessage<Component> = {
+      const msg: SequenceMessage<NovelMessage<Component>> = {
         type: 'Sequence',
         messages: [...restMessages, ...cmdMsgs],
       };
