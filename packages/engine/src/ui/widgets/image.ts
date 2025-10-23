@@ -1,6 +1,6 @@
-import type { NovelWidget } from './core';
+import type { NovelWidgetBase } from './core';
 
-export interface ImageWidget extends NovelWidget {
+export interface ImageWidget extends NovelWidgetBase {
   type: 'Image';
   style?: string;
   src: string;

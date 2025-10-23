@@ -1,7 +1,7 @@
-import type { NovelWidget } from './core';
+import type { NovelWidgetBase } from './core';
 import type { TextWidget } from './text';
 
-export interface TextBoxWidget extends NovelWidget {
+export interface TextBoxWidget extends NovelWidgetBase {
   id: string;
   type: 'TextBox';
   style?: string;
@@ -18,5 +18,5 @@ export const textBox =
     children,
   });
 
-export const isTextBox = (obj: NovelWidget): obj is TextBoxWidget =>
+export const isTextBox = (obj: NovelWidgetBase): obj is TextBoxWidget =>
   obj.type === 'TextBox';

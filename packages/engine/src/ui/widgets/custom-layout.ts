@@ -1,10 +1,11 @@
-import type { NovelWidget } from './core';
+import type { NovelWidget, NovelWidgetBase } from './core';
 
-export interface CustomLayoutWidget<Component> extends NovelWidget {
+export interface CustomLayoutWidget<Component = unknown>
+  extends NovelWidgetBase {
   id: string;
   type: 'CustomLayout';
   component: Component;
-  children: NovelWidget[];
+  children: NovelWidget<Component>[];
 }
 
 type CustomLayoutProps<Component> = Omit<
@@ -14,12 +15,12 @@ type CustomLayoutProps<Component> = Omit<
 
 export const customLayout =
   <Component>(props: CustomLayoutProps<Component>) =>
-  (children: NovelWidget[]): CustomLayoutWidget<Component> => ({
+  (children: NovelWidget<Component>[]): CustomLayoutWidget<Component> => ({
     ...props,
     type: 'CustomLayout',
     children,
   });
 
 export const isCustomLayout = <Component>(
-  obj: NovelWidget,
+  obj: NovelWidgetBase,
 ): obj is CustomLayoutWidget<Component> => obj.type === 'CustomLayout';

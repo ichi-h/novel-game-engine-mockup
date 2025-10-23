@@ -1,21 +1,25 @@
-import type { NovelWidget } from './core';
+import type { NovelWidget, NovelWidgetBase } from './core';
 
-export interface LayoutWidget extends NovelWidget {
+export interface LayoutWidget<Component = unknown> extends NovelWidgetBase {
   id: string;
   type: 'Layout';
   style?: string;
-  children: NovelWidget[];
+  children: NovelWidget<Component>[];
 }
 
-type LayoutProps = Omit<LayoutWidget, 'type' | 'children'>;
+type LayoutProps<Component> = Omit<
+  LayoutWidget<Component>,
+  'type' | 'children'
+>;
 
 export const layout =
-  (props: LayoutProps) =>
-  (children: NovelWidget[]): LayoutWidget => ({
+  <Component>(props: LayoutProps<Component>) =>
+  (children: NovelWidget<Component>[]): LayoutWidget<Component> => ({
     ...props,
     type: 'Layout',
     children,
   });
 
-export const isLayout = (obj: NovelWidget): obj is LayoutWidget =>
-  obj.type === 'Layout';
+export const isLayout = <Component>(
+  obj: NovelWidgetBase,
+): obj is LayoutWidget<Component> => obj.type === 'Layout';
