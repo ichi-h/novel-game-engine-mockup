@@ -1,9 +1,19 @@
 import { elmish } from 'elmish';
 import {
+  addChannel,
+  addLayout,
+  addTextBox,
+  clearTextBox as clearTextBoxMsg,
   generateInitModel,
   Mixer,
   type NovelMessage,
   type NovelModel,
+  playChannel,
+  removeWidgets,
+  sequence,
+  showImage,
+  showText,
+  stopChannel,
   update,
 } from 'engine';
 import { useState } from 'react';
@@ -21,380 +31,291 @@ const useElement = elmish<
   NovelMessage<ReactComponentDriver>
 >();
 
-const sequence = (
-  messages: NovelMessage<ReactComponentDriver>[],
-): NovelMessage<ReactComponentDriver> => ({
-  type: 'Sequence',
-  messages,
-});
+// メッセージ生成ヘルパー関数
+const TEXTBOX_ID = 'main-textbox';
+const CHARACTER_LAYOUT_ID = 'character-display';
+const BG_LAYER_ID = 'background-content-layer';
+
+const COMMON_STYLES = {
+  nameText: 'font-bold text-4xl mb-4 drop-shadow-md',
+  dialogText: 'text-gray-800 text-3xl leading-relaxed',
+  characterImage: 'w-128 h-128 drop-shadow-2xl select-none',
+} as const;
+
+const CHARACTER_COLORS = {
+  bun: 'text-pink-500',
+  react: 'text-cyan-500',
+  player: 'text-purple-600',
+} as const;
+
+// テキストボックスをクリア
+const clearTextBox = (): NovelMessage<ReactComponentDriver> =>
+  clearTextBoxMsg(TEXTBOX_ID);
+
+// キャラクター名を表示
+const showCharacterName = (
+  name: string,
+  color: string,
+): NovelMessage<ReactComponentDriver> =>
+  showText(
+    TEXTBOX_ID,
+    name,
+    undefined,
+    `${color} ${COMMON_STYLES.nameText}`,
+    50,
+  );
+
+// 台詞を表示
+const showDialog = (text: string): NovelMessage<ReactComponentDriver> =>
+  showText(TEXTBOX_ID, text, undefined, COMMON_STYLES.dialogText, 50);
+
+// ナレーション（キャラクター名なし）
+const showNarration = (text: string): NovelMessage<ReactComponentDriver>[] => [
+  clearTextBox(),
+  showDialog(text),
+];
+
+// キャラクターの台詞シーン（名前 + 台詞）
+const showCharacterDialog = (
+  name: string,
+  color: string,
+  text: string,
+): NovelMessage<ReactComponentDriver>[] => [
+  clearTextBox(),
+  showCharacterName(name, color),
+  showDialog(text),
+];
+
+// キャラクター画像を表示
+const showCharacter = (
+  id: string,
+  src: string,
+): NovelMessage<ReactComponentDriver> =>
+  showImage(CHARACTER_LAYOUT_ID, src, id, COMMON_STYLES.characterImage);
+
+// キャラクター登場シーン（画像 + 名前 + 台詞）
+const introduceCharacter = (
+  id: string,
+  src: string,
+  name: string,
+  color: string,
+  text: string,
+): NovelMessage<ReactComponentDriver>[] => [
+  clearTextBox(),
+  showCharacter(id, src),
+  showCharacterName(name, color),
+  showDialog(text),
+];
+
+// 背景を変更
+const changeBackground = (
+  id: string,
+  src: string,
+): NovelMessage<ReactComponentDriver> =>
+  showImage(
+    BG_LAYER_ID,
+    src,
+    id,
+    'absolute inset-0 w-full h-full object-cover animate-fade-in',
+  );
 
 // ノベルゲームのシーン定義
 const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
   return [
     // シーン2: タイトルフェードアウトとゲーム開始
     sequence([
-      { type: 'PlayChannel', channelName: 'bgm' },
-      { type: 'RemoveWidgets', ids: ['title'] },
-      {
-        type: 'AddLayout',
-        id: 'game-container',
-        parentLayoutId: 'content-layer',
-        style: 'w-full h-full flex flex-col',
-      },
-      {
-        type: 'AddLayout',
-        id: 'character-display',
-        parentLayoutId: 'game-container',
-        style: 'flex-1 flex items-center justify-around px-8',
-      },
-      {
-        type: 'AddLayout',
-        id: 'textbox-area',
-        parentLayoutId: 'game-container',
-        style: 'w-full flex justify-center px-4 pb-4',
-      },
-      {
-        type: 'AddTextBox',
-        id: 'main-textbox',
-        layoutId: 'textbox-area',
-        style:
-          'w-full h-56 max-w-4xl bg-white/95 backdrop-blur-md border-4 border-pink-300 rounded-3xl p-8 shadow-2xl',
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content:
-          '今日は休日。妹のBunちゃんと弟のReactくんと一緒にショッピングモールへ出かけることにした。',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
+      playChannel('bgm'),
+      removeWidgets(['title']),
+      addLayout(
+        'game-container',
+        'content-layer',
+        'w-full h-full flex flex-col',
+      ),
+      addLayout(
+        CHARACTER_LAYOUT_ID,
+        'game-container',
+        'flex-1 flex items-center justify-around px-8',
+      ),
+      addLayout(
+        'textbox-area',
+        'game-container',
+        'w-full flex justify-center px-4 pb-4',
+      ),
+      addTextBox(
+        TEXTBOX_ID,
+        'textbox-area',
+        'w-full h-56 max-w-4xl bg-white/95 backdrop-blur-md border-4 border-pink-300 rounded-3xl p-8 shadow-2xl',
+      ),
+      showDialog(
+        '今日は休日。妹のBunちゃんと弟のReactくんと一緒にショッピングモールへ出かけることにした。',
+      ),
     ]),
 
     // シーン3: Bunちゃん登場
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowImage',
-        id: 'bun-char',
-        layoutId: 'character-display',
-        src: logo,
-        style: 'w-128 h-128 drop-shadow-2xl select-none',
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'Bunちゃん',
-        style: 'text-pink-500 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content:
-          'お兄ちゃん！今日は新しい服を買いに行くんだよね？わくわくしちゃう！✨',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      introduceCharacter(
+        'bun-char',
+        logo,
+        'Bunちゃん',
+        CHARACTER_COLORS.bun,
+        'お兄ちゃん！今日は新しい服を買いに行くんだよね？わくわくしちゃう！✨',
+      ),
+    ),
 
     // シーン4: Reactくん登場
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowImage',
-        id: 'react-char',
-        layoutId: 'character-display',
-        src: reactLogo,
-        style: 'w-128 h-128 drop-shadow-2xl select-none',
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'Reactくん',
-        style: 'text-cyan-500 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: '僕も新しいTシャツが欲しいな！早く行こうよ！',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      introduceCharacter(
+        'react-char',
+        reactLogo,
+        'Reactくん',
+        CHARACTER_COLORS.react,
+        '僕も新しいTシャツが欲しいな！早く行こうよ！',
+      ),
+    ),
 
     // シーン5: ショッピングモール到着
     sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      { type: 'RemoveWidgets', ids: ['bun-char', 'react-char'] },
-      {
-        type: 'ShowImage',
-        id: 'shopping-mall-bg',
-        layoutId: 'background-content-layer',
-        src: shoppingMallBg,
-        style: 'absolute inset-0 w-full h-full object-cover animate-fade-in',
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'ショッピングモールに到着！広くて綺麗な建物だ。',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
+      clearTextBox(),
+      removeWidgets(['bun-char', 'react-char']),
+      changeBackground('shopping-mall-bg', shoppingMallBg),
+      showDialog('ショッピングモールに到着！広くて綺麗な建物だ。'),
     ]),
 
     // シーン6: 服屋さんを探す
     sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowImage',
-        id: 'bun-char',
-        layoutId: 'character-display',
-        src: logo,
-        style: 'w-128 h-128 drop-shadow-2xl select-none',
-      },
-      {
-        type: 'ShowImage',
-        id: 'react-char',
-        layoutId: 'character-display',
-        src: reactLogo,
-        style: 'w-128 h-128 drop-shadow-2xl select-none',
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'Bunちゃん',
-        style: 'text-pink-500 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'あ！あそこに可愛い服屋さんがある！行ってみよう！💕',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
+      clearTextBox(),
+      showCharacter('bun-char', logo),
+      showCharacter('react-char', reactLogo),
+      showCharacterName('Bunちゃん', CHARACTER_COLORS.bun),
+      showDialog('あ！あそこに可愛い服屋さんがある！行ってみよう！💕'),
     ]),
 
     // シーン7: 服を選ぶ
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'Reactくん',
-        style: 'text-cyan-500 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'わぁ！この青いTシャツかっこいい！これにしようかな！',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      showCharacterDialog(
+        'Reactくん',
+        CHARACTER_COLORS.react,
+        'わぁ！この青いTシャツかっこいい！これにしようかな！',
+      ),
+    ),
 
     // シーン8: Bunちゃんも服を選ぶ
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'Bunちゃん',
-        style: 'text-pink-500 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: '私はこのピンクのワンピースにする！お兄ちゃん、似合うかな？',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      showCharacterDialog(
+        'Bunちゃん',
+        CHARACTER_COLORS.bun,
+        '私はこのピンクのワンピースにする！お兄ちゃん、似合うかな？',
+      ),
+    ),
 
     // シーン9: おまえの返事
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'おまえ',
-        style: 'text-purple-600 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'とても似合ってるよ！二人とも良い服を見つけられて良かったね。',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      showCharacterDialog(
+        'おまえ',
+        CHARACTER_COLORS.player,
+        'とても似合ってるよ！二人とも良い服を見つけられて良かったね。',
+      ),
+    ),
 
     // シーン10: お会計
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'おまえ',
-        style: 'text-purple-600 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'じゃあ、お会計をしようか。',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      showCharacterDialog(
+        'おまえ',
+        CHARACTER_COLORS.player,
+        'じゃあ、お会計をしようか。',
+      ),
+    ),
 
     // シーン11: 帰り道
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'Bunちゃん',
-        style: 'text-pink-500 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: '今日は楽しかった！また一緒にお買い物に来ようね、お兄ちゃん！',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      showCharacterDialog(
+        'Bunちゃん',
+        CHARACTER_COLORS.bun,
+        '今日は楽しかった！また一緒にお買い物に来ようね、お兄ちゃん！',
+      ),
+    ),
 
     // シーン12: Reactくんの言葉
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: 'Reactくん',
-        style: 'text-cyan-500 font-bold text-4xl mb-4 drop-shadow-md',
-        speed: 50,
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: '僕も！次は靴も見たいな！',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      showCharacterDialog(
+        'Reactくん',
+        CHARACTER_COLORS.react,
+        '僕も！次は靴も見たいな！',
+      ),
+    ),
 
     // シーン13: エンディング
-    sequence([
-      { type: 'ClearTextBox', textBoxId: 'main-textbox' },
-      {
-        type: 'ShowText',
-        textBoxId: 'main-textbox',
-        content: '楽しい一日だった。家族と過ごす時間は本当に大切だな。',
-        style: 'text-gray-800 text-3xl leading-relaxed',
-        speed: 50,
-      },
-    ]),
+    sequence(
+      showNarration('楽しい一日だった。家族と過ごす時間は本当に大切だな。'),
+    ),
 
     // シーン14: おわり
     sequence([
-      { type: 'StopChannel', channelName: 'bgm', fadeOutMs: 3000 },
-      {
-        type: 'RemoveWidgets',
-        ids: [
-          'main-textbox',
-          'bun-char',
-          'react-char',
-          'textbox-area',
-          'character-display',
-          'game-container',
-        ],
-      },
-      {
-        type: 'AddTextBox',
-        id: 'end-title',
-        layoutId: 'title-area',
-        style:
-          'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
-      },
-      {
-        type: 'ShowText',
-        textBoxId: 'end-title',
-        content: 'おしまい',
-        style: 'drop-shadow-2xl',
-        speed: 100,
-      },
+      stopChannel('bgm', 3000),
+      removeWidgets([
+        TEXTBOX_ID,
+        'bun-char',
+        'react-char',
+        'textbox-area',
+        CHARACTER_LAYOUT_ID,
+        'game-container',
+      ]),
+      addTextBox(
+        'end-title',
+        'title-area',
+        'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
+      ),
+      showText('end-title', 'おしまい', undefined, 'drop-shadow-2xl', 100),
     ]),
   ];
 };
 
 // 初期化メッセージ（自動実行）
 const initMessage: NovelMessage<ReactComponentDriver> = sequence([
-  {
-    type: 'AddChannel',
-    src: bgm,
-    name: 'bgm',
-    volume: 1,
-    loop: { start: 0, end: 7650432 },
-  },
-  {
-    type: 'AddLayout',
-    id: 'root',
-    style:
-      'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
-  },
-  {
-    type: 'AddLayout',
-    id: 'background-layer',
-    parentLayoutId: 'root',
-    style: 'absolute inset-0 flex items-center justify-center',
-  },
-  {
-    type: 'AddLayout',
-    id: 'background-content-layer',
-    parentLayoutId: 'background-layer',
-    style: 'relative w-full h-full',
-  },
-  {
-    type: 'ShowImage',
-    id: 'home-bg',
-    layoutId: 'background-content-layer',
-    src: homeBg,
-    style: 'absolute inset-0 w-full h-full object-cover',
-  },
-  {
-    type: 'AddLayout',
-    id: 'content-layer',
-    parentLayoutId: 'root',
-    style:
-      'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
-  },
-  {
-    type: 'AddLayout',
-    id: 'title-area',
-    parentLayoutId: 'content-layer',
-    style: 'flex-1 flex items-center justify-center',
-  },
-  {
-    type: 'AddTextBox',
-    id: 'title',
-    layoutId: 'title-area',
-    style:
-      'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
-  },
-  {
-    type: 'ShowText',
-    textBoxId: 'title',
-    content: '🛍️ ショッピングモールへ行こう！ 🛍️',
-    style: 'drop-shadow-2xl',
-    speed: 80,
-  },
+  addChannel('bgm', bgm, 1, { start: 0, end: 7650432 }),
+  addLayout(
+    'root',
+    undefined,
+    'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
+  ),
+  addLayout(
+    'background-layer',
+    'root',
+    'absolute inset-0 flex items-center justify-center',
+  ),
+  addLayout(
+    'background-content-layer',
+    'background-layer',
+    'relative w-full h-full',
+  ),
+  showImage(
+    'background-content-layer',
+    homeBg,
+    'home-bg',
+    'absolute inset-0 w-full h-full object-cover',
+  ),
+  addLayout(
+    'content-layer',
+    'root',
+    'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
+  ),
+  addLayout(
+    'title-area',
+    'content-layer',
+    'flex-1 flex items-center justify-center',
+  ),
+  addTextBox(
+    'title',
+    'title-area',
+    'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
+  ),
+  showText(
+    'title',
+    '🛍️ ショッピングモールへ行こう！ 🛍️',
+    undefined,
+    'drop-shadow-2xl',
+    80,
+  ),
 ]);
 
 const messages = createNovelGame();
