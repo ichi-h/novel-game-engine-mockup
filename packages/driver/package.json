@@ -1,0 +1,31 @@
+{
+  "name": "driver",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "bun run tsc && bun run build.ts --minify",
+    "build:dev": "bun run tsc && bun run build.ts",
+    "tsc": "tsc --noEmit"
+  },
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "react": "^19",
+    "react-dom": "^19",
+    "engine": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}
