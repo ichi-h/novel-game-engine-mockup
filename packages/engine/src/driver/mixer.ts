@@ -88,7 +88,10 @@ export class Mixer implements IMixer {
       channel.ctx.close();
     }
 
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const AudioContextClass = (window.AudioContext ||
+      (window as typeof window & { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext) as typeof AudioContext;
+    const ctx = new AudioContextClass();
     const sourceNode = ctx.createBufferSource();
     const gainNode = ctx.createGain();
 
