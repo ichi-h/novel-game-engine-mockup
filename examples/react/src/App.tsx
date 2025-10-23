@@ -57,7 +57,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
         id: 'main-textbox',
         layoutId: 'textbox-area',
         style:
-          'w-full max-w-4xl bg-white/95 backdrop-blur-md border-4 border-pink-300 rounded-3xl p-8 shadow-2xl',
+          'w-full h-56 max-w-4xl bg-white/95 backdrop-blur-md border-4 border-pink-300 rounded-3xl p-8 shadow-2xl',
       },
       {
         type: 'ShowText',
@@ -84,7 +84,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
         id: 'bun-char',
         layoutId: 'character-display',
         src: logo,
-        style: 'w-96 h-96 drop-shadow-2xl animate-bounce',
+        style: 'w-96 h-96 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowText',
@@ -111,7 +111,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
         id: 'react-char',
         layoutId: 'character-display',
         src: reactLogo,
-        style: 'w-96 h-96 drop-shadow-2xl',
+        style: 'w-96 h-96 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowText',
@@ -157,14 +157,14 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
         id: 'bun-char',
         layoutId: 'character-display',
         src: logo,
-        style: 'w-96 h-96 drop-shadow-2xl',
+        style: 'w-96 h-96 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowImage',
         id: 'react-char',
         layoutId: 'character-display',
         src: reactLogo,
-        style: 'w-96 h-96 drop-shadow-2xl',
+        style: 'w-96 h-96 drop-shadow-2xl select-none',
       },
       {
         type: 'ShowText',
