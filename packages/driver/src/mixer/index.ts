@@ -19,6 +19,30 @@ interface AudioChannelState {
   playStatus: 'Standby' | 'Playing' | 'Stopped';
 }
 
+const fadeIn = (
+  gainNode: GainNode,
+  targetVolume: number,
+  startTime: number,
+  fadeInMs: number,
+) => {
+  gainNode.gain.setValueAtTime(0, startTime);
+  gainNode.gain.linearRampToValueAtTime(
+    targetVolume,
+    startTime + fadeInMs / 1000,
+  );
+};
+
+const fadeOut = (
+  gainNode: GainNode,
+  currentVolume: number,
+  startTime: number,
+  fadeOutMs: number,
+) => {
+  gainNode.gain.cancelScheduledValues(startTime);
+  gainNode.gain.setValueAtTime(currentVolume, startTime);
+  gainNode.gain.linearRampToValueAtTime(0, startTime + fadeOutMs / 1000);
+};
+
 /**
  * Class that realizes declaratively defined Mixer in the context of Web Audio API
  */
@@ -179,18 +203,16 @@ class MixerDriver {
       sourceNode.loopEnd = track.isLoop.end;
     }
 
-    // Fade-in processing
-    if (track.fadeInMs) {
-      state.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-      state.gainNode.gain.linearRampToValueAtTime(
-        track.volume,
-        this.audioContext.currentTime + track.fadeInMs / 1000,
-      );
-    }
-
     const startTime =
       this.audioContext.currentTime + (track.delayMs || 0) / 1000;
     const offset = (track.offsetMs || 0) / 1000;
+
+    // Fade-in processing
+    if (track.fadeInMs) {
+      fadeIn(state.gainNode, track.volume, startTime, track.fadeInMs);
+    } else {
+      state.gainNode.gain.setValueAtTime(track.volume, startTime);
+    }
 
     sourceNode.start(startTime, offset);
 
@@ -198,15 +220,14 @@ class MixerDriver {
     state.playStartTime = startTime;
     state.playStatus = 'Playing';
 
-    // Fade-out processing
-    if (track.fadeOutMs && state.audioBuffer.duration) {
+    // Fade-out processing (when audio ends naturally)
+    if (track.fadeOutMs && state.audioBuffer.duration && !track.isLoop) {
       const fadeOutStartTime =
-        startTime + state.audioBuffer.duration - track.fadeOutMs / 1000;
-      state.gainNode.gain.setValueAtTime(track.volume, fadeOutStartTime);
-      state.gainNode.gain.linearRampToValueAtTime(
-        0,
-        fadeOutStartTime + track.fadeOutMs / 1000,
-      );
+        startTime +
+        state.audioBuffer.duration -
+        offset -
+        track.fadeOutMs / 1000;
+      fadeOut(state.gainNode, track.volume, fadeOutStartTime, track.fadeOutMs);
     }
   }
 
@@ -247,8 +268,8 @@ class MixerDriver {
           }
           break;
         case 'Stopped':
-          // Stop from Playing state
-          this.stopTrack(state);
+          // Stop from Playing state with fade-out
+          this.stopTrack(state, track.fadeOutMs);
           break;
       }
     }
@@ -257,11 +278,28 @@ class MixerDriver {
   /**
    * Stop Track
    */
-  private stopTrack(state: AudioChannelState): void {
+  private stopTrack(state: AudioChannelState, fadeOutMs?: number): void {
     if (state.sourceNode) {
-      state.sourceNode.stop();
-      state.sourceNode.disconnect();
-      state.sourceNode = undefined;
+      const currentTime = this.audioContext.currentTime;
+      const currentVolume = state.gainNode.gain.value;
+
+      if (fadeOutMs && fadeOutMs > 0) {
+        // Apply fade-out before stopping
+        fadeOut(state.gainNode, currentVolume, currentTime, fadeOutMs);
+        // Schedule stop after fade-out completes
+        setTimeout(() => {
+          if (state.sourceNode) {
+            state.sourceNode.stop();
+            state.sourceNode.disconnect();
+            state.sourceNode = undefined;
+          }
+        }, fadeOutMs);
+      } else {
+        // Stop immediately without fade-out
+        state.sourceNode.stop();
+        state.sourceNode.disconnect();
+        state.sourceNode = undefined;
+      }
     }
     state.playStartTime = undefined;
     state.playStatus = 'Stopped';
