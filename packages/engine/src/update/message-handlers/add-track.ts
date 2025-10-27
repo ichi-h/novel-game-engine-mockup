@@ -1,5 +1,11 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
-import type { ApplyMixer, Samples, Track, Volume } from '@/mixer-v2';
+import type { BaseMessage, ReturnModel, Update } from 'elmish';
+import {
+  type ApplyMixer,
+  addChannelToMixer,
+  type Samples,
+  type Track,
+  type Volume,
+} from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '../message';
 import { createApplyMixerCommand } from './utils';
@@ -36,6 +42,7 @@ export const addTrack = (
 export const handleAddTrack = <Component>(
   model: NovelModel<Component>,
   msg: AddTrackMessage,
+  update: Update<NovelModel<Component>, NovelMessage<Component>>,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   const track: Track = {
@@ -47,19 +54,29 @@ export const handleAddTrack = <Component>(
     ...(msg.loop !== undefined ? { isLoop: msg.loop } : {}),
   };
 
-  const channels = [...model.mixer.channels, track];
+  try {
+    const mixer = addChannelToMixer(model.mixer, msg.busTrackId, track);
 
-  const mixer = {
-    ...model.mixer,
-    channels,
-  };
-
-  return [
-    {
-      ...model,
-      mixer,
-      isApplyingMixer: true,
-    },
-    createApplyMixerCommand(mixer, applyMixer),
-  ];
+    return [
+      {
+        ...model,
+        mixer,
+        isApplyingMixer: true,
+      },
+      createApplyMixerCommand(mixer, applyMixer),
+    ];
+  } catch (error) {
+    if (error instanceof Error) {
+      return update(model, {
+        type: 'Error',
+        value: error,
+      });
+    }
+    return update(model, {
+      type: 'Error',
+      value: new Error(
+        `An unknown error occurred while adding Track: ${JSON.stringify(error)}`,
+      ),
+    });
+  }
 };
