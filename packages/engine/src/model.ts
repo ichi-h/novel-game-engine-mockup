@@ -9,10 +9,8 @@ export interface NovelModel<Component> {
   error: Error | null;
 }
 
-export const generateInitModel = <Component>(
-  mixer: Mixer,
-): NovelModel<Component> => ({
-  mixer,
+export const generateInitModel = <Component>(): NovelModel<Component> => ({
+  mixer: { channels: [], volume: 1.0 },
   ui: new WidgetManager<Component>(),
   isDelaying: false,
   isApplyingMixer: false,

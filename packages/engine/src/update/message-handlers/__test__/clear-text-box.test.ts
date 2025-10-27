@@ -5,12 +5,11 @@ import {
   type ClearTextBoxMessage,
   handleClearTextBox,
 } from '../clear-text-box';
-import { mockMixer } from './test-utils';
 
 describe('handleClearTextBox - normal cases', () => {
   test('clears empty text box', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // Add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -34,7 +33,7 @@ describe('handleClearTextBox - normal cases', () => {
 
   test('clears text box with multiple texts', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // Add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -67,7 +66,7 @@ describe('handleClearTextBox - normal cases', () => {
 describe('handleClearTextBox - error cases', () => {
   test('throws error for non-existent text box ID', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
 
     const msg: ClearTextBoxMessage = {
       type: 'ClearTextBox',
@@ -85,7 +84,7 @@ describe('handleClearTextBox - error cases', () => {
 
   test('throws error when ID is not a text box', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // Add layout (not a text box)
     const layoutWidget = layout({ id: 'not-a-textbox' })([]);
     model.ui.addWidget(layoutWidget);

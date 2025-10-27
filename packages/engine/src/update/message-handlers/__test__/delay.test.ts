@@ -6,11 +6,10 @@ import {
   handleDelay,
   handleDelayCompleted,
 } from '../delay';
-import { mockMixer } from './test-utils';
 
 describe('handleDelay / handleDelayCompleted - normal cases', () => {
   test('handleDelay sets isDelaying true and returns a command', () => {
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
 
     const msg: DelayMessage = {
       type: 'Delay',
@@ -35,7 +34,7 @@ describe('handleDelay / handleDelayCompleted - normal cases', () => {
   });
 
   test('returned command resolves to DelayCompleted message and can be handled', async () => {
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
 
     const msg: DelayMessage = {
       type: 'Delay',

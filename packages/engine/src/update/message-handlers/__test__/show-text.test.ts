@@ -2,12 +2,11 @@ import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { layout, textBox } from '@/ui';
 import { handleShowText, type ShowTextMessage } from '../show-text';
-import { mockMixer } from './test-utils';
 
 describe('handleShowText - normal cases', () => {
   test('adds text to text box with only required fields', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // First, add parent layout and text box
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -31,7 +30,7 @@ describe('handleShowText - normal cases', () => {
 
   test('adds text to text box with id', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const textBoxWidget = textBox({ id: 'textbox1' })([]);
@@ -55,7 +54,7 @@ describe('handleShowText - normal cases', () => {
 
   test('adds text to text box with all optional fields', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const textBoxWidget = textBox({ id: 'textbox1' })([]);
@@ -81,7 +80,7 @@ describe('handleShowText - normal cases', () => {
 
   test('adds multiple texts to same text box', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const textBoxWidget = textBox({ id: 'textbox1' })([]);
@@ -116,7 +115,7 @@ describe('handleShowText - normal cases', () => {
 describe('handleShowText - error cases', () => {
   test('throws error for duplicate text ID', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
     const textBoxWidget = textBox({ id: 'textbox1' })([]);
@@ -150,7 +149,7 @@ describe('handleShowText - error cases', () => {
 
   test('throws error for non-existent text box ID', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -169,7 +168,7 @@ describe('handleShowText - error cases', () => {
 
   test('throws error when text ID conflicts with existing widget ID', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // Add layout
     const existingLayout = layout({ id: 'existing-widget' })([]);
     model.ui.addWidget(existingLayout);

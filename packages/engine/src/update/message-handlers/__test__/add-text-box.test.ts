@@ -2,13 +2,12 @@ import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { img, layout } from '@/ui';
 import { type AddTextBoxMessage, handleAddTextBox } from '../add-text-box';
-import { mockMixer } from './test-utils';
 
 // Create a mock mixer
 describe('handleAddTextBox - normal cases', () => {
   test('adds text box to layout', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // First, add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -32,7 +31,7 @@ describe('handleAddTextBox - normal cases', () => {
 
   test('adds text box to layout with styles', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // First, add parent layout
     const parentLayout = layout({ id: 'parent' })([]);
     model.ui.addWidget(parentLayout);
@@ -59,7 +58,7 @@ describe('handleAddTextBox - normal cases', () => {
 describe('handleAddTextBox - error cases', () => {
   test('throws error for duplicate ID', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // Add existing layout
     const existingLayout = layout({ id: 'duplicate-id' })([]);
     model.ui.addWidget(existingLayout);
@@ -81,7 +80,7 @@ describe('handleAddTextBox - error cases', () => {
 
   test('throws error for non-existent parent layout ID', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     const msg: AddTextBoxMessage = {
       type: 'AddTextBox',
       id: 'new-layout',
@@ -99,7 +98,7 @@ describe('handleAddTextBox - error cases', () => {
 
   test('throws error when non-layout widget ID is specified as parent', () => {
     // Arrange
-    const model = generateInitModel(mockMixer);
+    const model = generateInitModel();
     // Add Image widget
     const imageWidget = img({
       id: 'image1',

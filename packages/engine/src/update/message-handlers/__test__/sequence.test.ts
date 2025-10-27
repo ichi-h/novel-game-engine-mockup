@@ -3,13 +3,12 @@ import type { Cmd, Update } from 'elmish';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '../../message';
 import { handleSequence, type SequenceMessage } from '../sequence';
-import { mockMixer } from './test-utils';
 
 describe('handleSequence', () => {
   describe('normal cases', () => {
     test('processes empty message array', async () => {
       // Arrange
-      const model = generateInitModel<string>(mockMixer);
+      const model = generateInitModel<string>();
       const msg: SequenceMessage<NovelMessage<string>> = {
         type: 'Sequence',
         messages: [],
@@ -28,7 +27,7 @@ describe('handleSequence', () => {
 
     test('processes all messages when no Delay is present', async () => {
       // Arrange
-      const model = generateInitModel<string>(mockMixer);
+      const model = generateInitModel<string>();
       let callCount = 0;
 
       const msg: SequenceMessage<NovelMessage<string>> = {
@@ -75,7 +74,7 @@ describe('handleSequence', () => {
 
     test('stops processing at Delay message and returns remaining messages', async () => {
       // Arrange
-      const model = generateInitModel<string>(mockMixer);
+      const model = generateInitModel<string>();
       const processedMessages: string[] = [];
 
       const msg: SequenceMessage<NovelMessage<string>> = {
@@ -124,7 +123,7 @@ describe('handleSequence', () => {
 
     test('stops at first Delay when multiple Delays are present', async () => {
       // Arrange
-      const model = generateInitModel<string>(mockMixer);
+      const model = generateInitModel<string>();
       const processedMessages: string[] = [];
 
       const msg: SequenceMessage<NovelMessage<string>> = {
@@ -181,7 +180,7 @@ describe('handleSequence', () => {
 
     test('correctly processes messages that return commands', async () => {
       // Arrange
-      const model = generateInitModel<string>(mockMixer);
+      const model = generateInitModel<string>();
 
       const msg: SequenceMessage<NovelMessage<string>> = {
         type: 'Sequence',
