@@ -7,7 +7,7 @@ export interface Track {
     start: number;
     end: number;
   };
-  source: ArrayBuffer;
+  src: string;
   fadeInMs?: number;
   fadeOutMs?: number;
   delayMs?: number;
