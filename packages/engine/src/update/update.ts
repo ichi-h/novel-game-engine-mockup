@@ -31,11 +31,13 @@ export const update =
     model: NovelModel<Component>,
     msg: NovelMessage<Component>,
   ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+    const updateWrapped = update<Component>(applyMixer);
+
     switch (msg.type) {
       case 'AddLayout':
         return handleAddLayout(model, msg);
       case 'AddBusTrack':
-        return handleAddBusTrack(model, msg, update(applyMixer), applyMixer);
+        return handleAddBusTrack(model, msg, updateWrapped, applyMixer);
       case 'AddCustomLayout':
         return handleAddCustomLayout(model, msg);
       case 'ShowImage':
@@ -53,11 +55,11 @@ export const update =
       case 'ChangeMasterVolume':
         return handleChangeMasterVolume(model, msg, applyMixer);
       case 'ApplyMixerCompleted':
-        return handleApplyMixerCompleted(model, msg, update(applyMixer));
+        return handleApplyMixerCompleted(model, msg, updateWrapped);
       case 'ClearTextBox':
         return handleClearTextBox(model, msg);
       case 'AddTrack':
-        return handleAddTrack(model, msg, applyMixer);
+        return handleAddTrack(model, msg, updateWrapped, applyMixer);
       case 'RemoveChannel':
         return handleRemoveChannel(model, msg, applyMixer);
       case 'ChangeChannelVolume':
@@ -71,7 +73,7 @@ export const update =
       case 'RecoverError':
         return handleRecoverError(model);
       case 'Sequence':
-        return handleSequence<Component>(model, msg, update(applyMixer));
+        return handleSequence<Component>(model, msg, updateWrapped);
       default: {
         const error = new Error(
           `Unhandled message type: ${JSON.stringify(msg)}`,
