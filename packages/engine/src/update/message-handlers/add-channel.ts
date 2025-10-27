@@ -14,12 +14,6 @@ export interface AddChannelMessage extends BaseMessage {
   };
 }
 
-export interface SuccessFetchAudioMessage
-  extends Omit<AddChannelMessage, 'type' | 'src'> {
-  type: 'SuccessFetchAudio';
-  arrayBuffer: ArrayBuffer;
-}
-
 export const addChannel = (
   name: string,
   src: string,
@@ -68,20 +62,4 @@ export const handleAddChannel = <Component>(
       }
     },
   ];
-};
-
-export const handleSuccessFetchAudio = <Component>(
-  model: NovelModel<Component>,
-  msg: SuccessFetchAudioMessage,
-): NovelModel<Component> => {
-  model.mixer.addChannel(
-    msg.name,
-    msg.arrayBuffer,
-    msg.volume ?? 1.0,
-    msg.loop !== undefined,
-    msg.loop?.start,
-    msg.loop?.end,
-  );
-  model.isFetching = false;
-  return model;
 };

@@ -3,27 +3,26 @@ import type {
   AddCustomLayoutMessage,
   AddLayoutMessage,
   AddTextBoxMessage,
+  ApplyMixerCompletedMessage,
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
   ClearTextBoxMessage,
   DelayCompletedMessage,
   DelayMessage,
   ErrorMessage,
-  PauseChannelMessage,
   PlayChannelMessage,
   RecoverErrorMessage,
   RemoveChannelMessage,
   RemoveWidgetsMessage,
-  ResumeChannelMessage,
   SequenceMessage,
   ShowImageMessage,
   ShowTextMessage,
   StopChannelMessage,
-  SuccessFetchAudioMessage,
 } from './message-handlers';
 
 export type NovelMessage<Component> =
   | AddLayoutMessage
+  | ApplyMixerCompletedMessage
   | AddCustomLayoutMessage<Component>
   | ShowImageMessage
   | AddTextBoxMessage
@@ -36,11 +35,8 @@ export type NovelMessage<Component> =
   | ChangeMasterVolumeMessage
   | ClearTextBoxMessage
   | AddChannelMessage
-  | SuccessFetchAudioMessage
   | RemoveChannelMessage
   | ChangeChannelVolumeMessage
   | PlayChannelMessage
   | StopChannelMessage
-  | PauseChannelMessage
-  | ResumeChannelMessage
   | SequenceMessage<NovelMessage<Component>>;
