@@ -22,23 +22,26 @@ import type {
 } from './message-handlers';
 
 export type NovelMessage<Component> =
+  // General
+  | DelayMessage
+  | DelayCompletedMessage
+  | SequenceMessage<NovelMessage<Component>>
+  | ErrorMessage
+  | RecoverErrorMessage
+  // Widgets
   | AddLayoutMessage
-  | ApplyMixerCompletedMessage
-  | AddBusTrackMessage
   | AddCustomLayoutMessage<Component>
   | ShowImageMessage
   | AddTextBoxMessage
   | ShowTextMessage
-  | RemoveWidgetsMessage
-  | DelayMessage
-  | DelayCompletedMessage
-  | ErrorMessage
-  | RecoverErrorMessage
-  | ChangeMasterVolumeMessage
   | ClearTextBoxMessage
+  | RemoveWidgetsMessage
+  // Mixer
   | AddTrackMessage
-  | RemoveChannelMessage
-  | ChangeChannelVolumeMessage
+  | AddBusTrackMessage
   | PlayChannelMessage
   | StopChannelMessage
-  | SequenceMessage<NovelMessage<Component>>;
+  | ChangeMasterVolumeMessage
+  | ChangeChannelVolumeMessage
+  | RemoveChannelMessage
+  | ApplyMixerCompletedMessage;
