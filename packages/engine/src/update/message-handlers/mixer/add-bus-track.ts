@@ -54,17 +54,9 @@ export const handleAddBusTrack = <Component>(
       createApplyMixerCommand(mixer, applyMixer),
     ];
   } catch (error) {
-    if (error instanceof Error) {
-      return update(model, {
-        type: 'Error',
-        value: error,
-      });
-    }
     return update(model, {
       type: 'Error',
-      value: new Error(
-        `An unknown error occurred while adding BusTrack: ${JSON.stringify(error)}`,
-      ),
+      value: error instanceof Error ? error : new Error('Unknown error'),
     });
   }
 };
