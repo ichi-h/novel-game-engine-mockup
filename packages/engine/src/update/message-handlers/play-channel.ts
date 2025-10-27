@@ -1,6 +1,14 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
-import type { DelayMs, FadeInMs, FadeOutMs, OffsetMs } from '../../mixer';
-import type { NovelModel } from '../../model';
+import type {
+  ApplyMixer,
+  DelayMs,
+  FadeInMs,
+  FadeOutMs,
+  OffsetMs,
+} from '@/mixer-v2';
+import type { NovelModel } from '@/model';
+import type { NovelMessage } from '../message';
+import { createApplyMixerCommand } from './utils';
 
 export interface PlayChannelMessage extends BaseMessage {
   type: 'PlayChannel';
@@ -31,13 +39,32 @@ export const playChannel = (
 export const handlePlayChannel = <Component>(
   model: NovelModel<Component>,
   msg: PlayChannelMessage,
-): ReturnModel<NovelModel<Component>, never> => {
-  model.mixer.playChannel(
-    msg.channelName,
-    msg.delayMs,
-    msg.offsetMs,
-    msg.fadeInMs,
-    msg.fadeOutMs,
-  );
-  return model;
+  applyMixer: ApplyMixer,
+): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+  const updatedChannels = model.mixer.channels.map((channel) => {
+    if (channel.id === msg.channelName) {
+      return {
+        ...channel,
+        playStatus: 'Playing' as const,
+        ...(msg.fadeInMs !== undefined ? { fadeInMs: msg.fadeInMs } : {}),
+        ...(msg.fadeOutMs !== undefined ? { fadeOutMs: msg.fadeOutMs } : {}),
+        ...(msg.delayMs !== undefined ? { delayMs: msg.delayMs } : {}),
+        ...(msg.offsetMs !== undefined ? { offsetMs: msg.offsetMs } : {}),
+      };
+    }
+    return channel;
+  });
+
+  const updatedMixer = {
+    ...model.mixer,
+    channels: updatedChannels,
+  };
+
+  const updatedModel = {
+    ...model,
+    mixer: updatedMixer,
+    isApplyingMixer: true,
+  };
+
+  return [updatedModel, createApplyMixerCommand(updatedMixer, applyMixer)];
 };
