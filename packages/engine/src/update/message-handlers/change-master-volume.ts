@@ -2,6 +2,7 @@ import type { BaseMessage, ReturnModel } from 'elmish';
 import type { ApplyMixer, Volume } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '../message';
+import { createApplyMixerCommand } from './utils';
 
 export interface ChangeMasterVolumeMessage extends BaseMessage {
   type: 'ChangeMasterVolume';
@@ -36,19 +37,5 @@ export const handleChangeMasterVolume = <Component>(
     isApplyingMixer: true,
   };
 
-  return [
-    updatedModel,
-    async () => {
-      let error: Error | null = null;
-      try {
-        await applyMixer(updatedMixer);
-      } catch (e) {
-        error = e instanceof Error ? e : new Error(String(e));
-      }
-      return {
-        type: 'ApplyMixerCompleted',
-        error,
-      };
-    },
-  ];
+  return [updatedModel, createApplyMixerCommand(updatedMixer, applyMixer)];
 };
