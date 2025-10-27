@@ -4,10 +4,10 @@ import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
 import {
   handleAddChannel,
-  handleApplyMixerCompleted,
   handleAddCustomLayout,
   handleAddLayout,
   handleAddTextBox,
+  handleApplyMixerCompleted,
   handleChangeChannelVolume,
   handleChangeMasterVolume,
   handleClearTextBox,
@@ -50,7 +50,7 @@ export const update =
       case 'ChangeMasterVolume':
         return handleChangeMasterVolume(model, msg, applyMixer);
       case 'ApplyMixerCompleted':
-        return handleApplyMixerCompleted(model, msg);
+        return handleApplyMixerCompleted(model, msg, update(applyMixer));
       case 'ClearTextBox':
         return handleClearTextBox(model, msg);
       case 'AddChannel':
