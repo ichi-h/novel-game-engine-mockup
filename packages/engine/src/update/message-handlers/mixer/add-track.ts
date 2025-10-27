@@ -7,7 +7,7 @@ import {
   type Volume,
 } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
-import type { NovelMessage } from '../message';
+import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
 
 export interface AddTrackMessage extends BaseMessage {

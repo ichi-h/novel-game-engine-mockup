@@ -1,37 +1,55 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
-import type { ApplyMixer, FadeOutMs } from '@/mixer-v2';
+import type {
+  ApplyMixer,
+  DelayMs,
+  FadeInMs,
+  FadeOutMs,
+  OffsetMs,
+} from '@/mixer-v2';
 import type { NovelModel } from '@/model';
-import type { NovelMessage } from '../message';
+import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
 
-export interface StopChannelMessage extends BaseMessage {
-  type: 'StopChannel';
+export interface PlayChannelMessage extends BaseMessage {
+  type: 'PlayChannel';
   channelId: string;
+  fadeInMs?: FadeInMs;
   fadeOutMs?: FadeOutMs;
+  delayMs?: DelayMs;
+  offsetMs?: OffsetMs;
 }
 
-export const stopChannel = (
+export const playChannel = (
   channelId: string,
+  delayMs?: DelayMs,
+  offsetMs?: OffsetMs,
+  fadeInMs?: FadeInMs,
   fadeOutMs?: FadeOutMs,
-): StopChannelMessage => {
+): PlayChannelMessage => {
   return {
-    type: 'StopChannel',
+    type: 'PlayChannel',
     channelId,
+    ...(delayMs !== undefined ? { delayMs } : {}),
+    ...(offsetMs !== undefined ? { offsetMs } : {}),
+    ...(fadeInMs !== undefined ? { fadeInMs } : {}),
     ...(fadeOutMs !== undefined ? { fadeOutMs } : {}),
   };
 };
 
-export const handleStopChannel = <Component>(
+export const handlePlayChannel = <Component>(
   model: NovelModel<Component>,
-  msg: StopChannelMessage,
+  msg: PlayChannelMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   const updatedChannels = model.mixer.channels.map((channel) => {
     if (channel.id === msg.channelId) {
       return {
         ...channel,
-        playStatus: 'Stopped' as const,
+        playStatus: 'Playing' as const,
+        ...(msg.fadeInMs !== undefined ? { fadeInMs: msg.fadeInMs } : {}),
         ...(msg.fadeOutMs !== undefined ? { fadeOutMs: msg.fadeOutMs } : {}),
+        ...(msg.delayMs !== undefined ? { delayMs: msg.delayMs } : {}),
+        ...(msg.offsetMs !== undefined ? { offsetMs: msg.offsetMs } : {}),
       };
     }
     return channel;

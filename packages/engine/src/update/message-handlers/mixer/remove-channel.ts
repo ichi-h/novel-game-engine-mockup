@@ -1,7 +1,7 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
 import type { ApplyMixer } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
-import type { NovelMessage } from '../message';
+import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
 
 export interface RemoveChannelMessage extends BaseMessage {

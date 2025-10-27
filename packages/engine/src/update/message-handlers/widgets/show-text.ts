@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
+import type { NovelModel } from '@/model';
 import { text } from '@/ui';
-import type { NovelModel } from '../../model';
 
 export interface ShowTextMessage extends BaseMessage {
   type: 'ShowText';

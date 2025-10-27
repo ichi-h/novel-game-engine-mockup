@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
+import type { NovelModel } from '@/model';
 import { img } from '@/ui';
-import type { NovelModel } from '../../model';
 
 export interface ShowImageMessage extends BaseMessage {
   type: 'ShowImage';

@@ -1,36 +1,37 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
-import type { ApplyMixer, Volume } from '@/mixer-v2';
+import type { ApplyMixer, FadeOutMs } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
-import type { NovelMessage } from '../message';
+import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
 
-export interface ChangeChannelVolumeMessage extends BaseMessage {
-  type: 'ChangeChannelVolume';
+export interface StopChannelMessage extends BaseMessage {
+  type: 'StopChannel';
   channelId: string;
-  volume: Volume;
+  fadeOutMs?: FadeOutMs;
 }
 
-export const changeChannelVolume = (
+export const stopChannel = (
   channelId: string,
-  volume: Volume,
-): ChangeChannelVolumeMessage => {
+  fadeOutMs?: FadeOutMs,
+): StopChannelMessage => {
   return {
-    type: 'ChangeChannelVolume',
+    type: 'StopChannel',
     channelId,
-    volume,
+    ...(fadeOutMs !== undefined ? { fadeOutMs } : {}),
   };
 };
 
-export const handleChangeChannelVolume = <Component>(
+export const handleStopChannel = <Component>(
   model: NovelModel<Component>,
-  msg: ChangeChannelVolumeMessage,
+  msg: StopChannelMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   const updatedChannels = model.mixer.channels.map((channel) => {
     if (channel.id === msg.channelId) {
       return {
         ...channel,
-        volume: msg.volume,
+        playStatus: 'Stopped' as const,
+        ...(msg.fadeOutMs !== undefined ? { fadeOutMs: msg.fadeOutMs } : {}),
       };
     }
     return channel;

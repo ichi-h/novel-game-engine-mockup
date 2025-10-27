@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import type { Cmd, Update } from 'elmish';
 import { generateInitModel, type NovelModel } from '@/model';
-import type { NovelMessage } from '../../message';
+import type { NovelMessage } from '@/update/message';
 import { handleSequence, type SequenceMessage, sequence } from '../sequence';
 
 describe('sequence', () => {

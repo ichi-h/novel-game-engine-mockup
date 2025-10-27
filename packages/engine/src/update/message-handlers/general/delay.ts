@@ -1,5 +1,5 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
-import type { NovelModel } from '../../model';
+import type { NovelModel } from '@/model';
 
 export interface DelayMessage extends BaseMessage {
   type: 'Delay';

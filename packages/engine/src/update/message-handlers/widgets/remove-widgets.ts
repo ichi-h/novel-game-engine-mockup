@@ -1,5 +1,5 @@
 import type { BaseMessage } from 'elmish';
-import type { NovelModel } from '../../model';
+import type { NovelModel } from '@/model';
 
 export interface RemoveWidgetsMessage extends BaseMessage {
   type: 'RemoveWidgets';

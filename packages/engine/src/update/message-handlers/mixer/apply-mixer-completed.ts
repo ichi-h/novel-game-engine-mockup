@@ -1,6 +1,6 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import type { NovelModel } from '../../model';
-import type { NovelMessage } from '../message';
+import type { NovelModel } from '@/model';
+import type { NovelMessage } from '@/update/message';
 
 export interface ApplyMixerCompletedMessage extends BaseMessage {
   type: 'ApplyMixerCompleted';

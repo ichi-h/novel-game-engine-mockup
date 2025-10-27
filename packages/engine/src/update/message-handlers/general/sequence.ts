@@ -1,6 +1,6 @@
 import type { BaseMessage, Cmd, ReturnModel, Update } from 'elmish';
 import type { NovelModel } from '@/model';
-import type { NovelMessage } from '../message';
+import type { NovelMessage } from '@/update/message';
 
 export interface SequenceMessage<Message extends BaseMessage>
   extends BaseMessage {

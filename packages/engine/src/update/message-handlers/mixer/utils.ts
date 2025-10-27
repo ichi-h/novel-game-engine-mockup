@@ -1,6 +1,6 @@
 import type { Cmd } from 'elmish';
 import type { ApplyMixer, Mixer } from '@/mixer-v2';
-import type { NovelMessage } from '../message';
+import type { NovelMessage } from '@/update/message';
 
 /**
  * Create a command that applies mixer changes and dispatches ApplyMixerCompleted message.
