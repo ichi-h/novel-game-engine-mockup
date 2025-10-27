@@ -1,30 +1,37 @@
+export type FadeInMs = number;
+export type FadeOutMs = number;
+export type DelayMs = number;
+export type OffsetMs = number;
+export type Volume = number;
+export type Samples = number;
+
 export interface Track {
   id: string;
   type: 'Track';
   playStatus: 'Standby' | 'Playing' | 'Stopped';
-  volume: number;
+  volume: Volume;
   isLoop?: {
-    start: number;
-    end: number;
+    start: Samples;
+    end: Samples;
   };
   src: string;
-  fadeInMs?: number;
-  fadeOutMs?: number;
-  delayMs?: number;
-  offsetMs?: number;
+  fadeInMs?: FadeInMs;
+  fadeOutMs?: FadeOutMs;
+  delayMs?: DelayMs;
+  offsetMs?: OffsetMs;
 }
 
 export interface BusTrack {
   id: string;
   type: 'BusTrack';
-  volume: number;
+  volume: Volume;
   channels: Channel[];
 }
 
 export type Channel = Track | BusTrack;
 
 export interface Mixer {
-  volume: number;
+  volume: Volume;
   channels: Channel[];
 }
 
