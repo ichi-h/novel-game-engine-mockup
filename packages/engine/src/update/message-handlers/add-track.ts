@@ -4,8 +4,8 @@ import type { NovelModel } from '@/model';
 import type { NovelMessage } from '../message';
 import { createApplyMixerCommand } from './utils';
 
-export interface AddChannelMessage extends BaseMessage {
-  type: 'AddChannel';
+export interface AddTrackMessage extends BaseMessage {
+  type: 'AddTrack';
   id: string;
   src: string;
   busTrackId?: string;
@@ -16,15 +16,15 @@ export interface AddChannelMessage extends BaseMessage {
   };
 }
 
-export const addChannel = (
+export const addTrack = (
   id: string,
   src: string,
   busTrackId?: string,
   volume?: Volume,
   loop?: { start: Samples; end: Samples },
-): AddChannelMessage => {
+): AddTrackMessage => {
   return {
-    type: 'AddChannel',
+    type: 'AddTrack',
     id,
     src,
     ...(busTrackId !== undefined ? { busTrackId } : {}),
@@ -33,12 +33,12 @@ export const addChannel = (
   };
 };
 
-export const handleAddChannel = <Component>(
+export const handleAddTrack = <Component>(
   model: NovelModel<Component>,
-  msg: AddChannelMessage,
+  msg: AddTrackMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  const newChannel: Track = {
+  const track: Track = {
     id: msg.id,
     type: 'Track',
     playStatus: 'Standby',
@@ -47,18 +47,19 @@ export const handleAddChannel = <Component>(
     ...(msg.loop !== undefined ? { isLoop: msg.loop } : {}),
   };
 
-  const updatedChannels = [...model.mixer.channels, newChannel];
+  const channels = [...model.mixer.channels, track];
 
-  const updatedMixer = {
+  const mixer = {
     ...model.mixer,
-    channels: updatedChannels,
+    channels,
   };
 
-  const updatedModel = {
-    ...model,
-    mixer: updatedMixer,
-    isApplyingMixer: true,
-  };
-
-  return [updatedModel, createApplyMixerCommand(updatedMixer, applyMixer)];
+  return [
+    {
+      ...model,
+      mixer,
+      isApplyingMixer: true,
+    },
+    createApplyMixerCommand(mixer, applyMixer),
+  ];
 };

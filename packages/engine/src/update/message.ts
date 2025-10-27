@@ -1,8 +1,8 @@
 import type {
-  AddChannelMessage,
   AddCustomLayoutMessage,
   AddLayoutMessage,
   AddTextBoxMessage,
+  AddTrackMessage,
   ApplyMixerCompletedMessage,
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
@@ -34,7 +34,7 @@ export type NovelMessage<Component> =
   | RecoverErrorMessage
   | ChangeMasterVolumeMessage
   | ClearTextBoxMessage
-  | AddChannelMessage
+  | AddTrackMessage
   | RemoveChannelMessage
   | ChangeChannelVolumeMessage
   | PlayChannelMessage

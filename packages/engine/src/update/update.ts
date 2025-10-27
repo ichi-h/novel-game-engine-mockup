@@ -3,10 +3,10 @@ import type { ApplyMixer } from '@/mixer-v2';
 import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
 import {
-  handleAddChannel,
   handleAddCustomLayout,
   handleAddLayout,
   handleAddTextBox,
+  handleAddTrack,
   handleApplyMixerCompleted,
   handleChangeChannelVolume,
   handleChangeMasterVolume,
@@ -53,8 +53,8 @@ export const update =
         return handleApplyMixerCompleted(model, msg, update(applyMixer));
       case 'ClearTextBox':
         return handleClearTextBox(model, msg);
-      case 'AddChannel':
-        return handleAddChannel(model, msg, applyMixer);
+      case 'AddTrack':
+        return handleAddTrack(model, msg, applyMixer);
       case 'RemoveChannel':
         return handleRemoveChannel(model, msg, applyMixer);
       case 'ChangeChannelVolume':
