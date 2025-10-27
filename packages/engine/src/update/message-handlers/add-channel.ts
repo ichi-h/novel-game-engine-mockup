@@ -1,7 +1,8 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
-import type { Samples, Volume } from '../../mixer';
-import type { NovelModel } from '../../model';
-import type { ErrorMessage } from './error';
+import type { ApplyMixer, Samples, Track, Volume } from '@/mixer-v2';
+import type { NovelModel } from '@/model';
+import type { NovelMessage } from '../message';
+import { createApplyMixerCommand } from './utils';
 
 export interface AddChannelMessage extends BaseMessage {
   type: 'AddChannel';
@@ -32,34 +33,29 @@ export const addChannel = (
 export const handleAddChannel = <Component>(
   model: NovelModel<Component>,
   msg: AddChannelMessage,
-): ReturnModel<
-  NovelModel<Component>,
-  SuccessFetchAudioMessage | ErrorMessage
-> => {
-  return [
-    { ...model, isFetching: true },
-    async () => {
-      try {
-        const response = await fetch(msg.src);
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch audio from ${msg.src}: ${response.statusText}`,
-          );
-        }
-        const arrayBuffer = await response.arrayBuffer();
-        return {
-          type: 'SuccessFetchAudio',
-          name: msg.name,
-          ...(msg.volume !== undefined ? { volume: msg.volume } : {}),
-          ...(msg.loop !== undefined ? { loop: msg.loop } : {}),
-          arrayBuffer,
-        };
-      } catch (error) {
-        return {
-          type: 'Error',
-          value: error as Error,
-        };
-      }
-    },
-  ];
+  applyMixer: ApplyMixer,
+): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+  const newChannel: Track = {
+    id: msg.name,
+    type: 'Track',
+    playStatus: 'Standby',
+    volume: msg.volume ?? 1.0,
+    src: msg.src,
+    ...(msg.loop !== undefined ? { isLoop: msg.loop } : {}),
+  };
+
+  const updatedChannels = [...model.mixer.channels, newChannel];
+
+  const updatedMixer = {
+    ...model.mixer,
+    channels: updatedChannels,
+  };
+
+  const updatedModel = {
+    ...model,
+    mixer: updatedMixer,
+    isApplyingMixer: true,
+  };
+
+  return [updatedModel, createApplyMixerCommand(updatedMixer, applyMixer)];
 };
