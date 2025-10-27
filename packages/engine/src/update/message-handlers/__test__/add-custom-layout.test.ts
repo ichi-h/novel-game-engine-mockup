@@ -3,6 +3,7 @@ import { generateInitModel } from '@/model';
 import { customLayout, img, layout } from '@/ui';
 import {
   type AddCustomLayoutMessage,
+  addCustomLayout,
   handleAddCustomLayout,
 } from '../add-custom-layout';
 
@@ -11,6 +12,35 @@ interface MockComponent {
   name: string;
   props?: Record<string, unknown>;
 }
+
+describe('addCustomLayout', () => {
+  describe('normal cases', () => {
+    test('creates message with only required fields', () => {
+      // Arrange & Act
+      const result = addCustomLayout('custom1', 'TestComponent');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'AddCustomLayout',
+        id: 'custom1',
+        component: 'TestComponent',
+      });
+    });
+
+    test('creates message with all optional fields', () => {
+      // Arrange & Act
+      const result = addCustomLayout('custom1', 'TestComponent', 'parent');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'AddCustomLayout',
+        id: 'custom1',
+        component: 'TestComponent',
+        parentLayoutId: 'parent',
+      });
+    });
+  });
+});
 
 describe('handleAddCustomLayout - normal cases', () => {
   test('adds custom layout to root', () => {

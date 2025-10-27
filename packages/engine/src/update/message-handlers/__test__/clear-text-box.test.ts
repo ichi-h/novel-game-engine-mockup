@@ -3,8 +3,24 @@ import { generateInitModel } from '@/model';
 import { layout, text, textBox } from '@/ui';
 import {
   type ClearTextBoxMessage,
+  clearTextBox,
   handleClearTextBox,
 } from '../clear-text-box';
+
+describe('clearTextBox', () => {
+  describe('normal cases', () => {
+    test('creates message with required fields', () => {
+      // Arrange & Act
+      const result = clearTextBox('textbox1');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'ClearTextBox',
+        textBoxId: 'textbox1',
+      });
+    });
+  });
+});
 
 describe('handleClearTextBox - normal cases', () => {
   test('clears empty text box', () => {

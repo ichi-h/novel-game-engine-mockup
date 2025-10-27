@@ -1,7 +1,44 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { layout, textBox } from '@/ui';
-import { handleShowText, type ShowTextMessage } from '../show-text';
+import { handleShowText, type ShowTextMessage, showText } from '../show-text';
+
+describe('showText', () => {
+  describe('normal cases', () => {
+    test('creates message with only required fields', () => {
+      // Arrange & Act
+      const result = showText('textbox1', 'Hello, World!');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'ShowText',
+        textBoxId: 'textbox1',
+        content: 'Hello, World!',
+      });
+    });
+
+    test('creates message with all optional fields', () => {
+      // Arrange & Act
+      const result = showText(
+        'textbox1',
+        'Hello, World!',
+        'text1',
+        'font-weight: bold;',
+        50,
+      );
+
+      // Assert
+      expect(result).toEqual({
+        type: 'ShowText',
+        textBoxId: 'textbox1',
+        content: 'Hello, World!',
+        id: 'text1',
+        style: 'font-weight: bold;',
+        speed: 50,
+      });
+    });
+  });
+});
 
 describe('handleShowText - normal cases', () => {
   test('adds text to text box with only required fields', () => {

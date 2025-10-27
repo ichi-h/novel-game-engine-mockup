@@ -4,7 +4,23 @@ import { layout, textBox } from '@/ui';
 import {
   handleRemoveWidgets,
   type RemoveWidgetsMessage,
+  removeWidgets,
 } from '../remove-widgets';
+
+describe('removeWidgets', () => {
+  describe('normal cases', () => {
+    test('creates message with required fields', () => {
+      // Arrange & Act
+      const result = removeWidgets(['widget1', 'widget2']);
+
+      // Assert
+      expect(result).toEqual({
+        type: 'RemoveWidgets',
+        ids: ['widget1', 'widget2'],
+      });
+    });
+  });
+});
 
 describe('handleRemoveWidgets - normal cases', () => {
   test('removes single widget', () => {

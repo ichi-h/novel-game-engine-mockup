@@ -1,7 +1,39 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { img, layout } from '@/ui';
-import { type AddLayoutMessage, handleAddLayout } from '../add-layout';
+import {
+  type AddLayoutMessage,
+  addLayout,
+  handleAddLayout,
+} from '../add-layout';
+
+describe('addLayout', () => {
+  describe('normal cases', () => {
+    test('creates message with only required fields', () => {
+      // Arrange & Act
+      const result = addLayout('layout1');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'AddLayout',
+        id: 'layout1',
+      });
+    });
+
+    test('creates message with all optional fields', () => {
+      // Arrange & Act
+      const result = addLayout('layout1', 'parent', 'display: flex;');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'AddLayout',
+        id: 'layout1',
+        parentLayoutId: 'parent',
+        style: 'display: flex;',
+      });
+    });
+  });
+});
 
 describe('handleAddLayout - normal cases', () => {
   test('adds layout to root without style', () => {

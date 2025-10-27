@@ -1,9 +1,41 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { img, layout } from '@/ui';
-import { type AddTextBoxMessage, handleAddTextBox } from '../add-text-box';
+import {
+  type AddTextBoxMessage,
+  addTextBox,
+  handleAddTextBox,
+} from '../add-text-box';
 
-// Create a mock mixer
+describe('addTextBox', () => {
+  describe('normal cases', () => {
+    test('creates message with only required fields', () => {
+      // Arrange & Act
+      const result = addTextBox('textbox1', 'parent');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'AddTextBox',
+        id: 'textbox1',
+        layoutId: 'parent',
+      });
+    });
+
+    test('creates message with all optional fields', () => {
+      // Arrange & Act
+      const result = addTextBox('textbox1', 'parent', 'padding: 10px;');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'AddTextBox',
+        id: 'textbox1',
+        layoutId: 'parent',
+        style: 'padding: 10px;',
+      });
+    });
+  });
+});
+
 describe('handleAddTextBox - normal cases', () => {
   test('adds text box to layout', () => {
     // Arrange

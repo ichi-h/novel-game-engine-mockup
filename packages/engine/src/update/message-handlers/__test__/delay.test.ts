@@ -3,9 +3,25 @@ import { generateInitModel } from '@/model';
 import {
   type DelayCompletedMessage,
   type DelayMessage,
+  delay,
   handleDelay,
   handleDelayCompleted,
 } from '../delay';
+
+describe('delay', () => {
+  describe('normal cases', () => {
+    test('creates message with required fields', () => {
+      // Arrange & Act
+      const result = delay(1000);
+
+      // Assert
+      expect(result).toEqual({
+        type: 'Delay',
+        durationMs: 1000,
+      });
+    });
+  });
+});
 
 describe('handleDelay / handleDelayCompleted - normal cases', () => {
   test('handleDelay sets isDelaying true and returns a command', () => {

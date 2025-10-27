@@ -1,7 +1,41 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { layout } from '@/ui';
-import { handleShowImage, type ShowImageMessage } from '../show-image';
+import {
+  handleShowImage,
+  type ShowImageMessage,
+  showImage,
+} from '../show-image';
+
+describe('showImage', () => {
+  describe('normal cases', () => {
+    test('creates message with only required fields', () => {
+      // Arrange & Act
+      const result = showImage('parent', 'test.png');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'ShowImage',
+        layoutId: 'parent',
+        src: 'test.png',
+      });
+    });
+
+    test('creates message with all optional fields', () => {
+      // Arrange & Act
+      const result = showImage('parent', 'test.png', 'img1', 'width: 100px;');
+
+      // Assert
+      expect(result).toEqual({
+        type: 'ShowImage',
+        layoutId: 'parent',
+        src: 'test.png',
+        id: 'img1',
+        style: 'width: 100px;',
+      });
+    });
+  });
+});
 
 describe('handleShowImage - normal cases', () => {
   test('adds image with only required fields', () => {

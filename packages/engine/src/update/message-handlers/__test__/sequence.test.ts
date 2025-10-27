@@ -2,7 +2,28 @@ import { describe, expect, test } from 'bun:test';
 import type { Cmd, Update } from 'elmish';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '../../message';
-import { handleSequence, type SequenceMessage } from '../sequence';
+import { handleSequence, type SequenceMessage, sequence } from '../sequence';
+
+describe('sequence', () => {
+  describe('normal cases', () => {
+    test('creates message with required fields', () => {
+      // Arrange
+      const messages: NovelMessage<string>[] = [
+        { type: 'ShowText', textBoxId: 'box1', content: 'Hello' },
+        { type: 'Delay', durationMs: 100 },
+      ];
+
+      // Act
+      const result = sequence(messages);
+
+      // Assert
+      expect(result).toEqual({
+        type: 'Sequence',
+        messages,
+      });
+    });
+  });
+});
 
 describe('handleSequence', () => {
   describe('normal cases', () => {
