@@ -1,20 +1,20 @@
-import type { IMixer } from './mixer';
+import type { Mixer } from './mixer-v2';
 import { WidgetManager } from './ui';
 
 export interface NovelModel<Component> {
-  mixer: IMixer;
+  mixer: Mixer;
   ui: WidgetManager<Component>;
   isDelaying: boolean;
-  isFetching: boolean;
+  isApplyingMixer: boolean;
   error: Error | null;
 }
 
 export const generateInitModel = <Component>(
-  mixer: IMixer,
+  mixer: Mixer,
 ): NovelModel<Component> => ({
   mixer,
   ui: new WidgetManager<Component>(),
   isDelaying: false,
-  isFetching: false,
+  isApplyingMixer: false,
   error: null,
 });
