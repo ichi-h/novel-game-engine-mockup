@@ -1,4 +1,5 @@
 import type {
+  AddBusTrackMessage,
   AddCustomLayoutMessage,
   AddLayoutMessage,
   AddTextBoxMessage,
@@ -23,6 +24,7 @@ import type {
 export type NovelMessage<Component> =
   | AddLayoutMessage
   | ApplyMixerCompletedMessage
+  | AddBusTrackMessage
   | AddCustomLayoutMessage<Component>
   | ShowImageMessage
   | AddTextBoxMessage

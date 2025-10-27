@@ -3,6 +3,7 @@ import type { ApplyMixer } from '@/mixer-v2';
 import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
 import {
+  handleAddBusTrack,
   handleAddCustomLayout,
   handleAddLayout,
   handleAddTextBox,
@@ -33,6 +34,8 @@ export const update =
     switch (msg.type) {
       case 'AddLayout':
         return handleAddLayout(model, msg);
+      case 'AddBusTrack':
+        return handleAddBusTrack(model, msg, update(applyMixer), applyMixer);
       case 'AddCustomLayout':
         return handleAddCustomLayout(model, msg);
       case 'ShowImage':
