@@ -34,10 +34,21 @@ export const update =
     const updateWrapped = update<Component>(applyMixer);
 
     switch (msg.type) {
+      // General
+      case 'Delay':
+        return handleDelay(model, msg);
+      case 'DelayCompleted':
+        return handleDelayCompleted(model, msg);
+      case 'Sequence':
+        return handleSequence<Component>(model, msg, updateWrapped);
+      case 'Error':
+        return handleError(model, msg);
+      case 'RecoverError':
+        return handleRecoverError(model);
+
+      // Widgets
       case 'AddLayout':
         return handleAddLayout(model, msg);
-      case 'AddBusTrack':
-        return handleAddBusTrack(model, msg, updateWrapped, applyMixer);
       case 'AddCustomLayout':
         return handleAddCustomLayout(model, msg);
       case 'ShowImage':
@@ -46,39 +57,34 @@ export const update =
         return handleAddTextBox(model, msg);
       case 'ShowText':
         return handleShowText(model, msg);
-      case 'RemoveWidgets':
-        return handleRemoveWidgets(model, msg);
-      case 'Delay':
-        return handleDelay(model, msg);
-      case 'DelayCompleted':
-        return handleDelayCompleted(model, msg);
-      case 'ChangeMasterVolume':
-        return handleChangeMasterVolume(model, msg, applyMixer);
-      case 'ApplyMixerCompleted':
-        return handleApplyMixerCompleted(model, msg, updateWrapped);
       case 'ClearTextBox':
         return handleClearTextBox(model, msg);
+      case 'RemoveWidgets':
+        return handleRemoveWidgets(model, msg);
+
+      // Mixer
       case 'AddTrack':
         return handleAddTrack(model, msg, updateWrapped, applyMixer);
-      case 'RemoveChannel':
-        return handleRemoveChannel(model, msg, applyMixer);
-      case 'ChangeChannelVolume':
-        return handleChangeChannelVolume(model, msg, applyMixer);
+      case 'AddBusTrack':
+        return handleAddBusTrack(model, msg, updateWrapped, applyMixer);
       case 'PlayChannel':
         return handlePlayChannel(model, msg, applyMixer);
       case 'StopChannel':
         return handleStopChannel(model, msg, applyMixer);
-      case 'Error':
-        return handleError(model, msg);
-      case 'RecoverError':
-        return handleRecoverError(model);
-      case 'Sequence':
-        return handleSequence<Component>(model, msg, updateWrapped);
+      case 'ChangeMasterVolume':
+        return handleChangeMasterVolume(model, msg, applyMixer);
+      case 'ChangeChannelVolume':
+        return handleChangeChannelVolume(model, msg, applyMixer);
+      case 'RemoveChannel':
+        return handleRemoveChannel(model, msg, applyMixer);
+      case 'ApplyMixerCompleted':
+        return handleApplyMixerCompleted(model, msg, updateWrapped);
+
       default: {
-        const error = new Error(
-          `Unhandled message type: ${JSON.stringify(msg)}`,
-        );
-        return handleError(model, { type: 'Error', value: error });
+        return handleError(model, {
+          type: 'Error',
+          value: new Error(`Unhandled message type: ${JSON.stringify(msg)}`),
+        });
       }
     }
   };
