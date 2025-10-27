@@ -6,17 +6,14 @@ import { createApplyMixerCommand } from './utils';
 
 export interface ChangeMasterVolumeMessage extends BaseMessage {
   type: 'ChangeMasterVolume';
-  name: string;
   masterVolume: Volume;
 }
 
 export const changeMasterVolume = (
-  name: string,
   masterVolume: Volume,
 ): ChangeMasterVolumeMessage => {
   return {
     type: 'ChangeMasterVolume',
-    name,
     masterVolume,
   };
 };

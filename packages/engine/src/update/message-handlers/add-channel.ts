@@ -6,8 +6,9 @@ import { createApplyMixerCommand } from './utils';
 
 export interface AddChannelMessage extends BaseMessage {
   type: 'AddChannel';
-  name: string;
+  id: string;
   src: string;
+  busTrackId?: string;
   volume?: Volume;
   loop?: {
     start: Samples;
@@ -16,15 +17,17 @@ export interface AddChannelMessage extends BaseMessage {
 }
 
 export const addChannel = (
-  name: string,
+  id: string,
   src: string,
+  busTrackId?: string,
   volume?: Volume,
   loop?: { start: Samples; end: Samples },
 ): AddChannelMessage => {
   return {
     type: 'AddChannel',
-    name,
+    id,
     src,
+    ...(busTrackId !== undefined ? { busTrackId } : {}),
     ...(volume !== undefined ? { volume } : {}),
     ...(loop !== undefined ? { loop } : {}),
   };
@@ -36,7 +39,7 @@ export const handleAddChannel = <Component>(
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   const newChannel: Track = {
-    id: msg.name,
+    id: msg.id,
     type: 'Track',
     playStatus: 'Standby',
     volume: msg.volume ?? 1.0,

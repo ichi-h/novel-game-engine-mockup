@@ -6,13 +6,13 @@ import { createApplyMixerCommand } from './utils';
 
 export interface RemoveChannelMessage extends BaseMessage {
   type: 'RemoveChannel';
-  name: string;
+  channelId: string;
 }
 
-export const removeChannel = (name: string): RemoveChannelMessage => {
+export const removeChannel = (channelId: string): RemoveChannelMessage => {
   return {
     type: 'RemoveChannel',
-    name,
+    channelId,
   };
 };
 
@@ -22,7 +22,7 @@ export const handleRemoveChannel = <Component>(
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   const updatedChannels = model.mixer.channels.filter(
-    (channel) => channel.id !== msg.name,
+    (channel) => channel.id !== msg.channelId,
   );
 
   const updatedMixer = {

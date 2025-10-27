@@ -6,17 +6,17 @@ import { createApplyMixerCommand } from './utils';
 
 export interface ChangeChannelVolumeMessage extends BaseMessage {
   type: 'ChangeChannelVolume';
-  channelName: string;
+  channelId: string;
   volume: Volume;
 }
 
 export const changeChannelVolume = (
-  channelName: string,
+  channelId: string,
   volume: Volume,
 ): ChangeChannelVolumeMessage => {
   return {
     type: 'ChangeChannelVolume',
-    channelName,
+    channelId,
     volume,
   };
 };
@@ -26,9 +26,8 @@ export const handleChangeChannelVolume = <Component>(
   msg: ChangeChannelVolumeMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  // Find and update the channel's volume
   const updatedChannels = model.mixer.channels.map((channel) => {
-    if (channel.id === msg.channelName) {
+    if (channel.id === msg.channelId) {
       return {
         ...channel,
         volume: msg.volume,

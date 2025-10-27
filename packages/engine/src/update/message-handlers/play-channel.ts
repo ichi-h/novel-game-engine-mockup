@@ -12,7 +12,7 @@ import { createApplyMixerCommand } from './utils';
 
 export interface PlayChannelMessage extends BaseMessage {
   type: 'PlayChannel';
-  channelName: string;
+  channelId: string;
   fadeInMs?: FadeInMs;
   fadeOutMs?: FadeOutMs;
   delayMs?: DelayMs;
@@ -20,7 +20,7 @@ export interface PlayChannelMessage extends BaseMessage {
 }
 
 export const playChannel = (
-  channelName: string,
+  channelId: string,
   delayMs?: DelayMs,
   offsetMs?: OffsetMs,
   fadeInMs?: FadeInMs,
@@ -28,7 +28,7 @@ export const playChannel = (
 ): PlayChannelMessage => {
   return {
     type: 'PlayChannel',
-    channelName,
+    channelId,
     ...(delayMs !== undefined ? { delayMs } : {}),
     ...(offsetMs !== undefined ? { offsetMs } : {}),
     ...(fadeInMs !== undefined ? { fadeInMs } : {}),
@@ -42,7 +42,7 @@ export const handlePlayChannel = <Component>(
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   const updatedChannels = model.mixer.channels.map((channel) => {
-    if (channel.id === msg.channelName) {
+    if (channel.id === msg.channelId) {
       return {
         ...channel,
         playStatus: 'Playing' as const,

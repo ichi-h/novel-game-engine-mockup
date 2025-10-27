@@ -6,17 +6,17 @@ import { createApplyMixerCommand } from './utils';
 
 export interface StopChannelMessage extends BaseMessage {
   type: 'StopChannel';
-  channelName: string;
+  channelId: string;
   fadeOutMs?: FadeOutMs;
 }
 
 export const stopChannel = (
-  channelName: string,
+  channelId: string,
   fadeOutMs?: FadeOutMs,
 ): StopChannelMessage => {
   return {
     type: 'StopChannel',
-    channelName,
+    channelId,
     ...(fadeOutMs !== undefined ? { fadeOutMs } : {}),
   };
 };
@@ -27,7 +27,7 @@ export const handleStopChannel = <Component>(
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
   const updatedChannels = model.mixer.channels.map((channel) => {
-    if (channel.id === msg.channelName) {
+    if (channel.id === msg.channelId) {
       return {
         ...channel,
         playStatus: 'Stopped' as const,
