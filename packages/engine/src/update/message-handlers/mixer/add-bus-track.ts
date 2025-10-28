@@ -41,8 +41,8 @@ export const handleAddBusTrack = <Component>(
   try {
     const mixer = addChannelToMixer(
       model.mixer,
-      msg.parentBusTrackId,
       newBusTrack,
+      msg.parentBusTrackId,
     );
 
     return [

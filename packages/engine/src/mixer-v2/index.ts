@@ -70,8 +70,8 @@ const hasIdInChannels = (channels: Channel[], channelId: string): boolean => {
  */
 export const addChannelToMixer = (
   mixer: Mixer,
-  parentBusTrackId: string | undefined,
   newChannel: Channel,
+  parentBusTrackId: string | undefined,
 ): Mixer => {
   if (hasIdInChannels(mixer.channels, newChannel.id)) {
     throw new Error(`Channel with ID ${newChannel.id} already exists in mixer`);
