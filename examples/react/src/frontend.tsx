@@ -5,6 +5,7 @@
  * It is included in `src/index.html`.
  */
 
+import { resumeAudioContext } from 'driver';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 
@@ -15,6 +16,10 @@ function start() {
   }
   const root = createRoot(container);
   root.render(<App />);
+
+  document.addEventListener('click', async () => {
+    await resumeAudioContext();
+  });
 }
 
 if (document.readyState === 'loading') {

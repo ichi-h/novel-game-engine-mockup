@@ -1,11 +1,10 @@
 import { elmish } from 'elmish';
 import {
-  addChannel,
   addLayout,
   addTextBox,
+  addTrack,
   clearTextBox as clearTextBoxMsg,
   generateInitModel,
-  Mixer,
   type NovelMessage,
   type NovelModel,
   playChannel,
@@ -19,7 +18,12 @@ import {
 import { useState } from 'react';
 
 import './index.css';
-import { NovelWidgetDriver, type ReactComponentDriver } from 'driver';
+import {
+  AudioFetcher,
+  createApplyMixer,
+  NovelWidgetDriver,
+  type ReactComponentDriver,
+} from 'driver';
 import bgm from './bgm.mp3';
 import homeBg from './home.jpg';
 import logo from './logo.svg';
@@ -272,7 +276,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
 
 // 初期化メッセージ（自動実行）
 const initMessage: NovelMessage<ReactComponentDriver> = sequence([
-  addChannel('bgm', bgm, 1, { start: 0, end: 7650432 }),
+  addTrack('bgm', bgm, undefined, 1, { start: 0, end: 7650432 }),
   addLayout(
     'root',
     undefined,
@@ -319,7 +323,10 @@ const initMessage: NovelMessage<ReactComponentDriver> = sequence([
 ]);
 
 const messages = createNovelGame();
-const initModel = generateInitModel<ReactComponentDriver>(new Mixer('novel'));
+const initModel = generateInitModel<ReactComponentDriver>();
+
+const fetcher = new AudioFetcher();
+const applyMixer = createApplyMixer(fetcher);
 
 export function App() {
   const [index, setIndex] = useState(0);
@@ -333,7 +340,7 @@ export function App() {
         },
       ];
     },
-    update,
+    update(applyMixer),
     setModel,
   );
 
