@@ -151,6 +151,11 @@ export const mapMixer =
     };
   };
 
+/**
+ * Filter channels in the mixer based on the provided predicate function.
+ *
+ * @returns Updated Mixer with filtered channels
+ */
 export const filterMixer =
   (predicate: (channel: Channel) => boolean) =>
   (mixer: Mixer): Mixer => {
