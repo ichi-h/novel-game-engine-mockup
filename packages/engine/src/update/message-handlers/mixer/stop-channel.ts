@@ -1,5 +1,5 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import { type ApplyMixer, type FadeOutMs, hasId, map } from '@/mixer-v2';
+import { type ApplyMixer, type FadeOutMs, hasId, map } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';

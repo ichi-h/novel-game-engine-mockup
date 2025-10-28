@@ -1,5 +1,5 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
-import type { ApplyMixer, Volume } from '@/mixer-v2';
+import type { ApplyMixer, Volume } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';

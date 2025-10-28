@@ -4,7 +4,7 @@ import type {
   Channel,
   Mixer,
   Track,
-} from '../../../engine/src/mixer-v2/index.js';
+} from '../../../engine/src/mixer/index.js';
 import type { IAudioFetcher } from './fetcher.js';
 
 /**

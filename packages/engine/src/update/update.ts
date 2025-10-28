@@ -1,5 +1,5 @@
 import type { ReturnModel } from 'elmish';
-import type { ApplyMixer } from '@/mixer-v2';
+import type { ApplyMixer } from '@/mixer';
 import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
 import {

@@ -1,6 +1,6 @@
 import { describe, expect, mock, test } from 'bun:test';
-import type { ApplyMixer, BusTrack } from '@/mixer-v2';
-import * as mixerModule from '@/mixer-v2';
+import type { ApplyMixer, BusTrack } from '@/mixer';
+import * as mixerModule from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';
@@ -213,7 +213,7 @@ describe('handleAddBusTrack', () => {
 
       // Mock addChannel to throw a non-Error object
       const originalAddChannelToMixer = mixerModule.addChannel;
-      mock.module('@/mixer-v2', () => ({
+      mock.module('@/mixer', () => ({
         ...mixerModule,
         addChannel: () => {
           throw 'string error'; // Throw a non-Error object
@@ -224,7 +224,7 @@ describe('handleAddBusTrack', () => {
       handleAddBusTrack(model, message, update, applyMixer);
 
       // Restore
-      mock.module('@/mixer-v2', () => ({
+      mock.module('@/mixer', () => ({
         ...mixerModule,
         addChannel: originalAddChannelToMixer,
       }));

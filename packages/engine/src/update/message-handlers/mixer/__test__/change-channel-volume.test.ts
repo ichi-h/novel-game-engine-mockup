@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import type { ApplyMixer, BusTrack } from '@/mixer-v2';
+import type { ApplyMixer, BusTrack } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';

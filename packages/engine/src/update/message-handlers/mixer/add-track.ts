@@ -5,7 +5,7 @@ import {
   type Samples,
   type Track,
   type Volume,
-} from '@/mixer-v2';
+} from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';

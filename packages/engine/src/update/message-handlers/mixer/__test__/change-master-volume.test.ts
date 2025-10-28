@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import type { ApplyMixer } from '@/mixer-v2';
+import type { ApplyMixer } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import {
   type ChangeMasterVolumeMessage,

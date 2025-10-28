@@ -1,6 +1,6 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import type { ApplyMixer, BusTrack, Volume } from '@/mixer-v2';
-import { addChannel } from '@/mixer-v2';
+import type { ApplyMixer, BusTrack, Volume } from '@/mixer';
+import { addChannel } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';

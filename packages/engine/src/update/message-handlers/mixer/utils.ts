@@ -1,5 +1,5 @@
 import type { Cmd } from 'elmish';
-import type { ApplyMixer, Mixer } from '@/mixer-v2';
+import type { ApplyMixer, Mixer } from '@/mixer';
 import type { NovelMessage } from '@/update/message';
 
 /**

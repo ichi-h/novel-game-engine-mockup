@@ -1,4 +1,4 @@
-import type { Mixer } from './mixer-v2';
+import type { Mixer } from './mixer';
 import { WidgetManager } from './ui';
 
 export interface NovelModel<Component> {
