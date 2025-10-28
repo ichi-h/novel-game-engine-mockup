@@ -1,5 +1,5 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
-import { type ApplyMixer, filterMixer } from '@/mixer-v2';
+import type { BaseMessage, ReturnModel, Update } from 'elmish';
+import { type ApplyMixer, filterMixer, hasIdInMixer } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
@@ -19,8 +19,18 @@ export const removeChannel = (channelId: string): RemoveChannelMessage => {
 export const handleRemoveChannel = <Component>(
   model: NovelModel<Component>,
   msg: RemoveChannelMessage,
+  update: Update<NovelModel<Component>, NovelMessage<Component>>,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+  if (!hasIdInMixer(model.mixer, msg.channelId)) {
+    return update(model, {
+      type: 'Error',
+      value: new Error(
+        `Channel with ID ${msg.channelId} does not exist in the mixer.`,
+      ),
+    });
+  }
+
   const mixer = filterMixer((c) => c.id !== msg.channelId)(model.mixer);
 
   return [

@@ -76,7 +76,7 @@ export const update =
       case 'ChangeChannelVolume':
         return handleChangeChannelVolume(model, msg, updateWrapped, applyMixer);
       case 'RemoveChannel':
-        return handleRemoveChannel(model, msg, applyMixer);
+        return handleRemoveChannel(model, msg, updateWrapped, applyMixer);
       case 'ApplyMixerCompleted':
         return handleApplyMixerCompleted(model, msg, updateWrapped);
 
