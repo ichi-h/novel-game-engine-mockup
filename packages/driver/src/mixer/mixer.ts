@@ -1,10 +1,4 @@
-import type {
-  ApplyMixer,
-  BusTrack,
-  Channel,
-  Mixer,
-  Track,
-} from '../../../engine/src/mixer/index.js';
+import type { ApplyMixer, BusTrack, Channel, Mixer, Track } from 'engine';
 import type { IAudioFetcher } from './fetcher.js';
 
 /**
