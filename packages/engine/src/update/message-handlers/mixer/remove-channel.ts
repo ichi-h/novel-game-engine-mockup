@@ -21,20 +21,19 @@ export const handleRemoveChannel = <Component>(
   msg: RemoveChannelMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  const updatedChannels = model.mixer.channels.filter(
-    (channel) => channel.id !== msg.channelId,
-  );
-
-  const updatedMixer = {
+  const mixer = {
     ...model.mixer,
-    channels: updatedChannels,
+    channels: model.mixer.channels.filter(
+      (channel) => channel.id !== msg.channelId,
+    ),
   };
 
-  const updatedModel = {
-    ...model,
-    mixer: updatedMixer,
-    isApplyingMixer: true,
-  };
-
-  return [updatedModel, createApplyMixerCommand(updatedMixer, applyMixer)];
+  return [
+    {
+      ...model,
+      mixer,
+      isApplyingMixer: true,
+    },
+    createApplyMixerCommand(mixer, applyMixer),
+  ];
 };

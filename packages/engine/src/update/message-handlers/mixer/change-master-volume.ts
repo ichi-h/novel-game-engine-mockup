@@ -23,16 +23,17 @@ export const handleChangeMasterVolume = <Component>(
   msg: ChangeMasterVolumeMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  const updatedMixer = {
+  const mixer = {
     ...model.mixer,
     volume: msg.masterVolume,
   };
 
-  const updatedModel = {
-    ...model,
-    mixer: updatedMixer,
-    isApplyingMixer: true,
-  };
-
-  return [updatedModel, createApplyMixerCommand(updatedMixer, applyMixer)];
+  return [
+    {
+      ...model,
+      mixer,
+      isApplyingMixer: true,
+    },
+    createApplyMixerCommand(mixer, applyMixer),
+  ];
 };

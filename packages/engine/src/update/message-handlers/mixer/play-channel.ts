@@ -41,7 +41,7 @@ export const handlePlayChannel = <Component>(
   msg: PlayChannelMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  const updatedChannels = model.mixer.channels.map((channel) => {
+  const channels = model.mixer.channels.map((channel) => {
     if (channel.id === msg.channelId) {
       return {
         ...channel,
@@ -55,16 +55,17 @@ export const handlePlayChannel = <Component>(
     return channel;
   });
 
-  const updatedMixer = {
+  const mixer = {
     ...model.mixer,
-    channels: updatedChannels,
+    channels,
   };
 
-  const updatedModel = {
-    ...model,
-    mixer: updatedMixer,
-    isApplyingMixer: true,
-  };
-
-  return [updatedModel, createApplyMixerCommand(updatedMixer, applyMixer)];
+  return [
+    {
+      ...model,
+      mixer,
+      isApplyingMixer: true,
+    },
+    createApplyMixerCommand(mixer, applyMixer),
+  ];
 };
