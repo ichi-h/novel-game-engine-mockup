@@ -68,9 +68,9 @@ export const update =
       case 'AddBusTrack':
         return handleAddBusTrack(model, msg, updateWrapped, applyMixer);
       case 'PlayChannel':
-        return handlePlayChannel(model, msg, applyMixer);
+        return handlePlayChannel(model, msg, updateWrapped, applyMixer);
       case 'StopChannel':
-        return handleStopChannel(model, msg, applyMixer);
+        return handleStopChannel(model, msg, updateWrapped, applyMixer);
       case 'ChangeMasterVolume':
         return handleChangeMasterVolume(model, msg, applyMixer);
       case 'ChangeChannelVolume':

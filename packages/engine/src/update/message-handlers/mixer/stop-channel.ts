@@ -1,5 +1,10 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
-import type { ApplyMixer, FadeOutMs } from '@/mixer-v2';
+import type { BaseMessage, ReturnModel, Update } from 'elmish';
+import {
+  type ApplyMixer,
+  type FadeOutMs,
+  hasIdInMixer,
+  mapMixer,
+} from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
@@ -24,23 +29,27 @@ export const stopChannel = (
 export const handleStopChannel = <Component>(
   model: NovelModel<Component>,
   msg: StopChannelMessage,
+  update: Update<NovelModel<Component>, NovelMessage<Component>>,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  const channels = model.mixer.channels.map((channel) => {
-    if (channel.id === msg.channelId) {
-      return {
-        ...channel,
-        playStatus: 'Stopped' as const,
-        ...(msg.fadeOutMs !== undefined ? { fadeOutMs: msg.fadeOutMs } : {}),
-      };
-    }
-    return channel;
-  });
+  if (!hasIdInMixer(model.mixer, msg.channelId)) {
+    return update(model, {
+      type: 'Error',
+      value: new Error(
+        `Channel with ID ${msg.channelId} does not exist in the mixer.`,
+      ),
+    });
+  }
 
-  const mixer = {
-    ...model.mixer,
-    channels,
-  };
+  const mixer = mapMixer((c) =>
+    c.id === msg.channelId
+      ? {
+          ...c,
+          playStatus: 'Stopped' as const,
+          ...(msg.fadeOutMs !== undefined ? { fadeOutMs: msg.fadeOutMs } : {}),
+        }
+      : c,
+  )(model.mixer);
 
   return [
     {

@@ -1,10 +1,12 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
-import type {
-  ApplyMixer,
-  DelayMs,
-  FadeInMs,
-  FadeOutMs,
-  OffsetMs,
+import type { BaseMessage, ReturnModel, Update } from 'elmish';
+import {
+  type ApplyMixer,
+  type DelayMs,
+  type FadeInMs,
+  type FadeOutMs,
+  hasIdInMixer,
+  mapMixer,
+  type OffsetMs,
 } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
@@ -39,26 +41,32 @@ export const playChannel = (
 export const handlePlayChannel = <Component>(
   model: NovelModel<Component>,
   msg: PlayChannelMessage,
+  update: Update<NovelModel<Component>, NovelMessage<Component>>,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  const channels = model.mixer.channels.map((channel) => {
-    if (channel.id === msg.channelId) {
-      return {
-        ...channel,
-        playStatus: 'Playing' as const,
-        ...(msg.fadeInMs !== undefined ? { fadeInMs: msg.fadeInMs } : {}),
-        ...(msg.fadeOutMs !== undefined ? { fadeOutMs: msg.fadeOutMs } : {}),
-        ...(msg.delayMs !== undefined ? { delayMs: msg.delayMs } : {}),
-        ...(msg.offsetMs !== undefined ? { offsetMs: msg.offsetMs } : {}),
-      };
-    }
-    return channel;
-  });
+  if (!hasIdInMixer(model.mixer, msg.channelId)) {
+    return update(model, {
+      type: 'Error',
+      value: new Error(
+        `Channel with ID ${msg.channelId} does not exist in the mixer.`,
+      ),
+    });
+  }
 
-  const mixer = {
-    ...model.mixer,
-    channels,
-  };
+  const { fadeInMs, fadeOutMs, delayMs, offsetMs } = msg;
+
+  const mixer = mapMixer((c) =>
+    c.id === msg.channelId
+      ? {
+          ...c,
+          playStatus: 'Playing' as const,
+          ...(fadeInMs !== undefined ? { fadeInMs } : {}),
+          ...(fadeOutMs !== undefined ? { fadeOutMs } : {}),
+          ...(delayMs !== undefined ? { delayMs } : {}),
+          ...(offsetMs !== undefined ? { offsetMs } : {}),
+        }
+      : c,
+  )(model.mixer);
 
   return [
     {
