@@ -246,7 +246,7 @@ describe('handleAddTrack', () => {
       // Assert
       expect(errorMessage).toBeTruthy();
       expect(String(errorMessage)).toContain(
-        'An unknown error occurred while adding Track',
+        'Unknown error occurred while adding Track',
       );
     });
   });

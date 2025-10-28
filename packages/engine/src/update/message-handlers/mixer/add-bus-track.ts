@@ -56,7 +56,10 @@ export const handleAddBusTrack = <Component>(
   } catch (error) {
     return update(model, {
       type: 'Error',
-      value: error instanceof Error ? error : new Error('Unknown error'),
+      value:
+        error instanceof Error
+          ? error
+          : new Error('Unknown error occurred while adding BusTrack'),
     });
   }
 };

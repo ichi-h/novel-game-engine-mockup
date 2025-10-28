@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, mock, test } from 'bun:test';
 import type { ApplyMixer, BusTrack } from '@/mixer-v2';
+import * as mixerModule from '@/mixer-v2';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';
@@ -188,6 +189,50 @@ describe('handleAddBusTrack', () => {
       expect(errorMessage).toBeTruthy();
       expect(String(errorMessage)).toContain(
         'Parent BusTrack with ID non-existent-parent does not exist in mixer',
+      );
+    });
+
+    test('handles unknown error when adding BusTrack', () => {
+      // Arrange
+      const model: NovelModel<string> = generateInitModel();
+      const message: AddBusTrackMessage = {
+        type: 'AddBusTrack',
+        id: 'track-1',
+      };
+      let errorMessage: string | null = null;
+      const update = (
+        _model: NovelModel<string>,
+        msg: NovelMessage<string>,
+      ) => {
+        if (msg.type === 'Error') {
+          errorMessage = (msg as ErrorMessage).value.message;
+        }
+        return _model;
+      };
+      const applyMixer: ApplyMixer = async () => {};
+
+      // Mock addChannelToMixer to throw a non-Error object
+      const originalAddChannelToMixer = mixerModule.addChannelToMixer;
+      mock.module('@/mixer-v2', () => ({
+        ...mixerModule,
+        addChannelToMixer: () => {
+          throw 'string error'; // Throw a non-Error object
+        },
+      }));
+
+      // Act
+      handleAddBusTrack(model, message, update, applyMixer);
+
+      // Restore
+      mock.module('@/mixer-v2', () => ({
+        ...mixerModule,
+        addChannelToMixer: originalAddChannelToMixer,
+      }));
+
+      // Assert
+      expect(errorMessage).toBeTruthy();
+      expect(String(errorMessage)).toContain(
+        'Unknown error occurred while adding BusTrack',
       );
     });
   });
