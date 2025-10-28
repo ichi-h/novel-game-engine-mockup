@@ -1,5 +1,5 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
-import type { ApplyMixer } from '@/mixer-v2';
+import { type ApplyMixer, filterMixer } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
@@ -21,12 +21,7 @@ export const handleRemoveChannel = <Component>(
   msg: RemoveChannelMessage,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  const mixer = {
-    ...model.mixer,
-    channels: model.mixer.channels.filter(
-      (channel) => channel.id !== msg.channelId,
-    ),
-  };
+  const mixer = filterMixer((c) => c.id !== msg.channelId)(model.mixer);
 
   return [
     {

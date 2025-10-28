@@ -150,3 +150,26 @@ export const mapMixer =
       channels: mapChannels(mixer.channels),
     };
   };
+
+export const filterMixer =
+  (predicate: (channel: Channel) => boolean) =>
+  (mixer: Mixer): Mixer => {
+    const filterChannels = (channels: Channel[]): Channel[] => {
+      return channels
+        .map((channel) => {
+          if (channel.type === 'BusTrack') {
+            return {
+              ...channel,
+              channels: filterChannels(channel.channels),
+            };
+          }
+          return channel;
+        })
+        .filter(predicate);
+    };
+
+    return {
+      ...mixer,
+      channels: filterChannels(mixer.channels),
+    };
+  };
