@@ -1,5 +1,10 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import { type ApplyMixer, hasIdInMixer, type Volume } from '@/mixer-v2';
+import {
+  type ApplyMixer,
+  hasIdInMixer,
+  mapMixer,
+  type Volume,
+} from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
@@ -36,20 +41,15 @@ export const handleChangeChannelVolume = <Component>(
     });
   }
 
-  const channels = model.mixer.channels.map((channel) => {
-    if (channel.id === msg.channelId) {
+  const mixer = mapMixer((c) => {
+    if (c.id === msg.channelId) {
       return {
-        ...channel,
+        ...c,
         volume: msg.volume,
       };
     }
-    return channel;
-  });
-
-  const mixer = {
-    ...model.mixer,
-    channels,
-  };
+    return c;
+  })(model.mixer);
 
   return [
     {
