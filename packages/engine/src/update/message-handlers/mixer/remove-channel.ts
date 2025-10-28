@@ -1,5 +1,5 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import { type ApplyMixer, filterMixer, hasIdInMixer } from '@/mixer-v2';
+import { type ApplyMixer, filter, hasId } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
@@ -22,7 +22,7 @@ export const handleRemoveChannel = <Component>(
   update: Update<NovelModel<Component>, NovelMessage<Component>>,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  if (!hasIdInMixer(model.mixer, msg.channelId)) {
+  if (!hasId(model.mixer, msg.channelId)) {
     return update(model, {
       type: 'Error',
       value: new Error(
@@ -31,7 +31,7 @@ export const handleRemoveChannel = <Component>(
     });
   }
 
-  const mixer = filterMixer((c) => c.id !== msg.channelId)(model.mixer);
+  const mixer = filter((c) => c.id !== msg.channelId)(model.mixer);
 
   return [
     {

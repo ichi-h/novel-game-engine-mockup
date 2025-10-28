@@ -1,7 +1,7 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
 import {
   type ApplyMixer,
-  addChannelToMixer,
+  addChannel,
   type Samples,
   type Track,
   type Volume,
@@ -55,7 +55,7 @@ export const handleAddTrack = <Component>(
   };
 
   try {
-    const mixer = addChannelToMixer(model.mixer, track, msg.busTrackId);
+    const mixer = addChannel(model.mixer, track, msg.busTrackId);
 
     return [
       {

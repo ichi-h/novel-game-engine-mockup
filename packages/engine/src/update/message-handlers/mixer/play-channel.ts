@@ -4,8 +4,8 @@ import {
   type DelayMs,
   type FadeInMs,
   type FadeOutMs,
-  hasIdInMixer,
-  mapMixer,
+  hasId,
+  map,
   type OffsetMs,
 } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
@@ -44,7 +44,7 @@ export const handlePlayChannel = <Component>(
   update: Update<NovelModel<Component>, NovelMessage<Component>>,
   applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-  if (!hasIdInMixer(model.mixer, msg.channelId)) {
+  if (!hasId(model.mixer, msg.channelId)) {
     return update(model, {
       type: 'Error',
       value: new Error(
@@ -55,7 +55,7 @@ export const handlePlayChannel = <Component>(
 
   const { fadeInMs, fadeOutMs, delayMs, offsetMs } = msg;
 
-  const mixer = mapMixer((c) =>
+  const mixer = map((c) =>
     c.id === msg.channelId
       ? {
           ...c,

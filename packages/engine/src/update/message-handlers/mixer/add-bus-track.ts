@@ -1,6 +1,6 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
 import type { ApplyMixer, BusTrack, Volume } from '@/mixer-v2';
-import { addChannelToMixer } from '@/mixer-v2';
+import { addChannel } from '@/mixer-v2';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { createApplyMixerCommand } from './utils';
@@ -39,11 +39,7 @@ export const handleAddBusTrack = <Component>(
   };
 
   try {
-    const mixer = addChannelToMixer(
-      model.mixer,
-      newBusTrack,
-      msg.parentBusTrackId,
-    );
+    const mixer = addChannel(model.mixer, newBusTrack, msg.parentBusTrackId);
 
     return [
       {

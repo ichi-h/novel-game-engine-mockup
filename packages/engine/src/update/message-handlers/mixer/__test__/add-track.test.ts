@@ -225,11 +225,11 @@ describe('handleAddTrack', () => {
       };
       const applyMixer: ApplyMixer = async () => {};
 
-      // Mock addChannelToMixer to throw a non-Error object
-      const originalAddChannelToMixer = mixerModule.addChannelToMixer;
+      // Mock addChannel to throw a non-Error object
+      const originalAddChannelToMixer = mixerModule.addChannel;
       mock.module('@/mixer-v2', () => ({
         ...mixerModule,
-        addChannelToMixer: () => {
+        addChannel: () => {
           throw 'string error'; // Throw a non-Error object
         },
       }));
@@ -240,7 +240,7 @@ describe('handleAddTrack', () => {
       // Restore
       mock.module('@/mixer-v2', () => ({
         ...mixerModule,
-        addChannelToMixer: originalAddChannelToMixer,
+        addChannel: originalAddChannelToMixer,
       }));
 
       // Assert
