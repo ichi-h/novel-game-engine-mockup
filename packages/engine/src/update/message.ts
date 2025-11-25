@@ -4,6 +4,7 @@ import type {
   AddLayoutMessage,
   AddTextBoxMessage,
   AddTrackMessage,
+  AddWidgetsMessage,
   ApplyMixerCompletedMessage,
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
@@ -32,6 +33,7 @@ export type NovelMessage<Component> =
   | AddLayoutMessage
   | AddCustomLayoutMessage<Component>
   | ShowImageMessage
+  | AddWidgetsMessage<Component>
   | AddTextBoxMessage
   | ShowTextMessage
   | ClearTextBoxMessage

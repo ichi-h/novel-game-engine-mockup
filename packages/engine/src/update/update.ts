@@ -8,6 +8,7 @@ import {
   handleAddLayout,
   handleAddTextBox,
   handleAddTrack,
+  handleAddWidgets,
   handleApplyMixerCompleted,
   handleChangeChannelVolume,
   handleChangeMasterVolume,
@@ -40,7 +41,7 @@ export const update =
       case 'DelayCompleted':
         return handleDelayCompleted(model, msg);
       case 'Sequence':
-        return handleSequence<Component>(model, msg, updateWrapped);
+        return handleSequence(model, msg, updateWrapped);
       case 'Error':
         return handleError(model, msg);
       case 'RecoverError':
@@ -57,6 +58,8 @@ export const update =
         return handleAddTextBox(model, msg);
       case 'ShowText':
         return handleShowText(model, msg);
+      case 'AddWidgets':
+        return handleAddWidgets(model, msg);
       case 'ClearTextBox':
         return handleClearTextBox(model, msg);
       case 'RemoveWidgets':
