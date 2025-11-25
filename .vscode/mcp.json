@@ -3,7 +3,7 @@
     "serena": {
       "type": "stdio",
       "args": ["start-mcp-server"],
-      "command": "/nix/store/hzjfakw4ilalm7ydw9g6qmg074v91ivn-serena-0.1.4-unstable-2025-10-15/bin/serena",
+      "command": "/nix/store/08m3qxbr9vh7h9zfdh6b0y94wn56nq13-serena-0.1.4-unstable-2025-11-23/bin/serena",
       "env": {}
     }
   },

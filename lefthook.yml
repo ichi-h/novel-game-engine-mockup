@@ -5,12 +5,12 @@ pre-commit:
       glob: "*.{ts,js,tsx,jsx,css,html,json,yml,yaml}"
       root: "."
       stage_fixed: true
-      run: bun run lint
+      run: nix develop --command -- bun run lint
     format:
       glob: "*.{ts,js,tsx,jsx,css,html,json,yml,yaml}"
       root: "."
       stage_fixed: true
-      run: bun run format
+      run: nix develop --command -- bun run format
 
 pre-push:
   parallel: true
@@ -18,8 +18,8 @@ pre-push:
     test:
       glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
-      run: bun test
+      run: nix develop --command -- bun test
     build:
       glob: "*.{ts,js,tsx,jsx,css,html}"
       root: "."
-      run: bun run build:dev
+      run: nix develop --command -- bun run build:dev
