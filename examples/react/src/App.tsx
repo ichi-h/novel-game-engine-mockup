@@ -5,6 +5,7 @@ import {
   addTrack,
   clearTextBox as clearTextBoxMsg,
   generateInitModel,
+  historyMiddleware,
   type NovelMessage,
   type NovelModel,
   playChannel,
@@ -340,7 +341,7 @@ export function App() {
         },
       ];
     },
-    update(applyMixer),
+    update(applyMixer, [historyMiddleware]),
     setModel,
   );
 
@@ -361,6 +362,8 @@ export function App() {
       next();
     }
   };
+
+  console.log('model', JSON.stringify(model, null, 2));
 
   return (
     // biome-ignore lint/a11y/useSemanticElements: ゲーム画面全体をクリック可能にするための特殊なUI
