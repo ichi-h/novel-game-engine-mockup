@@ -1,7 +1,7 @@
 ---
-mode: agent
+agent: agent
 model: Claude Sonnet 4.5
-tools: ["codebase", "editFiles", "fetch", "serena"]
+tools: ["codebase", "editFiles", "fetch"]
 description: "Generate test code"
 ---
 
