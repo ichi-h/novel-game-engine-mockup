@@ -99,7 +99,7 @@ describe('handleRemoveWidgets - normal cases', () => {
     const result = handleRemoveWidgets(model, msg);
 
     // Assert
-    expect(model.ui).toHaveLength(beforeCount);
+    expect(result.ui).toHaveLength(beforeCount);
   });
 });
 
