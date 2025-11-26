@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { layout, textBox } from '@/ui';
+import { addWidget, hasId, layout, textBox } from '@/ui';
 import { handleShowText, type ShowTextMessage, showText } from '../show-text';
 
 describe('showText', () => {
@@ -45,10 +45,8 @@ describe('handleShowText - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout and text box
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const textBoxWidget = textBox({ id: 'textbox1' })([]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -60,18 +58,15 @@ describe('handleShowText - normal cases', () => {
     const result = handleShowText(model, msg);
 
     // Assert
-    expect(result).toBe(model);
     // Verify text box still exists
-    expect(result.ui.hasId('textbox1')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(true);
   });
 
   test('adds text to text box with id', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const textBoxWidget = textBox({ id: 'textbox1' })([]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -84,18 +79,15 @@ describe('handleShowText - normal cases', () => {
     const result = handleShowText(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('text1')).toBe(true);
-    expect(result.ui.hasId('textbox1')).toBe(true);
+    expect(hasId(result.ui, 'text1')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(true);
   });
 
   test('adds text to text box with all optional fields', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const textBoxWidget = textBox({ id: 'textbox1' })([]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -110,18 +102,15 @@ describe('handleShowText - normal cases', () => {
     const result = handleShowText(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('text-all')).toBe(true);
-    expect(result.ui.hasId('textbox1')).toBe(true);
+    expect(hasId(result.ui, 'text-all')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(true);
   });
 
   test('adds multiple texts to same text box', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const textBoxWidget = textBox({ id: 'textbox1' })([]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg1: ShowTextMessage = {
       type: 'ShowText',
@@ -138,14 +127,13 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    handleShowText(model, msg1);
-    const result = handleShowText(model, msg2);
+    let result = handleShowText(model, msg1);
+    result = handleShowText(result, msg2);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('text1')).toBe(true);
-    expect(result.ui.hasId('text2')).toBe(true);
-    expect(result.ui.hasId('textbox1')).toBe(true);
+    expect(hasId(result.ui, 'text1')).toBe(true);
+    expect(hasId(result.ui, 'text2')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(true);
   });
 });
 
@@ -153,10 +141,8 @@ describe('handleShowText - error cases', () => {
   test('throws error for duplicate text ID', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const textBoxWidget = textBox({ id: 'textbox1' })([]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
 
     // Add first text
     const msg1: ShowTextMessage = {
@@ -165,7 +151,7 @@ describe('handleShowText - error cases', () => {
       textBoxId: 'textbox1',
       content: 'First text',
     };
-    handleShowText(model, msg1);
+    const newModel = handleShowText(model, msg1);
 
     // Try to add text with duplicate ID
     const msg2: ShowTextMessage = {
@@ -176,12 +162,12 @@ describe('handleShowText - error cases', () => {
     };
 
     // Act & Assert
-    expect(() => handleShowText(model, msg2)).toThrow(
+    expect(() => handleShowText(newModel, msg2)).toThrow(
       'Widget with id "duplicate-text" already exists',
     );
 
     // Model contains only first text
-    expect(model.ui.hasId('duplicate-text')).toBe(true);
+    expect(hasId(newModel.ui, 'duplicate-text')).toBe(true);
   });
 
   test('throws error for non-existent text box ID', () => {
@@ -200,20 +186,20 @@ describe('handleShowText - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.widgets).toHaveLength(0);
+    expect(model.ui).toHaveLength(0);
   });
 
   test('throws error when text ID conflicts with existing widget ID', () => {
     // Arrange
     const model = generateInitModel();
     // Add layout
-    const existingLayout = layout({ id: 'existing-widget' })([]);
-    model.ui.addWidget(existingLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'existing-widget' })([]));
     // Add text box
-    const textBoxWidget = textBox({
-      id: 'textbox1',
-    })([]);
-    model.ui.addWidget(textBoxWidget, 'existing-widget');
+    model.ui = addWidget(
+      model.ui,
+      textBox({ id: 'textbox1' })([]),
+      'existing-widget',
+    );
 
     const msg: ShowTextMessage = {
       type: 'ShowText',

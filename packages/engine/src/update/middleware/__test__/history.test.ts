@@ -1,5 +1,4 @@
 import { describe, expect, test } from 'bun:test';
-import { WidgetManager } from '@/ui';
 import type { NovelModel } from '../../../model';
 import type { NovelMessage } from '../../message';
 import type { MiddlewareNext } from '../../update';
@@ -8,7 +7,7 @@ import { historyMiddleware } from '../history';
 // Helper function to create initial model
 const createInitialModel = (): NovelModel<string> => ({
   mixer: { volume: 1.0, channels: [] },
-  ui: new WidgetManager(),
+  ui: [],
   isDelaying: false,
   isApplyingMixer: false,
   error: null,

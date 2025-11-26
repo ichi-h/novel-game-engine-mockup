@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { customLayout, img, layout } from '@/ui';
+import { addWidget, customLayout, hasId, img, layout } from '@/ui';
 import {
   type AddCustomLayoutMessage,
   addCustomLayout,
@@ -60,17 +60,15 @@ describe('handleAddCustomLayout - normal cases', () => {
     const result = handleAddCustomLayout(model, msg);
 
     // Assert
-    expect(result).toBe(model); // Returns the same model instance
-    expect(result.ui.widgets).toHaveLength(1);
-    expect(result.ui.hasId('custom-layout-1')).toBe(true);
+    expect(result.ui).toHaveLength(1);
+    expect(hasId(result.ui, 'custom-layout-1')).toBe(true);
   });
 
   test('adds custom layout to parent layout', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const mockComponent: MockComponent = {
       name: 'ChildComponent',
@@ -86,11 +84,10 @@ describe('handleAddCustomLayout - normal cases', () => {
     const result = handleAddCustomLayout(model, msg);
 
     // Assert
-    expect(result).toBe(model);
     // Root only contains parent (child is nested)
-    expect(result.ui.widgets).toHaveLength(1);
+    expect(result.ui).toHaveLength(1);
     // Verify child custom layout was added
-    expect(result.ui.hasId('custom-child')).toBe(true);
+    expect(hasId(result.ui, 'custom-child')).toBe(true);
   });
 });
 
@@ -99,11 +96,13 @@ describe('handleAddCustomLayout - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add existing custom layout
-    const existingLayout = customLayout({
-      id: 'duplicate-id',
-      component: 'ExistingComponent',
-    })([]);
-    model.ui.addWidget(existingLayout);
+    model.ui = addWidget(
+      model.ui,
+      customLayout({
+        id: 'duplicate-id',
+        component: 'ExistingComponent',
+      })([]),
+    );
 
     const msg: AddCustomLayoutMessage<string> = {
       type: 'AddCustomLayout',
@@ -117,15 +116,14 @@ describe('handleAddCustomLayout - error cases', () => {
     );
 
     // Model is unchanged (only existing one)
-    expect(model.ui.widgets).toHaveLength(1);
+    expect(model.ui).toHaveLength(1);
   });
 
   test('throws error for duplicate ID with existing layout', () => {
     // Arrange
     const model = generateInitModel();
     // Add existing regular layout
-    const existingLayout = layout({ id: 'same-id' })([]);
-    model.ui.addWidget(existingLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'same-id' })([]));
 
     const msg: AddCustomLayoutMessage<string> = {
       type: 'AddCustomLayout',
@@ -139,7 +137,7 @@ describe('handleAddCustomLayout - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.widgets).toHaveLength(1);
+    expect(model.ui).toHaveLength(1);
   });
 
   test('throws error for non-existent parent layout ID', () => {
@@ -158,18 +156,14 @@ describe('handleAddCustomLayout - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.widgets).toHaveLength(0);
+    expect(model.ui).toHaveLength(0);
   });
 
   test('throws error when non-layout widget ID is specified as parent', () => {
     // Arrange
     const model = generateInitModel();
     // Add Image widget
-    const imageWidget = img({
-      id: 'image1',
-      src: 'test.png',
-    });
-    model.ui.addWidget(imageWidget);
+    model.ui = addWidget(model.ui, img({ id: 'image1', src: 'test.png' }));
 
     const msg: AddCustomLayoutMessage<string> = {
       type: 'AddCustomLayout',
@@ -185,7 +179,7 @@ describe('handleAddCustomLayout - error cases', () => {
     );
 
     // Model is unchanged (Image only)
-    expect(model.ui.widgets).toHaveLength(1);
-    expect(model.ui.hasId('image1')).toBe(true);
+    expect(model.ui).toHaveLength(1);
+    expect(hasId(model.ui, 'image1')).toBe(true);
   });
 });

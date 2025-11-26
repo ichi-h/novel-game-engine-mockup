@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { layout } from '@/ui';
+import { addWidget, hasId, layout } from '@/ui';
 import {
   handleShowImage,
   type ShowImageMessage,
@@ -41,8 +41,7 @@ describe('handleShowImage - normal cases', () => {
   test('adds image with only required fields', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const msg: ShowImageMessage = {
       type: 'ShowImage',
@@ -54,16 +53,14 @@ describe('handleShowImage - normal cases', () => {
     const result = handleShowImage(model, msg);
 
     // Assert
-    expect(result).toBe(model);
     // Verify parent layout still exists
-    expect(result.ui.hasId('parent')).toBe(true);
+    expect(hasId(result.ui, 'parent')).toBe(true);
   });
 
   test('adds image with all optional fields', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const msg: ShowImageMessage = {
       type: 'ShowImage',
@@ -77,16 +74,14 @@ describe('handleShowImage - normal cases', () => {
     const result = handleShowImage(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('img-all')).toBe(true);
-    expect(result.ui.hasId('parent')).toBe(true);
+    expect(hasId(result.ui, 'img-all')).toBe(true);
+    expect(hasId(result.ui, 'parent')).toBe(true);
   });
 
   test('adds multiple images to same layout', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const msg1: ShowImageMessage = {
       type: 'ShowImage',
@@ -103,14 +98,13 @@ describe('handleShowImage - normal cases', () => {
     };
 
     // Act
-    handleShowImage(model, msg1);
-    const result = handleShowImage(model, msg2);
+    let result = handleShowImage(model, msg1);
+    result = handleShowImage(result, msg2);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('img1')).toBe(true);
-    expect(result.ui.hasId('img2')).toBe(true);
-    expect(result.ui.hasId('parent')).toBe(true);
+    expect(hasId(result.ui, 'img1')).toBe(true);
+    expect(hasId(result.ui, 'img2')).toBe(true);
+    expect(hasId(result.ui, 'parent')).toBe(true);
   });
 });
 
@@ -118,8 +112,7 @@ describe('handleShowImage - error cases', () => {
   test('throws error for duplicate image ID', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const msg1: ShowImageMessage = {
       type: 'ShowImage',
@@ -128,7 +121,7 @@ describe('handleShowImage - error cases', () => {
       src: 'sprite1.png',
     };
 
-    handleShowImage(model, msg1);
+    const newModel = handleShowImage(model, msg1);
 
     const msg2: ShowImageMessage = {
       type: 'ShowImage',
@@ -138,12 +131,12 @@ describe('handleShowImage - error cases', () => {
     };
 
     // Act & Assert
-    expect(() => handleShowImage(model, msg2)).toThrow(
+    expect(() => handleShowImage(newModel, msg2)).toThrow(
       'Widget with id "duplicate-img" already exists',
     );
 
     // Model contains only first image
-    expect(model.ui.hasId('duplicate-img')).toBe(true);
+    expect(hasId(newModel.ui, 'duplicate-img')).toBe(true);
   });
 
   test('throws error for non-existent layoutId', () => {
@@ -162,18 +155,16 @@ describe('handleShowImage - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.widgets).toHaveLength(0);
+    expect(model.ui).toHaveLength(0);
   });
 
   test('throws error when image ID conflicts with existing widget ID', () => {
     // Arrange
     const model = generateInitModel();
     // Add existing widget with id 'existing-widget'
-    const existingLayout = layout({ id: 'existing-widget' })([]);
-    model.ui.addWidget(existingLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'existing-widget' })([]));
     // Add a layout to host images
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const msg: ShowImageMessage = {
       type: 'ShowImage',

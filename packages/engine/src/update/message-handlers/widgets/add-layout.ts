@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
-import { layout } from '@/ui';
+import { addWidget, layout } from '@/ui';
 
 export interface AddLayoutMessage extends BaseMessage {
   type: 'AddLayout';
@@ -30,6 +30,8 @@ export const handleAddLayout = <Component>(
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),
   })([]);
-  model.ui.addWidget(newLayout, msg.parentLayoutId);
-  return model;
+  return {
+    ...model,
+    ui: addWidget(model.ui, newLayout, msg.parentLayoutId),
+  };
 };

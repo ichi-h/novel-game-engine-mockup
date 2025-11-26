@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { layout, textBox } from '@/ui';
+import { addWidget, hasId, layout, textBox } from '@/ui';
 import {
   handleRemoveWidgets,
   type RemoveWidgetsMessage,
@@ -26,10 +26,8 @@ describe('handleRemoveWidgets - normal cases', () => {
   test('removes single widget', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const textBoxWidget = textBox({ id: 'textbox1' })([]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
@@ -40,20 +38,16 @@ describe('handleRemoveWidgets - normal cases', () => {
     const result = handleRemoveWidgets(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('textbox1')).toBe(false);
-    expect(result.ui.hasId('parent')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(false);
+    expect(hasId(result.ui, 'parent')).toBe(true);
   });
 
   test('removes multiple widgets', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const t1 = textBox({ id: 'textbox1' })([]);
-    const t2 = textBox({ id: 'textbox2' })([]);
-    model.ui.addWidget(t1, 'parent');
-    model.ui.addWidget(t2, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox2' })([]), 'parent');
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
@@ -64,19 +58,16 @@ describe('handleRemoveWidgets - normal cases', () => {
     const result = handleRemoveWidgets(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('textbox1')).toBe(false);
-    expect(result.ui.hasId('textbox2')).toBe(false);
-    expect(result.ui.hasId('parent')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(false);
+    expect(hasId(result.ui, 'textbox2')).toBe(false);
+    expect(hasId(result.ui, 'parent')).toBe(true);
   });
 
   test('removes parent and its children when removing parent', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const child = textBox({ id: 'childA' })([]);
-    model.ui.addWidget(child, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'childA' })([]), 'parent');
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
@@ -87,20 +78,17 @@ describe('handleRemoveWidgets - normal cases', () => {
     const result = handleRemoveWidgets(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.hasId('parent')).toBe(false);
-    expect(result.ui.hasId('childA')).toBe(false);
+    expect(hasId(result.ui, 'parent')).toBe(false);
+    expect(hasId(result.ui, 'childA')).toBe(false);
   });
 
   test('no-op when ids is empty array', () => {
     // Arrange
     const model = generateInitModel();
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
-    const child = textBox({ id: 'childA' })([]);
-    model.ui.addWidget(child, 'parent');
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'childA' })([]), 'parent');
 
-    const beforeCount = model.ui.widgets.length;
+    const beforeCount = model.ui.length;
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
@@ -111,8 +99,7 @@ describe('handleRemoveWidgets - normal cases', () => {
     const result = handleRemoveWidgets(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(model.ui.widgets).toHaveLength(beforeCount);
+    expect(model.ui).toHaveLength(beforeCount);
   });
 });
 
@@ -132,6 +119,6 @@ describe('handleRemoveWidgets - error cases', () => {
     );
 
     // Model unchanged
-    expect(model.ui.widgets).toHaveLength(0);
+    expect(model.ui).toHaveLength(0);
   });
 });

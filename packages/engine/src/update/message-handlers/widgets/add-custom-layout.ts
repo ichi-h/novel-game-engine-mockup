@@ -1,6 +1,7 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
 import { customLayout } from '@/ui';
+import { addWidget } from '@/ui/add-widget';
 
 export interface AddCustomLayoutMessage<Component> extends BaseMessage {
   type: 'AddCustomLayout';
@@ -30,6 +31,8 @@ export const handleAddCustomLayout = <Component>(
     id: msg.id,
     component: msg.component,
   })([]);
-  model.ui.addWidget(newLayout, msg.parentLayoutId);
-  return model;
+  return {
+    ...model,
+    ui: addWidget(model.ui, newLayout, msg.parentLayoutId),
+  };
 };

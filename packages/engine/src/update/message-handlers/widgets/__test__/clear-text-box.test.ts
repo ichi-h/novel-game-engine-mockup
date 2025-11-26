@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { layout, text, textBox } from '@/ui';
+import { addWidget, hasId, layout, text, textBox } from '@/ui';
 import {
   type ClearTextBoxMessage,
   clearTextBox,
@@ -27,11 +27,9 @@ describe('handleClearTextBox - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add parent layout
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
     // Add text box without any text
-    const textBoxWidget = textBox({ id: 'textbox1' })([]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ClearTextBoxMessage = {
       type: 'ClearTextBox',
@@ -42,23 +40,25 @@ describe('handleClearTextBox - normal cases', () => {
     const result = handleClearTextBox(model, msg);
 
     // Assert
-    expect(result).toBe(model);
     // Verify text box still exists
-    expect(result.ui.hasId('textbox1')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(true);
   });
 
   test('clears text box with multiple texts', () => {
     // Arrange
     const model = generateInitModel();
     // Add parent layout
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
     // Add text box with multiple texts
-    const text1 = text({ id: 'text1', content: 'First text' });
-    const text2 = text({ id: 'text2', content: 'Second text' });
-    const text3 = text({ id: 'text3', content: 'Third text' });
-    const textBoxWidget = textBox({ id: 'textbox1' })([text1, text2, text3]);
-    model.ui.addWidget(textBoxWidget, 'parent');
+    model.ui = addWidget(
+      model.ui,
+      textBox({ id: 'textbox1' })([
+        text({ id: 'text1', content: 'First text' }),
+        text({ id: 'text2', content: 'Second text' }),
+        text({ id: 'text3', content: 'Third text' }),
+      ]),
+      'parent',
+    );
 
     const msg: ClearTextBoxMessage = {
       type: 'ClearTextBox',
@@ -69,13 +69,12 @@ describe('handleClearTextBox - normal cases', () => {
     const result = handleClearTextBox(model, msg);
 
     // Assert
-    expect(result).toBe(model);
     // Verify text box still exists
-    expect(result.ui.hasId('textbox1')).toBe(true);
+    expect(hasId(result.ui, 'textbox1')).toBe(true);
     // Verify all texts have been removed
-    expect(result.ui.hasId('text1')).toBe(false);
-    expect(result.ui.hasId('text2')).toBe(false);
-    expect(result.ui.hasId('text3')).toBe(false);
+    expect(hasId(result.ui, 'text1')).toBe(false);
+    expect(hasId(result.ui, 'text2')).toBe(false);
+    expect(hasId(result.ui, 'text3')).toBe(false);
   });
 });
 
@@ -95,7 +94,7 @@ describe('handleClearTextBox - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.widgets).toHaveLength(0);
+    expect(model.ui).toHaveLength(0);
   });
 
   test('throws error when ID is not a text box', () => {
@@ -103,7 +102,7 @@ describe('handleClearTextBox - error cases', () => {
     const model = generateInitModel();
     // Add layout (not a text box)
     const layoutWidget = layout({ id: 'not-a-textbox' })([]);
-    model.ui.addWidget(layoutWidget);
+    model.ui = addWidget(model.ui, layoutWidget);
 
     const msg: ClearTextBoxMessage = {
       type: 'ClearTextBox',
@@ -116,6 +115,6 @@ describe('handleClearTextBox - error cases', () => {
     );
 
     // Verify layout still exists and is unchanged
-    expect(model.ui.hasId('not-a-textbox')).toBe(true);
+    expect(hasId(model.ui, 'not-a-textbox')).toBe(true);
   });
 });

@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
-import { text } from '@/ui';
+import { addText, text } from '@/ui';
 
 export interface ShowTextMessage extends BaseMessage {
   type: 'ShowText';
@@ -38,6 +38,8 @@ export const handleShowText = <Component>(
     ...(msg.style !== undefined && { style: msg.style }),
     ...(msg.speed !== undefined && { speed: msg.speed }),
   });
-  model.ui.addText(newText, msg.textBoxId);
-  return model;
+  return {
+    ...model,
+    ui: addText(model.ui, newText, msg.textBoxId),
+  };
 };

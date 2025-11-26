@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { img, layout } from '@/ui';
+import { addWidget, hasId, img, layout } from '@/ui';
 import {
   type AddWidgetsMessage,
   addWidgets,
@@ -64,18 +64,16 @@ describe('handleAddWidgets - normal cases', () => {
     const result = handleAddWidgets(model, msg);
 
     // Assert
-    expect(result).toBe(model); // Returns the same model instance
-    expect(result.ui.widgets).toHaveLength(2);
-    expect(result.ui.hasId('img1')).toBe(true);
-    expect(result.ui.hasId('img2')).toBe(true);
+    expect(result.ui).toHaveLength(2);
+    expect(hasId(result.ui, 'img1')).toBe(true);
+    expect(hasId(result.ui, 'img2')).toBe(true);
   });
 
   test('adds widgets to parent layout with layoutId', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const widgets = [
       img({ id: 'img1', src: 'test1.png' }),
@@ -91,12 +89,11 @@ describe('handleAddWidgets - normal cases', () => {
     const result = handleAddWidgets(model, msg);
 
     // Assert
-    expect(result).toBe(model);
     // Root only contains parent (widgets are nested)
-    expect(result.ui.widgets).toHaveLength(1);
+    expect(result.ui).toHaveLength(1);
     // Verify widgets were added
-    expect(result.ui.hasId('img1')).toBe(true);
-    expect(result.ui.hasId('img2')).toBe(true);
+    expect(hasId(result.ui, 'img1')).toBe(true);
+    expect(hasId(result.ui, 'img2')).toBe(true);
   });
 
   test('handles empty widgets array without errors', () => {
@@ -111,8 +108,7 @@ describe('handleAddWidgets - normal cases', () => {
     const result = handleAddWidgets(model, msg);
 
     // Assert
-    expect(result).toBe(model);
-    expect(result.ui.widgets).toHaveLength(0);
+    expect(result.ui).toHaveLength(0);
   });
 });
 
@@ -122,7 +118,7 @@ describe('handleAddWidgets - error cases', () => {
     const model = generateInitModel();
     // Add existing widget
     const existingWidget = img({ id: 'duplicate-id', src: 'existing.png' });
-    model.ui.addWidget(existingWidget);
+    model.ui = addWidget(model.ui, existingWidget);
 
     const widgets = [img({ id: 'duplicate-id', src: 'new.png' })];
     const msg: AddWidgetsMessage<unknown> = {
@@ -136,7 +132,7 @@ describe('handleAddWidgets - error cases', () => {
     );
 
     // Model is unchanged (only existing widget)
-    expect(model.ui.widgets).toHaveLength(1);
+    expect(model.ui).toHaveLength(1);
   });
 
   test('throws error for non-existent parent layout ID', () => {
@@ -155,18 +151,14 @@ describe('handleAddWidgets - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.widgets).toHaveLength(0);
+    expect(model.ui).toHaveLength(0);
   });
 
   test('throws error when non-layout widget ID is specified as parent', () => {
     // Arrange
     const model = generateInitModel();
     // Add Image widget
-    const imageWidget = img({
-      id: 'image1',
-      src: 'test.png',
-    });
-    model.ui.addWidget(imageWidget);
+    model.ui = addWidget(model.ui, img({ id: 'image1', src: 'test.png' }));
 
     const widgets = [img({ id: 'img1', src: 'new.png' })];
     const msg: AddWidgetsMessage<unknown> = {
@@ -181,7 +173,7 @@ describe('handleAddWidgets - error cases', () => {
     );
 
     // Model is unchanged (only the image widget)
-    expect(model.ui.widgets).toHaveLength(1);
-    expect(model.ui.hasId('image1')).toBe(true);
+    expect(model.ui).toHaveLength(1);
+    expect(hasId(model.ui, 'image1')).toBe(true);
   });
 });

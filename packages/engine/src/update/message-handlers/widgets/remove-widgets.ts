@@ -1,5 +1,6 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
+import { removeById } from '@/ui';
 
 export interface RemoveWidgetsMessage extends BaseMessage {
   type: 'RemoveWidgets';
@@ -17,8 +18,8 @@ export const handleRemoveWidgets = <Component>(
   model: NovelModel<Component>,
   msg: RemoveWidgetsMessage,
 ): NovelModel<Component> => {
-  for (const id of msg.ids) {
-    model.ui.removeById(id);
-  }
-  return model;
+  return {
+    ...model,
+    ui: msg.ids.reduce((ui, id) => removeById(ui, id), model.ui),
+  };
 };

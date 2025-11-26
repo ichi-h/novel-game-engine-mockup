@@ -1,5 +1,6 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
+import { clearTextBox as clearTextBoxFn } from '@/ui';
 
 export interface ClearTextBoxMessage extends BaseMessage {
   type: 'ClearTextBox';
@@ -17,6 +18,8 @@ export const handleClearTextBox = <Component>(
   model: NovelModel<Component>,
   msg: ClearTextBoxMessage,
 ): NovelModel<Component> => {
-  model.ui.clearTextBox(msg.textBoxId);
-  return model;
+  return {
+    ...model,
+    ui: clearTextBoxFn(model.ui, msg.textBoxId),
+  };
 };

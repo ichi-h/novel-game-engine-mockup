@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { img, layout } from '@/ui';
+import { addWidget, hasId, img, layout } from '@/ui';
 import {
   type AddTextBoxMessage,
   addTextBox,
@@ -41,8 +41,7 @@ describe('handleAddTextBox - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const msg: AddTextBoxMessage = {
       type: 'AddTextBox',
@@ -54,19 +53,18 @@ describe('handleAddTextBox - normal cases', () => {
     const result = handleAddTextBox(model, msg);
 
     // Assert
-    expect(result).toBe(model);
+
     // Root only contains parent (child is nested)
-    expect(result.ui.widgets).toHaveLength(1);
+    expect(result.ui).toHaveLength(1);
     // Verify child layout was added
-    expect(result.ui.hasId('child')).toBe(true);
+    expect(hasId(result.ui, 'child')).toBe(true);
   });
 
   test('adds text box to layout with styles', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout
-    const parentLayout = layout({ id: 'parent' })([]);
-    model.ui.addWidget(parentLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
 
     const msg: AddTextBoxMessage = {
       type: 'AddTextBox',
@@ -79,11 +77,11 @@ describe('handleAddTextBox - normal cases', () => {
     const result = handleAddTextBox(model, msg);
 
     // Assert
-    expect(result).toBe(model);
+
     // Root only contains parent (child is nested)
-    expect(result.ui.widgets).toHaveLength(1);
+    expect(result.ui).toHaveLength(1);
     // Verify child layout was added
-    expect(result.ui.hasId('child')).toBe(true);
+    expect(hasId(result.ui, 'child')).toBe(true);
   });
 });
 
@@ -92,8 +90,7 @@ describe('handleAddTextBox - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add existing layout
-    const existingLayout = layout({ id: 'duplicate-id' })([]);
-    model.ui.addWidget(existingLayout);
+    model.ui = addWidget(model.ui, layout({ id: 'duplicate-id' })([]));
 
     const msg: AddTextBoxMessage = {
       type: 'AddTextBox',
@@ -107,7 +104,7 @@ describe('handleAddTextBox - error cases', () => {
     );
 
     // Model is unchanged (only existing one)
-    expect(model.ui.widgets).toHaveLength(1);
+    expect(model.ui).toHaveLength(1);
   });
 
   test('throws error for non-existent parent layout ID', () => {
@@ -125,18 +122,14 @@ describe('handleAddTextBox - error cases', () => {
     );
 
     // Model is unchanged
-    expect(model.ui.widgets).toHaveLength(0);
+    expect(model.ui).toHaveLength(0);
   });
 
   test('throws error when non-layout widget ID is specified as parent', () => {
     // Arrange
     const model = generateInitModel();
     // Add Image widget
-    const imageWidget = img({
-      id: 'image1',
-      src: 'test.png',
-    });
-    model.ui.addWidget(imageWidget);
+    model.ui = addWidget(model.ui, img({ id: 'image1', src: 'test.png' }));
 
     const msg: AddTextBoxMessage = {
       type: 'AddTextBox',
@@ -151,7 +144,7 @@ describe('handleAddTextBox - error cases', () => {
     );
 
     // Model is unchanged(Imageの1つのみ)
-    expect(model.ui.widgets).toHaveLength(1);
-    expect(model.ui.hasId('image1')).toBe(true);
+    expect(model.ui).toHaveLength(1);
+    expect(hasId(model.ui, 'image1')).toBe(true);
   });
 });

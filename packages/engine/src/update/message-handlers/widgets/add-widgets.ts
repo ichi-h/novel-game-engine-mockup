@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
-import type { NovelWidget } from '@/ui';
+import { addWidget, type NovelWidget } from '@/ui';
 
 export interface AddWidgetsMessage<Component> extends BaseMessage {
   type: 'AddWidgets';
@@ -23,8 +23,11 @@ export const handleAddWidgets = <Component>(
   model: NovelModel<Component>,
   msg: AddWidgetsMessage<Component>,
 ): NovelModel<Component> => {
-  for (const widget of msg.widgets) {
-    model.ui.addWidget(widget, msg.layoutId);
-  }
-  return model;
+  return {
+    ...model,
+    ui: msg.widgets.reduce(
+      (ui, widget) => addWidget(ui, widget, msg.layoutId),
+      model.ui,
+    ),
+  };
 };
