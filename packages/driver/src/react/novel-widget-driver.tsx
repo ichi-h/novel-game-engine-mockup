@@ -3,7 +3,7 @@ import type { ReactComponentDriver } from './type';
 import { CustomLayout, Image, Layout, Text, TextBox } from './widgets';
 
 interface Props {
-  widgets: readonly NovelWidget<ReactComponentDriver>[];
+  widgets: NovelWidget<ReactComponentDriver>[];
 }
 
 export const NovelWidgetDriver = ({ widgets }: Props) => {

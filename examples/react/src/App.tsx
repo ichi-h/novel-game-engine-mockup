@@ -379,7 +379,7 @@ export function App() {
       tabIndex={0}
       aria-label="次のシーンへ進む"
     >
-      <NovelWidgetDriver widgets={model.ui.widgets} />
+      <NovelWidgetDriver widgets={model.ui} />
     </div>
   );
 }

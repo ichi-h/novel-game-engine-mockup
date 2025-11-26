@@ -1,12 +1,12 @@
 import type { Mixer } from './mixer';
-import { WidgetManager } from './ui';
+import type { NovelWidget } from './ui';
 import type { NovelMessage } from './update';
 
 type NovelMessageType<Component> = NovelMessage<Component>['type'];
 
 export interface NovelModel<Component> {
   mixer: Mixer;
-  ui: WidgetManager<Component>;
+  ui: NovelWidget<Component>[];
   isDelaying: boolean;
   isApplyingMixer: boolean;
   error: Error | null;
@@ -68,7 +68,7 @@ export const generateInitModel = <Component>(
 
   return {
     mixer: { channels: [], volume: 1.0 },
-    ui: new WidgetManager<Component>(),
+    ui: [],
     isDelaying: false,
     isApplyingMixer: false,
     error: null,
