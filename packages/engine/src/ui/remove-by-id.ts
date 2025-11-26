@@ -39,15 +39,17 @@ const removeByIdFromWidgets = <Component>(
 
 /**
  * Removes a widget by ID
+ * @param widgets - The array of widgets
  * @param id - The ID of the widget to remove
  * @throws Error if the widget with the specified ID does not exist
  */
-export const removeById =
-  <Component>(id: string) =>
-  (widgets: NovelWidget<Component>[]): NovelWidget<Component>[] => {
-    if (hasId(widgets, id) === false) {
-      throw new Error(`Widget with id "${id}" not found`);
-    }
+export const removeById = <Component>(
+  widgets: NovelWidget<Component>[],
+  id: string,
+): NovelWidget<Component>[] => {
+  if (hasId(widgets, id) === false) {
+    throw new Error(`Widget with id "${id}" not found`);
+  }
 
-    return removeByIdFromWidgets(id, widgets);
-  };
+  return removeByIdFromWidgets(id, widgets);
+};

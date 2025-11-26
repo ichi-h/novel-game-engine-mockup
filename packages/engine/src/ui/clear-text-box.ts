@@ -38,16 +38,18 @@ const clearTextBoxInWidgets = <Component>(
 
 /**
  * Clears all TextWidgets in the specified TextBox
+ * @param widgets - The array of widgets
  * @param textBoxId - The ID of the TextBox to clear
  * @throws Error if textBoxId doesn't exist
  */
-export const clearTextBox =
-  <Component>(textBoxId: string) =>
-  (widgets: NovelWidget<Component>[]): NovelWidget<Component>[] => {
-    const widget = findById<Component>(widgets, textBoxId);
-    if (widget === null || isTextBox(widget) === false) {
-      throw new Error(`TextBox with id "${textBoxId}" not found`);
-    }
+export const clearTextBox = <Component>(
+  widgets: NovelWidget<Component>[],
+  textBoxId: string,
+): NovelWidget<Component>[] => {
+  const widget = findById<Component>(widgets, textBoxId);
+  if (widget === null || isTextBox(widget) === false) {
+    throw new Error(`TextBox with id "${textBoxId}" not found`);
+  }
 
-    return clearTextBoxInWidgets(textBoxId, widgets);
-  };
+  return clearTextBoxInWidgets(textBoxId, widgets);
+};
