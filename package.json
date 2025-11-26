@@ -18,7 +18,7 @@
     "@types/bun": "latest",
     "bun-plugin-dts": "^0.3.0",
     "lefthook": "^1.13.6",
-    "turbo": "^2.5.8"
+    "turbo": "^2.6.1"
   },
   "peerDependencies": {
     "typescript": "^5"
