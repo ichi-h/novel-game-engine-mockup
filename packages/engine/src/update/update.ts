@@ -24,6 +24,7 @@ import {
   handleShowImage,
   handleShowText,
   handleStopChannel,
+  handleUpdateConfig,
 } from './message-handlers';
 
 export type MiddlewareNext<Component> = (
@@ -60,6 +61,8 @@ export const update =
           return handleDelayCompleted(model, msg);
         case 'Sequence':
           return handleSequence(model, msg, updateWrapped);
+        case 'UpdateConfig':
+          return handleUpdateConfig(model, msg);
         case 'Error':
           return handleError(model, msg);
         case 'RecoverError':

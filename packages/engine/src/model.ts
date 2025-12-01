@@ -2,7 +2,14 @@ import type { Mixer } from './mixer';
 import type { NovelWidget } from './ui';
 import type { NovelMessage } from './update';
 
-type NovelMessageType<Component> = NovelMessage<Component>['type'];
+type NovelMessageType = NovelMessage<unknown>['type'];
+
+export interface NovelConfig {
+  historyLength: {
+    [K in NovelMessageType]: number;
+  };
+  textAnimationSpeed: number;
+}
 
 export interface NovelModel<Component> {
   mixer: Mixer;
@@ -11,23 +18,20 @@ export interface NovelModel<Component> {
   isApplyingMixer: boolean;
   error: Error | null;
   history: {
-    [K in NovelMessageType<Component>]: Extract<
-      NovelMessage<Component>,
-      { type: K }
-    >[];
+    [K in NovelMessageType]: Extract<NovelMessage<Component>, { type: K }>[];
   };
-  historyLength: {
-    [K in NovelMessageType<Component>]: number;
-  };
+  config: NovelConfig;
 }
 
-export interface InitModelConfig<Component> {
-  historyLength: {
-    [K in NovelMessageType<Component>]?: number;
-  };
-}
+type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 
-const createDefaultConfig = <Component>() =>
+export type InitModelConfig = DeepPartial<NovelConfig>;
+
+const createDefaultConfig = () =>
   ({
     historyLength: {
       Delay: 10,
@@ -35,6 +39,7 @@ const createDefaultConfig = <Component>() =>
       Sequence: 10,
       Error: 200,
       RecoverError: 10,
+      UpdateConfig: 10,
       AddLayout: 10,
       AddCustomLayout: 10,
       ShowImage: 10,
@@ -52,18 +57,21 @@ const createDefaultConfig = <Component>() =>
       RemoveChannel: 10,
       ApplyMixerCompleted: 10,
     },
-  }) satisfies InitModelConfig<Component>;
+    textAnimationSpeed: 50,
+  }) satisfies NovelConfig;
 
 export const generateInitModel = <Component>(
-  config?: InitModelConfig<Component>,
+  initConfig?: InitModelConfig,
 ): NovelModel<Component> => {
-  const defaultConfig = createDefaultConfig<Component>();
+  const defaultConfig = createDefaultConfig();
 
-  const mergedConfig = { ...defaultConfig, ...config };
-
-  const historyLength = {
-    ...defaultConfig.historyLength,
-    ...mergedConfig.historyLength,
+  const config: NovelConfig = {
+    historyLength: {
+      ...defaultConfig.historyLength,
+      ...initConfig?.historyLength,
+    },
+    textAnimationSpeed:
+      initConfig?.textAnimationSpeed ?? defaultConfig.textAnimationSpeed,
   };
 
   return {
@@ -78,6 +86,7 @@ export const generateInitModel = <Component>(
       Sequence: [],
       Error: [],
       RecoverError: [],
+      UpdateConfig: [],
       AddLayout: [],
       AddCustomLayout: [],
       ShowImage: [],
@@ -95,6 +104,6 @@ export const generateInitModel = <Component>(
       RemoveChannel: [],
       ApplyMixerCompleted: [],
     },
-    historyLength,
+    config,
   };
 };

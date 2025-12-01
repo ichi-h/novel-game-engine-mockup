@@ -20,6 +20,7 @@ import type {
   ShowImageMessage,
   ShowTextMessage,
   StopChannelMessage,
+  UpdateConfigMessage,
 } from './message-handlers';
 
 export type NovelMessage<Component> =
@@ -27,6 +28,7 @@ export type NovelMessage<Component> =
   | DelayMessage
   | DelayCompletedMessage
   | SequenceMessage<NovelMessage<Component>>
+  | UpdateConfigMessage
   | ErrorMessage
   | RecoverErrorMessage
   // Widgets
