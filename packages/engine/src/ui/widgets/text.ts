@@ -1,3 +1,4 @@
+import { murmurhash3, type Optional } from '@/utils';
 import type { NovelWidgetBase } from './core';
 
 export interface TextWidget extends NovelWidgetBase {
@@ -7,9 +8,15 @@ export interface TextWidget extends NovelWidgetBase {
   speed?: number;
 }
 
-type TextProps = Omit<TextWidget, 'type'>;
+type TextProps = Optional<Omit<TextWidget, 'type'>, 'id'>;
 
-export const text = (props: TextProps): TextWidget => ({
-  ...props,
-  type: 'Text',
-});
+export const text = (props: TextProps): TextWidget => {
+  const { id, ...rests } = props;
+  const result = {
+    ...rests,
+    type: 'Text' as const,
+    id: '',
+  };
+  result.id = id ?? murmurhash3(result);
+  return result;
+};

@@ -5,7 +5,7 @@ import type { TextWidget } from './text';
 import type { TextBoxWidget } from './text-box';
 
 export interface NovelWidgetBase {
-  id?: string;
+  id: string;
   type: string;
 }
 

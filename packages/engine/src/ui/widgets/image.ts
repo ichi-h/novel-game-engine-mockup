@@ -1,3 +1,4 @@
+import { murmurhash3, type Optional } from '@/utils';
 import type { NovelWidgetBase } from './core';
 
 export interface ImageWidget extends NovelWidgetBase {
@@ -6,9 +7,15 @@ export interface ImageWidget extends NovelWidgetBase {
   src: string;
 }
 
-type ImageProps = Omit<ImageWidget, 'type'>;
+type ImageProps = Optional<Omit<ImageWidget, 'type'>, 'id'>;
 
-export const img = (props: ImageProps): ImageWidget => ({
-  ...props,
-  type: 'Image',
-});
+export const img = (props: ImageProps): ImageWidget => {
+  const { id, ...rests } = props;
+  const result = {
+    ...rests,
+    type: 'Image' as const,
+    id: '',
+  };
+  result.id = id ?? murmurhash3(result);
+  return result;
+};
