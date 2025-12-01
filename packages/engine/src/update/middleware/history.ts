@@ -17,7 +17,7 @@ export const historyMiddleware = <Component>(
   const messageType = msg.type;
   const currentHistory = newModel.history[messageType];
   const updatedHistory = [...currentHistory, msg];
-  const historyLength = newModel.historyLength[messageType];
+  const historyLength = newModel.config.historyLength[messageType];
 
   const trimmedHistory =
     historyLength === 0
