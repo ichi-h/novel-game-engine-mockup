@@ -26,7 +26,7 @@ describe('handleApplyMixerCompleted', () => {
       expect(Array.isArray(result)).toBe(false);
       if (!Array.isArray(result)) {
         expect(result.isApplyingMixer).toBe(false);
-        expect(result.error).toBeNull();
+        expect(result.status.value).not.toBe('Error');
       }
     });
 
