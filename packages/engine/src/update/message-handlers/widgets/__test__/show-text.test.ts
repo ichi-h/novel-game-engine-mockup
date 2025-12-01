@@ -1,7 +1,14 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { addWidget, hasId, layout, textBox } from '@/ui';
-import { handleShowText, type ShowTextMessage, showText } from '../show-text';
+import {
+  calcAnimationTTL,
+  handleShowText,
+  handleTextAnimationCompleted,
+  type ShowTextMessage,
+  showText,
+  type TextAnimationCompletedMessage,
+} from '../show-text';
 
 describe('showText', () => {
   describe('normal cases', () => {
@@ -37,6 +44,88 @@ describe('showText', () => {
         speed: 50,
       });
     });
+
+    test('creates message with nextMessageCaught parameter', () => {
+      // Arrange & Act
+      const result = showText(
+        'textbox1',
+        'Hello, World!',
+        'text1',
+        'font-weight: bold;',
+        50,
+        'complete',
+      );
+
+      // Assert
+      expect(result).toEqual({
+        type: 'ShowText',
+        textBoxId: 'textbox1',
+        content: 'Hello, World!',
+        id: 'text1',
+        style: 'font-weight: bold;',
+        speed: 50,
+        nextMessageCaught: 'complete',
+      });
+    });
+  });
+});
+
+describe('calcAnimationTTL', () => {
+  describe('normal cases', () => {
+    test('returns 0 when speed is 100 or greater', () => {
+      // Arrange & Act
+      const result1 = calcAnimationTTL(100, 10);
+      const result2 = calcAnimationTTL(150, 10);
+
+      // Assert
+      expect(result1).toBe(0);
+      expect(result2).toBe(0);
+    });
+
+    test('returns minimum display time when speed is 0 or less', () => {
+      // Arrange
+      const charPosition = 10;
+      const minDisplayTimePerChar = 200;
+
+      // Act
+      const result1 = calcAnimationTTL(0, charPosition);
+      const result2 = calcAnimationTTL(-10, charPosition);
+
+      // Assert
+      expect(result1).toBe(minDisplayTimePerChar * charPosition);
+      expect(result2).toBe(minDisplayTimePerChar * charPosition);
+    });
+
+    test('calculates intermediate value when speed is between 0 and 100', () => {
+      // Arrange
+      const charPosition = 10;
+      const speed = 50;
+      const maxDisplayTimePerChar = 100;
+      const expected =
+        maxDisplayTimePerChar * ((100 - speed) / 100) * charPosition;
+
+      // Act
+      const result = calcAnimationTTL(speed, charPosition);
+
+      // Assert
+      expect(result).toBe(expected);
+    });
+
+    test('calculates correctly for different character positions', () => {
+      // Arrange
+      const speed = 50;
+      const charPosition1 = 5;
+      const charPosition2 = 20;
+      const maxDisplayTimePerChar = 100;
+
+      // Act
+      const result1 = calcAnimationTTL(speed, charPosition1);
+      const result2 = calcAnimationTTL(speed, charPosition2);
+
+      // Assert
+      expect(result1).toBe(maxDisplayTimePerChar * 0.5 * charPosition1);
+      expect(result2).toBe(maxDisplayTimePerChar * 0.5 * charPosition2);
+    });
   });
 });
 
@@ -59,7 +148,8 @@ describe('handleShowText - normal cases', () => {
 
     // Assert
     // Verify text box still exists
-    expect(hasId(result.ui, 'textbox1')).toBe(true);
+    const resultModel = Array.isArray(result) ? result[0] : result;
+    expect(hasId(resultModel.ui, 'textbox1')).toBe(true);
   });
 
   test('adds text to text box with id', () => {
@@ -79,8 +169,9 @@ describe('handleShowText - normal cases', () => {
     const result = handleShowText(model, msg);
 
     // Assert
-    expect(hasId(result.ui, 'text1')).toBe(true);
-    expect(hasId(result.ui, 'textbox1')).toBe(true);
+    const resultModel = Array.isArray(result) ? result[0] : result;
+    expect(hasId(resultModel.ui, 'text1')).toBe(true);
+    expect(hasId(resultModel.ui, 'textbox1')).toBe(true);
   });
 
   test('adds text to text box with all optional fields', () => {
@@ -102,8 +193,9 @@ describe('handleShowText - normal cases', () => {
     const result = handleShowText(model, msg);
 
     // Assert
-    expect(hasId(result.ui, 'text-all')).toBe(true);
-    expect(hasId(result.ui, 'textbox1')).toBe(true);
+    const resultModel = Array.isArray(result) ? result[0] : result;
+    expect(hasId(resultModel.ui, 'text-all')).toBe(true);
+    expect(hasId(resultModel.ui, 'textbox1')).toBe(true);
   });
 
   test('adds multiple texts to same text box', () => {
@@ -128,12 +220,154 @@ describe('handleShowText - normal cases', () => {
 
     // Act
     let result = handleShowText(model, msg1);
-    result = handleShowText(result, msg2);
+    const model1 = Array.isArray(result) ? result[0] : result;
+    result = handleShowText(model1, msg2);
 
     // Assert
-    expect(hasId(result.ui, 'text1')).toBe(true);
-    expect(hasId(result.ui, 'text2')).toBe(true);
-    expect(hasId(result.ui, 'textbox1')).toBe(true);
+    const resultModel = Array.isArray(result) ? result[0] : result;
+    expect(hasId(resultModel.ui, 'text1')).toBe(true);
+    expect(hasId(resultModel.ui, 'text2')).toBe(true);
+    expect(hasId(resultModel.ui, 'textbox1')).toBe(true);
+  });
+
+  test('returns only model when speed is 100 or greater (no animation)', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+
+    const msg: ShowTextMessage = {
+      type: 'ShowText',
+      id: 'text1',
+      textBoxId: 'textbox1',
+      content: 'Fast text',
+      speed: 100,
+    };
+
+    // Act
+    const result = handleShowText(model, msg);
+
+    // Assert
+    expect(Array.isArray(result)).toBe(false);
+    if (!Array.isArray(result)) {
+      expect(hasId(result.ui, 'text1')).toBe(true);
+      expect(result.animationTickets).toHaveLength(0);
+    }
+  });
+
+  test('returns tuple with command when speed is less than 100 (with animation)', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+
+    const msg: ShowTextMessage = {
+      type: 'ShowText',
+      id: 'text1',
+      textBoxId: 'textbox1',
+      content: 'Animated text',
+      speed: 50,
+    };
+
+    // Act
+    const result = handleShowText(model, msg);
+
+    // Assert
+    expect(Array.isArray(result)).toBe(true);
+    if (Array.isArray(result)) {
+      const [newModel, cmd] = result;
+      expect(hasId(newModel.ui, 'text1')).toBe(true);
+      expect(newModel.animationTickets).toHaveLength(1);
+      expect(newModel.animationTickets[0]?.id).toBe('text1');
+      expect(newModel.animationTickets[0]?.nextMessageCaught).toBe('interrupt');
+      expect(cmd).toBeDefined();
+    }
+  });
+
+  test('uses model.config.textAnimationSpeed when speed is not specified', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.config.textAnimationSpeed = 30;
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+
+    const msg: ShowTextMessage = {
+      type: 'ShowText',
+      id: 'text1',
+      textBoxId: 'textbox1',
+      content: 'Default speed text',
+    };
+
+    // Act
+    const result = handleShowText(model, msg);
+
+    // Assert
+    expect(Array.isArray(result)).toBe(true);
+    if (Array.isArray(result)) {
+      const [newModel, _cmd] = result;
+      expect(newModel.animationTickets).toHaveLength(1);
+      expect(newModel.animationTickets[0]?.ttl).toBe(
+        calcAnimationTTL(30, msg.content.length),
+      );
+    }
+  });
+
+  test('sets nextMessageCaught to "complete" when specified', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+
+    const msg: ShowTextMessage = {
+      type: 'ShowText',
+      id: 'text1',
+      textBoxId: 'textbox1',
+      content: 'Complete text',
+      speed: 50,
+      nextMessageCaught: 'complete',
+    };
+
+    // Act
+    const result = handleShowText(model, msg);
+
+    // Assert
+    expect(Array.isArray(result)).toBe(true);
+    if (Array.isArray(result)) {
+      const [newModel, _cmd] = result;
+      expect(newModel.animationTickets).toHaveLength(1);
+      expect(newModel.animationTickets[0]?.nextMessageCaught).toBe('complete');
+    }
+  });
+
+  test('animation command returns TextAnimationCompletedMessage', async () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+
+    const msg: ShowTextMessage = {
+      type: 'ShowText',
+      id: 'text1',
+      textBoxId: 'textbox1',
+      content: 'x',
+      speed: 99,
+    };
+
+    // Act
+    const result = handleShowText(model, msg);
+
+    // Assert
+    expect(Array.isArray(result)).toBe(true);
+    if (Array.isArray(result)) {
+      const [_newModel, cmd] = result;
+      if (cmd) {
+        const completedMsg = await cmd();
+        expect(completedMsg).toEqual({
+          type: 'TextAnimationCompleted',
+          id: 'text1',
+        });
+      }
+    }
   });
 });
 
@@ -151,7 +385,8 @@ describe('handleShowText - error cases', () => {
       textBoxId: 'textbox1',
       content: 'First text',
     };
-    const newModel = handleShowText(model, msg1);
+    const result = handleShowText(model, msg1);
+    const newModel = Array.isArray(result) ? result[0] : result;
 
     // Try to add text with duplicate ID
     const msg2: ShowTextMessage = {
@@ -212,5 +447,71 @@ describe('handleShowText - error cases', () => {
     expect(() => handleShowText(model, msg)).toThrow(
       'Widget with id "existing-widget" already exists',
     );
+  });
+});
+
+describe('handleTextAnimationCompleted', () => {
+  describe('normal cases', () => {
+    test('removes animation ticket with matching ID', () => {
+      // Arrange
+      const model = generateInitModel();
+      model.animationTickets = [
+        { id: 'text1', ttl: 1000, nextMessageCaught: 'interrupt' },
+      ];
+
+      const msg: TextAnimationCompletedMessage = {
+        type: 'TextAnimationCompleted',
+        id: 'text1',
+      };
+
+      // Act
+      const result = handleTextAnimationCompleted(model, msg);
+
+      // Assert
+      expect(result.animationTickets).toHaveLength(0);
+    });
+
+    test('removes only the specified ticket when multiple tickets exist', () => {
+      // Arrange
+      const model = generateInitModel();
+      model.animationTickets = [
+        { id: 'text1', ttl: 1000, nextMessageCaught: 'interrupt' },
+        { id: 'text2', ttl: 2000, nextMessageCaught: 'complete' },
+        { id: 'text3', ttl: 3000, nextMessageCaught: 'interrupt' },
+      ];
+
+      const msg: TextAnimationCompletedMessage = {
+        type: 'TextAnimationCompleted',
+        id: 'text2',
+      };
+
+      // Act
+      const result = handleTextAnimationCompleted(model, msg);
+
+      // Assert
+      expect(result.animationTickets).toHaveLength(2);
+      expect(result.animationTickets[0]?.id).toBe('text1');
+      expect(result.animationTickets[1]?.id).toBe('text3');
+    });
+
+    test('does not modify model when ID does not exist', () => {
+      // Arrange
+      const model = generateInitModel();
+      model.animationTickets = [
+        { id: 'text1', ttl: 1000, nextMessageCaught: 'interrupt' },
+      ];
+
+      const msg: TextAnimationCompletedMessage = {
+        type: 'TextAnimationCompleted',
+        id: 'non-existent',
+      };
+
+      // Act
+      const result = handleTextAnimationCompleted(model, msg);
+
+      // Assert
+      expect(result.animationTickets).toHaveLength(1);
+      expect(result.animationTickets[0]?.id).toBe('text1');
+    });
   });
 });
