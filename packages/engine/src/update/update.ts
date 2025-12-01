@@ -24,6 +24,7 @@ import {
   handleShowImage,
   handleShowText,
   handleStopChannel,
+  handleTextAnimationCompleted,
   handleUpdateConfig,
 } from './message-handlers';
 
@@ -79,6 +80,8 @@ export const update =
           return handleAddTextBox(model, msg);
         case 'ShowText':
           return handleShowText(model, msg);
+        case 'TextAnimationCompleted':
+          return handleTextAnimationCompleted(model, msg);
         case 'AddWidgets':
           return handleAddWidgets(model, msg);
         case 'ClearTextBox':
@@ -122,14 +125,11 @@ export const update =
       return reducer(model, msg);
     }
 
-    return middlewares.reduce<
-      ReturnModel<NovelModel<Component>, NovelMessage<Component>>
-    >(
-      (_, cur) => {
-        return cur(model, msg, reducer);
-      },
-      {
-        ...model,
-      },
-    );
+    const composeMiddlewares = middlewares.reduceRight<
+      MiddlewareNext<Component>
+    >((next, cur) => {
+      return (model, msg) => cur(model, msg, next);
+    }, reducer);
+
+    return composeMiddlewares(model, msg);
   };

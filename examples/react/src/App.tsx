@@ -14,6 +14,7 @@ import {
   showImage,
   showText,
   stopChannel,
+  textAnimationMiddleware,
   update,
 } from 'engine';
 import { useState } from 'react';
@@ -67,12 +68,12 @@ const showCharacterName = (
     name,
     undefined,
     `${color} ${COMMON_STYLES.nameText}`,
-    50,
+    100,
   );
 
 // 台詞を表示
 const showDialog = (text: string): NovelMessage<ReactComponentDriver> =>
-  showText(TEXTBOX_ID, text, undefined, COMMON_STYLES.dialogText, 50);
+  showText(TEXTBOX_ID, text, undefined, COMMON_STYLES.dialogText);
 
 // ナレーション（キャラクター名なし）
 const showNarration = (text: string): NovelMessage<ReactComponentDriver>[] => [
@@ -319,7 +320,7 @@ const initMessage: NovelMessage<ReactComponentDriver> = sequence([
     '🛍️ ショッピングモールへ行こう！ 🛍️',
     undefined,
     'drop-shadow-2xl',
-    80,
+    100,
   ),
 ]);
 
@@ -341,26 +342,20 @@ export function App() {
         },
       ];
     },
-    update(applyMixer, [historyMiddleware]),
+    update(applyMixer, [historyMiddleware, textAnimationMiddleware]),
     setModel,
   );
 
   const next = () => {
-    const msg = messages[index];
+    const nextIndex = model.status.value === 'Intercepted' ? index - 1 : index;
+    const msg = messages[nextIndex];
     if (!msg) {
       console.log('ゲーム終了');
       return;
     }
-    console.log(`シーン ${index + 1}:`, msg);
+    console.log(`シーン ${nextIndex + 1}:`, msg);
     send(msg);
-    setIndex(index + 1);
-  };
-
-  // 画面クリックで進む
-  const handleScreenClick = () => {
-    if (index < messages.length) {
-      next();
-    }
+    setIndex(nextIndex + 1);
   };
 
   console.log('model', JSON.stringify(model, null, 2));
@@ -369,17 +364,17 @@ export function App() {
     // biome-ignore lint/a11y/useSemanticElements: ゲーム画面全体をクリック可能にするための特殊なUI
     <div
       className="relative w-screen h-screen"
-      onClick={handleScreenClick}
+      onClick={next}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          handleScreenClick();
+          next();
         }
       }}
       role="button"
       tabIndex={0}
       aria-label="次のシーンへ進む"
     >
-      <NovelWidgetDriver widgets={model.ui} />
+      <NovelWidgetDriver widgets={model.ui} model={model} />
     </div>
   );
 }

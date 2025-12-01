@@ -54,6 +54,10 @@ export const handleSequence = <Component>(
     { model, cmds: [] },
   );
 
+  if (result.cmds.length === 0 && restMessages.length === 0) {
+    return result.model;
+  }
+
   return [
     result.model,
     async () => {

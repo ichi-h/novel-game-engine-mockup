@@ -1,0 +1,91 @@
+import type { ReturnModel } from 'elmish';
+import type { NovelModel } from '../../model';
+import type { NovelMessage, NovelMessageType } from '../message';
+import {
+  sequence,
+  type TextAnimationCompletedMessage,
+} from '../message-handlers';
+import type { MiddlewareNext } from '../update';
+
+const ignoreMessageTypes: NovelMessageType[] = [
+  'TextAnimationCompleted',
+  'DelayCompleted',
+  'Error',
+  'RecoverError',
+  'ApplyMixerCompleted',
+  'UpdateConfig',
+];
+
+export const textAnimationMiddleware = <Component>(
+  model: NovelModel<Component>,
+  msg: NovelMessage<Component>,
+  next: MiddlewareNext<Component>,
+): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+  if (
+    ignoreMessageTypes.includes(msg.type) ||
+    (msg.type === 'Sequence' &&
+      msg.messages.every((m) => ignoreMessageTypes.includes(m.type)))
+  ) {
+    return next(model, msg);
+  }
+
+  const completeAnimationTickets = model.animationTickets.filter(
+    (t) => t.nextMessageCaught === 'complete',
+  );
+  const interruptAnimationTickets = model.animationTickets.filter(
+    (t) => t.nextMessageCaught === 'interrupt',
+  );
+
+  if (interruptAnimationTickets.length > 0) {
+    const sequenceMessage = sequence([
+      ...interruptAnimationTickets.map(
+        (t): TextAnimationCompletedMessage => ({
+          type: 'TextAnimationCompleted',
+          id: t.id,
+        }),
+      ),
+      ...completeAnimationTickets.map(
+        (t): TextAnimationCompletedMessage => ({
+          type: 'TextAnimationCompleted',
+          id: t.id,
+        }),
+      ),
+    ]);
+
+    return next(
+      {
+        ...model,
+        status: { value: 'Intercepted', message: msg },
+      },
+      sequenceMessage,
+    );
+  }
+
+  if (completeAnimationTickets.length > 0) {
+    const sequenceMessage = sequence([
+      ...completeAnimationTickets.map(
+        (t): TextAnimationCompletedMessage => ({
+          type: 'TextAnimationCompleted',
+          id: t.id,
+        }),
+      ),
+      msg,
+    ]);
+
+    return next(
+      {
+        ...model,
+        status: { value: 'Processed' },
+      },
+      sequenceMessage,
+    );
+  }
+
+  return next(
+    {
+      ...model,
+      status: { value: 'Processed' },
+    },
+    msg,
+  );
+};

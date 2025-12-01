@@ -23,7 +23,7 @@ export const handleError = <Component>(
 ): ReturnModel<NovelModel<Component>, never> => {
   return {
     ...model,
-    error: msg.value,
+    status: { value: 'Error', error: msg.value },
   };
 };
 
@@ -32,6 +32,6 @@ export const handleRecoverError = <Component>(
 ): ReturnModel<NovelModel<Component>, never> => {
   return {
     ...model,
-    error: null,
+    status: { value: 'Processed' },
   };
 };

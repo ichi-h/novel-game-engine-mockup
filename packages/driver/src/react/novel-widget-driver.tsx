@@ -1,12 +1,13 @@
-import type { NovelWidget } from 'engine';
+import type { NovelModel, NovelWidget } from 'engine';
 import type { ReactComponentDriver } from './type';
 import { CustomLayout, Image, Layout, Text, TextBox } from './widgets';
 
 interface Props {
   widgets: NovelWidget<ReactComponentDriver>[];
+  model: NovelModel<ReactComponentDriver>;
 }
 
-export const NovelWidgetDriver = ({ widgets }: Props) => {
+export const NovelWidgetDriver = ({ widgets, model }: Props) => {
   return (
     <>
       {widgets.map((widget, i) => {
@@ -16,6 +17,7 @@ export const NovelWidgetDriver = ({ widgets }: Props) => {
               <CustomLayout
                 key={`${widget.type}_${widget.id}_${i}`}
                 widget={widget}
+                model={model}
               />
             );
           case 'Image':
@@ -27,6 +29,7 @@ export const NovelWidgetDriver = ({ widgets }: Props) => {
               <Layout
                 key={`${widget.type}_${widget.id}_${i}`}
                 widget={widget}
+                model={model}
               />
             );
           case 'TextBox':
@@ -34,11 +37,18 @@ export const NovelWidgetDriver = ({ widgets }: Props) => {
               <TextBox
                 key={`${widget.type}_${widget.id}_${i}`}
                 widget={widget}
+                model={model}
               />
             );
           case 'Text':
             return (
-              <Text key={`${widget.type}_${widget.id}_${i}`} widget={widget} />
+              <Text
+                key={`${widget.type}_${widget.id}_${i}`}
+                widget={widget}
+                isAnimating={model.animationTickets.some(
+                  (ticket) => ticket.id === widget.id,
+                )}
+              />
             );
           default:
             return null;

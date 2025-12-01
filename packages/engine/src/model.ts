@@ -1,8 +1,6 @@
 import type { Mixer } from './mixer';
 import type { NovelWidget } from './ui';
-import type { NovelMessage } from './update';
-
-type NovelMessageType = NovelMessage<unknown>['type'];
+import type { NovelMessage, NovelMessageType } from './update';
 
 export interface NovelConfig {
   historyLength: {
@@ -11,12 +9,45 @@ export interface NovelConfig {
   textAnimationSpeed: number;
 }
 
+export interface AnimationTicket {
+  /**
+   * The ID of the widget that is currently animating
+   */
+  id: string;
+
+  /**
+   * The remaining time until the animation is complete (ms)
+   */
+  ttl: number;
+
+  /**
+   * The behavior when the next message is sent
+   *
+   * - ignore: Do nothing
+   * - complete: Complete the animation
+   * - interrupt: Replace the received message with a message that completes the animation
+   */
+  nextMessageCaught: 'ignore' | 'complete' | 'interrupt';
+}
+
 export interface NovelModel<Component> {
+  status:
+    | {
+        value: 'Processed';
+      }
+    | {
+        value: 'Intercepted';
+        message: NovelMessage<Component>;
+      }
+    | {
+        value: 'Error';
+        error: Error;
+      };
   mixer: Mixer;
   ui: NovelWidget<Component>[];
   isDelaying: boolean;
   isApplyingMixer: boolean;
-  error: Error | null;
+  animationTickets: AnimationTicket[];
   history: {
     [K in NovelMessageType]: Extract<NovelMessage<Component>, { type: K }>[];
   };
@@ -46,6 +77,7 @@ const createDefaultConfig = () =>
       AddWidgets: 10,
       AddTextBox: 200,
       ShowText: 10,
+      TextAnimationCompleted: 10,
       ClearTextBox: 10,
       RemoveWidgets: 10,
       AddTrack: 10,
@@ -75,11 +107,12 @@ export const generateInitModel = <Component>(
   };
 
   return {
+    status: { value: 'Processed' },
     mixer: { channels: [], volume: 1.0 },
     ui: [],
     isDelaying: false,
     isApplyingMixer: false,
-    error: null,
+    animationTickets: [],
     history: {
       Delay: [],
       DelayCompleted: [],
@@ -93,6 +126,7 @@ export const generateInitModel = <Component>(
       AddWidgets: [],
       AddTextBox: [],
       ShowText: [],
+      TextAnimationCompleted: [],
       ClearTextBox: [],
       RemoveWidgets: [],
       AddTrack: [],

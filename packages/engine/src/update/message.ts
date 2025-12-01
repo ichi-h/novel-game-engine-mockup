@@ -20,6 +20,7 @@ import type {
   ShowImageMessage,
   ShowTextMessage,
   StopChannelMessage,
+  TextAnimationCompletedMessage,
   UpdateConfigMessage,
 } from './message-handlers';
 
@@ -38,6 +39,7 @@ export type NovelMessage<Component> =
   | AddWidgetsMessage<Component>
   | AddTextBoxMessage
   | ShowTextMessage
+  | TextAnimationCompletedMessage
   | ClearTextBoxMessage
   | RemoveWidgetsMessage
   // Mixer
@@ -49,3 +51,5 @@ export type NovelMessage<Component> =
   | ChangeChannelVolumeMessage
   | RemoveChannelMessage
   | ApplyMixerCompletedMessage;
+
+export type NovelMessageType = NovelMessage<unknown>['type'];

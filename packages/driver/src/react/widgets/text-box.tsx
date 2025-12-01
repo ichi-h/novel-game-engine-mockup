@@ -1,15 +1,21 @@
-import type { TextBoxWidget } from 'engine';
-import { Text } from './text';
+import type { NovelModel, TextBoxWidget } from 'engine';
+import { NovelWidgetDriver } from '../novel-widget-driver';
+import type { ReactComponentDriver } from '../type';
 
 interface Props {
   widget: TextBoxWidget;
+  model: NovelModel<ReactComponentDriver>;
 }
 
-export const TextBox = ({ widget }: Props) => {
+export const TextBox = ({ widget, model }: Props) => {
   return (
     <div id={widget.id} className={widget.style}>
       {widget.children.map((child, i) => (
-        <Text key={`${widget.id}_${i}`} widget={child} />
+        <NovelWidgetDriver
+          key={`${child.type}_${child.id}_${i}`}
+          widgets={[child]}
+          model={model}
+        />
       ))}
     </div>
   );
