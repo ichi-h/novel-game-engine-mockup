@@ -55,11 +55,3 @@ body::before {
     animation: fade-in 0.5s ease-in-out forwards;
   }
 }
-
-@media (prefers-reduced-motion) {
-  *,
-  ::before,
-  ::after {
-    animation: none !important;
-  }
-}
