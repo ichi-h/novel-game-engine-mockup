@@ -8,6 +8,7 @@ import {
 } from '../serialization';
 
 const createBaseModel = (): Omit<NovelModel, 'status'> => ({
+  index: 0,
   mixer: { channels: [], volume: 1.0 },
   ui: [],
   isDelaying: false,
