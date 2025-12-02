@@ -1,5 +1,6 @@
-import { calcAnimationTTL, type TextWidget } from 'engine';
+import { calcAnimationTTL, type NovelModel, type TextWidget } from 'engine';
 import { type CSSProperties, useEffect, useState } from 'react';
+import type { ReactComponentDriver } from '../type';
 
 const generateCharStyle = (
   isAnimating: boolean,
@@ -38,9 +39,10 @@ const Char = ({ char, isAnimating, isRendered, delay }: CharProps) => {
 interface Props {
   widget: TextWidget;
   isAnimating: boolean;
+  model: NovelModel<ReactComponentDriver>;
 }
 
-export const Text = ({ widget, isAnimating }: Props) => {
+export const Text = ({ widget, isAnimating, model }: Props) => {
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
@@ -65,7 +67,10 @@ export const Text = ({ widget, isAnimating }: Props) => {
           char={char}
           isAnimating={isAnimating}
           isRendered={isRendered}
-          delay={calcAnimationTTL(widget.speed, index)}
+          delay={calcAnimationTTL(
+            widget.speed ?? model.config.textAnimationSpeed,
+            index,
+          )}
         />
       ))}
     </p>

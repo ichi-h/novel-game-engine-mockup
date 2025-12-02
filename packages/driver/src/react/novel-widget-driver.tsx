@@ -48,6 +48,7 @@ export const NovelWidgetDriver = ({ widgets, model }: Props) => {
                 isAnimating={model.animationTickets.some(
                   (ticket) => ticket.id === widget.id,
                 )}
+                model={model}
               />
             );
           default:

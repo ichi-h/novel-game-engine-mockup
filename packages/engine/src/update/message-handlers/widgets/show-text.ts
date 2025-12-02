@@ -62,13 +62,13 @@ export const handleShowText = <Component>(
   });
 
   const animationTicket: AnimationTicket | null =
-    newText.speed >= 100
-      ? null
-      : {
+    newText.speed && newText.speed < 100
+      ? {
           id: newText.id,
           ttl: calcAnimationTTL(newText.speed, msg.content.length),
           nextMessageCaught: msg.nextMessageCaught ?? 'interrupt',
-        };
+        }
+      : null;
 
   const result = {
     ...model,
