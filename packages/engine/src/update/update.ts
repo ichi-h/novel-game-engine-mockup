@@ -52,7 +52,7 @@ export const update =
       model: NovelModel<Component>,
       msg: NovelMessage<Component>,
     ) => {
-      const updateWrapped = update<Component>(applyMixer, middlewares);
+      const updateWrapped = update<Component>(applyMixer, []);
 
       switch (msg.type) {
         // General
