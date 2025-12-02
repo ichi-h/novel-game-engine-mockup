@@ -1,5 +1,4 @@
 import { describe, expect, test } from 'bun:test';
-import type { ApplyMixer } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import {
   type ChangeMasterVolumeMessage,
@@ -33,10 +32,10 @@ describe('handleChangeMasterVolume', () => {
         type: 'ChangeMasterVolume',
         masterVolume: 0.7,
       };
-      const applyMixer: ApplyMixer = async () => {};
+      const update = () => model;
 
       // Act
-      const result = handleChangeMasterVolume(model, message, applyMixer);
+      const result = handleChangeMasterVolume(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);

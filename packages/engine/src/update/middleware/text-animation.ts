@@ -12,6 +12,7 @@ const ignoreMessageTypes: NovelMessageType[] = [
   'DelayCompleted',
   'Error',
   'RecoverError',
+  'ApplyMixer',
   'ApplyMixerCompleted',
   'UpdateConfig',
 ];

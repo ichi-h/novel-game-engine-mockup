@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import type { ApplyMixer, BusTrack } from '@/mixer';
+import type { BusTrack } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';
@@ -74,10 +74,9 @@ describe('handlePlayChannel', () => {
         channelId: 'channel-1',
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handlePlayChannel(model, message, update, applyMixer);
+      const result = handlePlayChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -122,10 +121,9 @@ describe('handlePlayChannel', () => {
         offsetMs: 200,
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handlePlayChannel(model, message, update, applyMixer);
+      const result = handlePlayChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -181,10 +179,9 @@ describe('handlePlayChannel', () => {
         fadeInMs: 500,
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handlePlayChannel(model, message, update, applyMixer);
+      const result = handlePlayChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -251,10 +248,9 @@ describe('handlePlayChannel', () => {
         delayMs: 150,
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handlePlayChannel(model, message, update, applyMixer);
+      const result = handlePlayChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -306,10 +302,9 @@ describe('handlePlayChannel', () => {
         }
         return _model;
       };
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      handlePlayChannel(model, message, update, applyMixer);
+      handlePlayChannel(model, message, update);
 
       // Assert
       expect(errorMessage).toBeTruthy();

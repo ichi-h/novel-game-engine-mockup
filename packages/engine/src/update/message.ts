@@ -5,6 +5,7 @@ import type {
   AddTrackMessage,
   AddWidgetsMessage,
   ApplyMixerCompletedMessage,
+  ApplyMixerMessage,
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
   ClearTextBoxMessage,
@@ -48,6 +49,7 @@ export type NovelMessage =
   | ChangeMasterVolumeMessage
   | ChangeChannelVolumeMessage
   | RemoveChannelMessage
+  | ApplyMixerMessage
   | ApplyMixerCompletedMessage;
 
 export type NovelMessageType = NovelMessage['type'];

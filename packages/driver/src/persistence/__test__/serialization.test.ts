@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import type { NovelModel } from 'engine';
+import { generateInitModel, type NovelModel } from 'engine';
 import {
   deserializeModel,
   type SerializedError,
@@ -7,65 +7,10 @@ import {
   serializeModel,
 } from '../serialization';
 
-const createBaseModel = (): Omit<NovelModel, 'status'> => ({
-  index: 0,
-  mixer: { channels: [], volume: 1.0 },
-  ui: [],
-  isDelaying: false,
-  isApplyingMixer: false,
-  animationTickets: [],
-  history: {
-    Delay: [],
-    DelayCompleted: [],
-    Sequence: [],
-    Error: [],
-    RecoverError: [],
-    UpdateConfig: [],
-    AddLayout: [],
-    ShowImage: [],
-    AddWidgets: [],
-    AddTextBox: [],
-    ShowText: [],
-    TextAnimationCompleted: [],
-    ClearTextBox: [],
-    RemoveWidgets: [],
-    AddTrack: [],
-    AddBusTrack: [],
-    PlayChannel: [],
-    StopChannel: [],
-    ChangeMasterVolume: [],
-    ChangeChannelVolume: [],
-    RemoveChannel: [],
-    ApplyMixerCompleted: [],
-  },
-  config: {
-    historyLength: {
-      Delay: 10,
-      DelayCompleted: 10,
-      Sequence: 10,
-      Error: 200,
-      RecoverError: 10,
-      UpdateConfig: 10,
-      AddLayout: 10,
-      ShowImage: 10,
-      AddWidgets: 10,
-      AddTextBox: 200,
-      ShowText: 10,
-      TextAnimationCompleted: 10,
-      ClearTextBox: 10,
-      RemoveWidgets: 10,
-      AddTrack: 10,
-      AddBusTrack: 10,
-      PlayChannel: 10,
-      StopChannel: 10,
-      ChangeMasterVolume: 10,
-      ChangeChannelVolume: 10,
-      RemoveChannel: 10,
-      ApplyMixerCompleted: 10,
-    },
-    textAnimationSpeed: 50,
-  },
-});
+const createBaseModel = (): Omit<NovelModel, 'status'> => {
+  const { status: _, ...baseModel } = generateInitModel();
+  return baseModel;
+};
 
 describe('serialization', () => {
   describe('serializeModel', () => {

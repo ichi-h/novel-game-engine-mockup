@@ -1,8 +1,7 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import { type ApplyMixer, hasId, map, type Volume } from '@/mixer';
+import { hasId, map, type Volume } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
-import { createApplyMixerCommand } from './utils';
 
 export interface ChangeChannelVolumeMessage extends BaseMessage {
   type: 'ChangeChannelVolume';
@@ -25,7 +24,6 @@ export const handleChangeChannelVolume = (
   model: NovelModel,
   msg: ChangeChannelVolumeMessage,
   update: Update<NovelModel, NovelMessage>,
-  applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel, NovelMessage> => {
   if (!hasId(model.mixer, msg.channelId)) {
     return update(model, {
@@ -46,12 +44,13 @@ export const handleChangeChannelVolume = (
     return c;
   })(model.mixer);
 
-  return [
+  return update(
     {
       ...model,
       mixer,
-      isApplyingMixer: true,
     },
-    createApplyMixerCommand(mixer, applyMixer),
-  ];
+    {
+      type: 'ApplyMixer',
+    },
+  );
 };

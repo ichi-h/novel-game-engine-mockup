@@ -63,7 +63,7 @@ type DeepPartial<T> = T extends object
 
 export type InitModelConfig = DeepPartial<NovelConfig>;
 
-const createDefaultConfig = () =>
+export const createDefaultConfig = () =>
   ({
     historyLength: {
       Delay: 10,
@@ -87,6 +87,7 @@ const createDefaultConfig = () =>
       ChangeMasterVolume: 10,
       ChangeChannelVolume: 10,
       RemoveChannel: 10,
+      ApplyMixer: 10,
       ApplyMixerCompleted: 10,
     },
     textAnimationSpeed: 50,
@@ -134,6 +135,7 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
       ChangeMasterVolume: [],
       ChangeChannelVolume: [],
       RemoveChannel: [],
+      ApplyMixer: [],
       ApplyMixerCompleted: [],
     },
     config,

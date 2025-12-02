@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import type { ApplyMixer, BusTrack } from '@/mixer';
+import type { BusTrack } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';
@@ -58,10 +58,9 @@ describe('handleRemoveChannel', () => {
         channelId: 'track-2',
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handleRemoveChannel(model, message, update, applyMixer);
+      const result = handleRemoveChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -115,10 +114,9 @@ describe('handleRemoveChannel', () => {
         channelId: 'bus-track-1',
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handleRemoveChannel(model, message, update, applyMixer);
+      const result = handleRemoveChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -171,10 +169,9 @@ describe('handleRemoveChannel', () => {
         channelId: 'track-1',
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handleRemoveChannel(model, message, update, applyMixer);
+      const result = handleRemoveChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -222,10 +219,9 @@ describe('handleRemoveChannel', () => {
         channelId: 'nested-track',
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handleRemoveChannel(model, message, update, applyMixer);
+      const result = handleRemoveChannel(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -272,10 +268,9 @@ describe('handleRemoveChannel', () => {
         }
         return _model;
       };
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      handleRemoveChannel(model, message, update, applyMixer);
+      handleRemoveChannel(model, message, update);
 
       // Assert
       expect(errorMessage).toBeTruthy();

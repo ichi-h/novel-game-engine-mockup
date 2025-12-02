@@ -1,14 +1,7 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import {
-  type ApplyMixer,
-  addChannel,
-  type Samples,
-  type Track,
-  type Volume,
-} from '@/mixer';
+import { addChannel, type Samples, type Track, type Volume } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
-import { createApplyMixerCommand } from './utils';
 
 export interface AddTrackMessage extends BaseMessage {
   type: 'AddTrack';
@@ -43,7 +36,6 @@ export const handleAddTrack = (
   model: NovelModel,
   msg: AddTrackMessage,
   update: Update<NovelModel, NovelMessage>,
-  applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel, NovelMessage> => {
   const track: Track = {
     id: msg.id,
@@ -57,14 +49,15 @@ export const handleAddTrack = (
   try {
     const mixer = addChannel(model.mixer, track, msg.busTrackId);
 
-    return [
+    return update(
       {
         ...model,
         mixer,
-        isApplyingMixer: true,
       },
-      createApplyMixerCommand(mixer, applyMixer),
-    ];
+      {
+        type: 'ApplyMixer',
+      },
+    );
   } catch (error) {
     return update(model, {
       type: 'Error',

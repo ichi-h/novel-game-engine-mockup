@@ -1,8 +1,7 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
-import type { ApplyMixer, Volume } from '@/mixer';
+import type { BaseMessage, ReturnModel, Update } from 'elmish';
+import type { Volume } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
-import { createApplyMixerCommand } from './utils';
 
 export interface ChangeMasterVolumeMessage extends BaseMessage {
   type: 'ChangeMasterVolume';
@@ -21,19 +20,20 @@ export const changeMasterVolume = (
 export const handleChangeMasterVolume = (
   model: NovelModel,
   msg: ChangeMasterVolumeMessage,
-  applyMixer: ApplyMixer,
+  update: Update<NovelModel, NovelMessage>,
 ): ReturnModel<NovelModel, NovelMessage> => {
   const mixer = {
     ...model.mixer,
     volume: msg.masterVolume,
   };
 
-  return [
+  return update(
     {
       ...model,
       mixer,
-      isApplyingMixer: true,
     },
-    createApplyMixerCommand(mixer, applyMixer),
-  ];
+    {
+      type: 'ApplyMixer',
+    },
+  );
 };

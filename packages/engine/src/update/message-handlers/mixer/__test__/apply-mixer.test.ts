@@ -5,7 +5,7 @@ import type { ErrorMessage } from '@/update/message-handlers/general/error';
 import {
   type ApplyMixerCompletedMessage,
   handleApplyMixerCompleted,
-} from '../apply-mixer-completed';
+} from '../apply-mixer';
 
 describe('handleApplyMixerCompleted', () => {
   describe('normal cases', () => {

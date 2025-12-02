@@ -1,6 +1,5 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
 import {
-  type ApplyMixer,
   type DelayMs,
   type FadeInMs,
   type FadeOutMs,
@@ -10,7 +9,6 @@ import {
 } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
-import { createApplyMixerCommand } from './utils';
 
 export interface PlayChannelMessage extends BaseMessage {
   type: 'PlayChannel';
@@ -42,7 +40,6 @@ export const handlePlayChannel = (
   model: NovelModel,
   msg: PlayChannelMessage,
   update: Update<NovelModel, NovelMessage>,
-  applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel, NovelMessage> => {
   if (!hasId(model.mixer, msg.channelId)) {
     return update(model, {
@@ -68,12 +65,13 @@ export const handlePlayChannel = (
       : c,
   )(model.mixer);
 
-  return [
+  return update(
     {
       ...model,
       mixer,
-      isApplyingMixer: true,
     },
-    createApplyMixerCommand(mixer, applyMixer),
-  ];
+    {
+      type: 'ApplyMixer',
+    },
+  );
 };

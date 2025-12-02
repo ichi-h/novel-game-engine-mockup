@@ -8,6 +8,7 @@ import {
   handleAddTextBox,
   handleAddTrack,
   handleAddWidgets,
+  handleApplyMixer,
   handleApplyMixerCompleted,
   handleChangeChannelVolume,
   handleChangeMasterVolume,
@@ -82,24 +83,21 @@ export const update =
 
         // Mixer
         case 'AddTrack':
-          return handleAddTrack(model, msg, updateWrapped, applyMixer);
+          return handleAddTrack(model, msg, updateWrapped);
         case 'AddBusTrack':
-          return handleAddBusTrack(model, msg, updateWrapped, applyMixer);
+          return handleAddBusTrack(model, msg, updateWrapped);
         case 'PlayChannel':
-          return handlePlayChannel(model, msg, updateWrapped, applyMixer);
+          return handlePlayChannel(model, msg, updateWrapped);
         case 'StopChannel':
-          return handleStopChannel(model, msg, updateWrapped, applyMixer);
+          return handleStopChannel(model, msg, updateWrapped);
         case 'ChangeMasterVolume':
-          return handleChangeMasterVolume(model, msg, applyMixer);
+          return handleChangeMasterVolume(model, msg, updateWrapped);
         case 'ChangeChannelVolume':
-          return handleChangeChannelVolume(
-            model,
-            msg,
-            updateWrapped,
-            applyMixer,
-          );
+          return handleChangeChannelVolume(model, msg, updateWrapped);
         case 'RemoveChannel':
-          return handleRemoveChannel(model, msg, updateWrapped, applyMixer);
+          return handleRemoveChannel(model, msg, updateWrapped);
+        case 'ApplyMixer':
+          return handleApplyMixer(model, msg, applyMixer);
         case 'ApplyMixerCompleted':
           return handleApplyMixerCompleted(model, msg, updateWrapped);
 

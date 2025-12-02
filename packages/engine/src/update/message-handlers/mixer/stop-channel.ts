@@ -1,8 +1,7 @@
 import type { BaseMessage, ReturnModel, Update } from 'elmish';
-import { type ApplyMixer, type FadeOutMs, hasId, map } from '@/mixer';
+import { type FadeOutMs, hasId, map } from '@/mixer';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
-import { createApplyMixerCommand } from './utils';
 
 export interface StopChannelMessage extends BaseMessage {
   type: 'StopChannel';
@@ -25,7 +24,6 @@ export const handleStopChannel = (
   model: NovelModel,
   msg: StopChannelMessage,
   update: Update<NovelModel, NovelMessage>,
-  applyMixer: ApplyMixer,
 ): ReturnModel<NovelModel, NovelMessage> => {
   if (!hasId(model.mixer, msg.channelId)) {
     return update(model, {
@@ -46,12 +44,13 @@ export const handleStopChannel = (
       : c,
   )(model.mixer);
 
-  return [
+  return update(
     {
       ...model,
       mixer,
-      isApplyingMixer: true,
     },
-    createApplyMixerCommand(mixer, applyMixer),
-  ];
+    {
+      type: 'ApplyMixer',
+    },
+  );
 };

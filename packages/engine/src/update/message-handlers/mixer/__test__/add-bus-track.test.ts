@@ -1,5 +1,5 @@
 import { describe, expect, mock, test } from 'bun:test';
-import type { ApplyMixer, BusTrack } from '@/mixer';
+import type { BusTrack } from '@/mixer';
 import * as mixerModule from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
@@ -54,10 +54,9 @@ describe('handleAddBusTrack', () => {
         id: 'bus-track-1',
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handleAddBusTrack(model, message, update, applyMixer);
+      const result = handleAddBusTrack(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -93,10 +92,9 @@ describe('handleAddBusTrack', () => {
         parentBusTrackId: 'parent-bus-track',
       };
       const update = () => model;
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      const result = handleAddBusTrack(model, message, update, applyMixer);
+      const result = handleAddBusTrack(model, message, update);
 
       // Assert
       expect(Array.isArray(result)).toBe(true);
@@ -147,10 +145,9 @@ describe('handleAddBusTrack', () => {
         }
         return _model;
       };
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      handleAddBusTrack(model, message, update, applyMixer);
+      handleAddBusTrack(model, message, update);
 
       // Assert
       expect(errorMessage).toBeTruthy();
@@ -174,10 +171,9 @@ describe('handleAddBusTrack', () => {
         }
         return _model;
       };
-      const applyMixer: ApplyMixer = async () => {};
 
       // Act
-      handleAddBusTrack(model, message, update, applyMixer);
+      handleAddBusTrack(model, message, update);
 
       // Assert
       expect(errorMessage).toBeTruthy();
@@ -200,7 +196,6 @@ describe('handleAddBusTrack', () => {
         }
         return _model;
       };
-      const applyMixer: ApplyMixer = async () => {};
 
       // Mock addChannel to throw a non-Error object
       const originalAddChannelToMixer = mixerModule.addChannel;
@@ -212,7 +207,7 @@ describe('handleAddBusTrack', () => {
       }));
 
       // Act
-      handleAddBusTrack(model, message, update, applyMixer);
+      handleAddBusTrack(model, message, update);
 
       // Restore
       mock.module('@/mixer', () => ({

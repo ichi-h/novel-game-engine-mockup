@@ -8,7 +8,7 @@ import {
   update,
 } from 'engine';
 import { getApplyMixer } from 'libs/mixer-driver';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { messages } from '../game/scenario';
 
 interface GamePageProps {
@@ -27,12 +27,6 @@ export const GamePage = ({
   onOpenSave,
   toTitle,
 }: GamePageProps) => {
-  useEffect(() => {
-    return () => {
-      cleanupMixer();
-    };
-  }, []);
-
   const [model, setModel] = useState(initialModel);
 
   // Create a new elmish state for each GamePage instance
@@ -43,10 +37,8 @@ export const GamePage = ({
 
   const send = useElement(
     () => {
-      // If already initialized or index > 0, don't send init message
       if (model.index !== 0) {
-        applyMixer(model.mixer);
-        return model;
+        return [model, async () => ({ type: 'ApplyMixer' })];
       }
       const initMessage = messages[0];
       return [model, initMessage && (async () => initMessage)];
@@ -62,7 +54,9 @@ export const GamePage = ({
 
     const msg = messages[model.index];
     if (!msg) {
-      return toTitle();
+      cleanupMixer();
+      toTitle();
+      return;
     }
     send(msg);
   };
