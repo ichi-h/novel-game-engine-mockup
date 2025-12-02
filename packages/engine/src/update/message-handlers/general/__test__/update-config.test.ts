@@ -29,7 +29,15 @@ describe('handleUpdateConfig', () => {
     test('updates model config with new config', () => {
       // Arrange
       const model = generateInitModel();
-      const newConfig = createDefaultConfig();
+      const defaultConfig = createDefaultConfig();
+      const newConfig = {
+        ...defaultConfig,
+        historyLength: {
+          ...defaultConfig.historyLength,
+          Delay: 30,
+        },
+        textAnimationSpeed: 80,
+      };
       const msg: UpdateConfigMessage = {
         type: 'UpdateConfig',
         config: newConfig,
