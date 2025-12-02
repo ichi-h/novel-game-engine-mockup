@@ -64,7 +64,7 @@ export const handleSequence = (
       const cmdMsgs = await Promise.all(result.cmds.map((cmd) => cmd()));
       const msg: SequenceMessage<NovelMessage> = {
         type: 'Sequence',
-        messages: [...restMessages, ...cmdMsgs],
+        messages: [...cmdMsgs, ...restMessages],
       };
       return msg;
     },

@@ -24,7 +24,7 @@ export const textAnimationMiddleware = (
   if (
     ignoreMessageTypes.includes(msg.type) ||
     (msg.type === 'Sequence' &&
-      msg.messages.every((m) => ignoreMessageTypes.includes(m.type)))
+      msg.messages.some((m) => ignoreMessageTypes.includes(m.type)))
   ) {
     return next(model, msg);
   }

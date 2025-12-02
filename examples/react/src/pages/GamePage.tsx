@@ -51,11 +51,14 @@ export const GamePage = ({
   );
 
   const next = () => {
+    if (model.isDelaying || model.isApplyingMixer) {
+      return;
+    }
+
     const msg = messages[model.index];
     if (!msg) {
       return toTitle();
     }
-    console.log(`シーン ${model.index + 1}:`, msg);
     send(msg);
   };
 
@@ -63,8 +66,6 @@ export const GamePage = ({
     e.stopPropagation();
     onOpenSave(model);
   };
-
-  console.log('model', JSON.stringify(model, null, 2));
 
   return (
     <div className="relative w-screen h-screen">
