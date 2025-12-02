@@ -68,11 +68,15 @@ export const FadeTransition = ({
   return (
     <div
       className={`fixed inset-0 z-[9999] bg-black pointer-events-none ${
-        phase === 'fading-out' ? 'animate-fade-overlay-in' : 'animate-fade-overlay-out'
+        phase === 'fading-out'
+          ? 'animate-fade-overlay-in'
+          : 'animate-fade-overlay-out'
       }`}
       style={{
         animationDuration:
-          phase === 'fading-out' ? `${fadeOutDuration}ms` : `${fadeInDuration}ms`,
+          phase === 'fading-out'
+            ? `${fadeOutDuration}ms`
+            : `${fadeInDuration}ms`,
       }}
       aria-hidden="true"
     />

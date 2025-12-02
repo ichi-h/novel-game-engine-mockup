@@ -378,7 +378,6 @@ class MixerDriver {
     for (const id of this.channelStates.keys()) {
       await this.removeChannel(id);
     }
-    await this.audioContext.close();
   }
 }
 
@@ -414,6 +413,5 @@ export const resumeAudioContext = async (): Promise<void> => {
 export const cleanupMixer = async (): Promise<void> => {
   if (mixerInstance) {
     await mixerInstance.cleanup();
-    mixerInstance = null;
   }
 };

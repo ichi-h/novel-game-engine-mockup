@@ -1,4 +1,4 @@
-import { AudioFetcher, createApplyMixer, NovelWidgetDriver } from 'driver';
+import { cleanupMixer, NovelWidgetDriver } from 'driver';
 import { ElmishState, elmish } from 'elmish';
 import {
   historyMiddleware,
@@ -7,18 +7,17 @@ import {
   textAnimationMiddleware,
   update,
 } from 'engine';
-import { useMemo, useState } from 'react';
-
+import { getApplyMixer } from 'libs/mixer-driver';
+import { useEffect, useMemo, useState } from 'react';
 import { messages } from '../game/scenario';
-
-const fetcher = new AudioFetcher();
-const applyMixer = createApplyMixer(fetcher);
 
 interface GamePageProps {
   initialModel: NovelModel;
   onOpenSave: (model: NovelModel) => void;
   toTitle: () => void;
 }
+
+const applyMixer = getApplyMixer();
 
 /**
  * Game page component
@@ -28,6 +27,12 @@ export const GamePage = ({
   onOpenSave,
   toTitle,
 }: GamePageProps) => {
+  useEffect(() => {
+    return () => {
+      cleanupMixer();
+    };
+  }, []);
+
   const [model, setModel] = useState(initialModel);
 
   // Create a new elmish state for each GamePage instance
