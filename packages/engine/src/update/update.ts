@@ -4,7 +4,6 @@ import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
 import {
   handleAddBusTrack,
-  handleAddCustomLayout,
   handleAddLayout,
   handleAddTextBox,
   handleAddTrack,
@@ -72,8 +71,6 @@ export const update =
         // Widgets
         case 'AddLayout':
           return handleAddLayout(model, msg);
-        case 'AddCustomLayout':
-          return handleAddCustomLayout(model, msg);
         case 'ShowImage':
           return handleShowImage(model, msg);
         case 'AddTextBox':

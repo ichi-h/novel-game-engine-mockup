@@ -1,13 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { hasId } from '../has-id';
-import {
-  customLayout,
-  img,
-  layout,
-  type NovelWidget,
-  text,
-  textBox,
-} from '../widgets';
+import { img, layout, type NovelWidget, text, textBox } from '../widgets';
 
 describe('hasId', () => {
   describe('normal cases', () => {
@@ -65,19 +58,6 @@ describe('hasId', () => {
 
       // Act & Assert
       expect(hasId(widgets, 'any-id')).toBe(false);
-    });
-
-    test('finds ID in CustomLayout children', () => {
-      // Arrange
-      const widgets: NovelWidget<string>[] = [
-        customLayout<string>({
-          id: 'custom',
-          component: 'TestComponent',
-        })([img({ id: 'child', src: 'test.png' })]),
-      ];
-
-      // Act & Assert
-      expect(hasId(widgets, 'child')).toBe(true);
     });
 
     test('returns false for empty widget array', () => {

@@ -1,10 +1,5 @@
 import { hasId } from './has-id';
-import {
-  isCustomLayout,
-  isLayout,
-  isTextBox,
-  type NovelWidget,
-} from './widgets';
+import { isLayout, isTextBox, type NovelWidget } from './widgets';
 
 /**
  * Removes a widget by ID from the specified array of widgets
@@ -19,7 +14,7 @@ const removeByIdFromWidgets = <Component>(
   return widgets
     .filter((w) => w.id !== id)
     .map((w) => {
-      if (isLayout(w) || isCustomLayout<Component>(w)) {
+      if (isLayout(w)) {
         return {
           ...w,
           children: removeByIdFromWidgets(id, w.children),

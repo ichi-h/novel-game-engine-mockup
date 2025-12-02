@@ -1,13 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { findById } from '../find-by-id';
-import {
-  customLayout,
-  img,
-  layout,
-  type NovelWidget,
-  text,
-  textBox,
-} from '../widgets';
+import { img, layout, type NovelWidget, text, textBox } from '../widgets';
 
 describe('findById', () => {
   describe('normal cases', () => {
@@ -66,23 +59,6 @@ describe('findById', () => {
       // Assert
       expect(result).not.toBeNull();
       expect(result?.id).toBe('text1');
-    });
-
-    test('finds widget in CustomLayout children', () => {
-      // Arrange
-      const widgets: NovelWidget<string>[] = [
-        customLayout<string>({
-          id: 'custom',
-          component: 'TestComponent',
-        })([img({ id: 'child', src: 'test.png' })]),
-      ];
-
-      // Act
-      const result = findById(widgets, 'child');
-
-      // Assert
-      expect(result).not.toBeNull();
-      expect(result?.id).toBe('child');
     });
 
     test('returns null for non-existent ID', () => {

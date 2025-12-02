@@ -1,5 +1,4 @@
 import {
-  isCustomLayout,
   isLayout,
   isTextBox,
   type NovelWidget,
@@ -83,8 +82,8 @@ export class WidgetManager<Component = unknown> {
         return true;
       }
 
-      // Check children for Layout and CustomLayout widgets
-      if (isLayout(obj) || isCustomLayout<Component>(obj)) {
+      // Check children for Layout widgets
+      if (isLayout(obj)) {
         if (this.hasIdInWidgets(id, obj.children)) {
           return true;
         }
@@ -116,8 +115,8 @@ export class WidgetManager<Component = unknown> {
         return obj;
       }
 
-      // Search in children for Layout and CustomLayout widgets
-      if (isLayout(obj) || isCustomLayout<Component>(obj)) {
+      // Search in children for Layout widgets
+      if (isLayout(obj)) {
         const foundInChildren = this.findById(id, obj.children);
         if (foundInChildren) {
           return foundInChildren;
@@ -147,7 +146,7 @@ export class WidgetManager<Component = unknown> {
   ): boolean {
     for (const obj of widgets) {
       if (obj.id === layoutId) {
-        if (isLayout(obj) || isCustomLayout<Component>(obj)) {
+        if (isLayout(obj)) {
           obj.children.push(widget);
           return true;
         }
@@ -155,8 +154,8 @@ export class WidgetManager<Component = unknown> {
         return false;
       }
 
-      // Search in children for Layout and CustomLayout widgets
-      if (isLayout(obj) || isCustomLayout<Component>(obj)) {
+      // Search in children for Layout widgets
+      if (isLayout(obj)) {
         if (this.addToLayout(widget, layoutId, obj.children)) {
           return true;
         }
@@ -186,8 +185,8 @@ export class WidgetManager<Component = unknown> {
         return false;
       }
 
-      // Search in children for Layout and CustomLayout widgets
-      if (isLayout(obj) || isCustomLayout<Component>(obj)) {
+      // Search in children for Layout widgets
+      if (isLayout(obj)) {
         if (this.addToTextBox(textWidget, textBoxId, obj.children)) {
           return true;
         }
@@ -241,12 +240,8 @@ export class WidgetManager<Component = unknown> {
         continue;
       }
 
-      // Recursively remove from children for Layout, CustomLayout and TextBox widgets
-      if (
-        isLayout(widget) ||
-        isCustomLayout<Component>(widget) ||
-        isTextBox(widget)
-      ) {
+      // Recursively remove from children for Layout and TextBox widgets
+      if (isLayout(widget) || isTextBox(widget)) {
         const newChildren = this.removeByIdFromWidgets(id, widget.children);
         widget.children = newChildren;
       }

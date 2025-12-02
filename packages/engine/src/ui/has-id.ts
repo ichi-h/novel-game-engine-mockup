@@ -1,9 +1,4 @@
-import {
-  isCustomLayout,
-  isLayout,
-  isTextBox,
-  type NovelWidget,
-} from './widgets';
+import { isLayout, isTextBox, type NovelWidget } from './widgets';
 
 /**
  * Check if a widget with the specified ID exists in the widgets array
@@ -17,13 +12,8 @@ export const hasId = <Component>(
       return true;
     }
 
-    // Check children for Layout, CustomLayout and TextBox widgets
-    if (
-      (isLayout(widget) ||
-        isCustomLayout<Component>(widget) ||
-        isTextBox(widget)) &&
-      hasId(widget.children, id)
-    ) {
+    // Check children for Layout and TextBox widgets
+    if ((isLayout(widget) || isTextBox(widget)) && hasId(widget.children, id)) {
       return true;
     }
 

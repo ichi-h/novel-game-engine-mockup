@@ -1,14 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import { hasId } from '../has-id';
 import { removeById } from '../remove-by-id';
-import {
-  customLayout,
-  img,
-  layout,
-  type NovelWidget,
-  text,
-  textBox,
-} from '../widgets';
+import { img, layout, type NovelWidget, text, textBox } from '../widgets';
 
 describe('removeById', () => {
   describe('normal cases', () => {
@@ -104,23 +97,6 @@ describe('removeById', () => {
       expect(hasId(widgets, 'child1')).toBe(false);
       expect(hasId(widgets, 'child2')).toBe(false);
       expect(widgets).toHaveLength(0);
-    });
-
-    test('removes widget from CustomLayout', () => {
-      // Arrange
-      let widgets: NovelWidget<string>[] = [
-        customLayout<string>({
-          id: 'custom',
-          component: 'TestComponent',
-        })([img({ id: 'child', src: 'test.png' })]),
-      ];
-
-      // Act
-      widgets = removeById(widgets, 'child');
-
-      // Assert
-      expect(hasId(widgets, 'custom')).toBe(true);
-      expect(hasId(widgets, 'child')).toBe(false);
     });
   });
 

@@ -1,6 +1,5 @@
 import type {
   AddBusTrackMessage,
-  AddCustomLayoutMessage,
   AddLayoutMessage,
   AddTextBoxMessage,
   AddTrackMessage,
@@ -34,7 +33,6 @@ export type NovelMessage<Component> =
   | RecoverErrorMessage
   // Widgets
   | AddLayoutMessage
-  | AddCustomLayoutMessage<Component>
   | ShowImageMessage
   | AddWidgetsMessage<Component>
   | AddTextBoxMessage

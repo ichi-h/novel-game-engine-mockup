@@ -1,6 +1,6 @@
 import type { NovelModel, NovelWidget } from 'engine';
 import type { ReactComponentDriver } from './type';
-import { CustomLayout, Image, Layout, Text, TextBox } from './widgets';
+import { Image, Layout, Text, TextBox } from './widgets';
 
 interface Props {
   widgets: NovelWidget<ReactComponentDriver>[];
@@ -12,14 +12,6 @@ export const NovelWidgetDriver = ({ widgets, model }: Props) => {
     <>
       {widgets.map((widget, i) => {
         switch (widget.type) {
-          case 'CustomLayout':
-            return (
-              <CustomLayout
-                key={`${widget.type}_${widget.id}_${i}`}
-                widget={widget}
-                model={model}
-              />
-            );
           case 'Image':
             return (
               <Image key={`${widget.type}_${widget.id}_${i}`} widget={widget} />

@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { WidgetManager } from '../manager';
 import {
-  customLayout,
   img,
   layout,
   type NovelWidget,
@@ -139,24 +138,6 @@ describe('WidgetManager', () => {
         expect(manager.hasId('root')).toBe(true);
         expect(manager.hasId('nested')).toBe(true);
         expect(manager.hasId('deep')).toBe(true);
-      });
-
-      test('adds widget to CustomLayout', () => {
-        // Arrange
-        const manager = new WidgetManager<string>();
-        const customLayoutWidget = customLayout({
-          id: 'custom',
-          component: 'TestComponent',
-        })([]);
-        manager.addWidget(customLayoutWidget);
-        const childWidget = img({ id: 'child', src: 'test.png' });
-
-        // Act
-        manager.addWidget(childWidget, 'custom');
-
-        // Assert
-        expect(manager.hasId('custom')).toBe(true);
-        expect(manager.hasId('child')).toBe(true);
       });
 
       test('adds multiple widgets to root', () => {
@@ -446,21 +427,6 @@ describe('WidgetManager', () => {
         // Act & Assert
         expect(manager.hasId('any-id')).toBe(false);
       });
-
-      test('finds ID in CustomLayout children', () => {
-        // Arrange
-        const manager = new WidgetManager<string>();
-        const customLayoutWidget = customLayout({
-          id: 'custom',
-          component: 'TestComponent',
-        })([]);
-        manager.addWidget(customLayoutWidget);
-        const childWidget = img({ id: 'child', src: 'test.png' });
-        manager.addWidget(childWidget, 'custom');
-
-        // Act & Assert
-        expect(manager.hasId('child')).toBe(true);
-      });
     });
   });
 
@@ -645,25 +611,6 @@ describe('WidgetManager', () => {
         expect(manager.hasId('child1')).toBe(false);
         expect(manager.hasId('child2')).toBe(false);
         expect(manager.widgets).toHaveLength(0);
-      });
-
-      test('removes widget from CustomLayout', () => {
-        // Arrange
-        const manager = new WidgetManager<string>();
-        const customLayoutWidget = customLayout({
-          id: 'custom',
-          component: 'TestComponent',
-        })([]);
-        manager.addWidget(customLayoutWidget);
-        const childWidget = img({ id: 'child', src: 'test.png' });
-        manager.addWidget(childWidget, 'custom');
-
-        // Act
-        manager.removeById('child');
-
-        // Assert
-        expect(manager.hasId('custom')).toBe(true);
-        expect(manager.hasId('child')).toBe(false);
       });
     });
 

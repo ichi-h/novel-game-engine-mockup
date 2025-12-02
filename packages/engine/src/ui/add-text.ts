@@ -1,7 +1,6 @@
 import { findById } from './find-by-id';
 import { hasId } from './has-id';
 import {
-  isCustomLayout,
   isLayout,
   isTextBox,
   type NovelWidget,
@@ -26,8 +25,8 @@ const addToTextBox = <Component>(
       };
     }
 
-    // Search in children for Layout and CustomLayout widgets
-    if (isLayout(w) || isCustomLayout<Component>(w)) {
+    // Search in children for Layout widgets
+    if (isLayout(w)) {
       const children = addToTextBox(textWidget, textBoxId, w.children);
       if (children !== null) {
         return {

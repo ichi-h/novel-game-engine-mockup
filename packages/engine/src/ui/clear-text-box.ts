@@ -1,10 +1,5 @@
 import { findById } from './find-by-id';
-import {
-  isCustomLayout,
-  isLayout,
-  isTextBox,
-  type NovelWidget,
-} from './widgets';
+import { isLayout, isTextBox, type NovelWidget } from './widgets';
 
 /**
  * Clear all TextWidgets in the specified TextBox
@@ -23,8 +18,8 @@ const clearTextBoxInWidgets = <Component>(
       };
     }
 
-    // Search in children for Layout and CustomLayout widgets
-    if (isLayout(w) || isCustomLayout<Component>(w)) {
+    // Search in children for Layout widgets
+    if (isLayout(w)) {
       const children = clearTextBoxInWidgets(textBoxId, w.children);
       return {
         ...w,

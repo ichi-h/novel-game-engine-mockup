@@ -1,6 +1,6 @@
 import { findById } from './find-by-id';
 import { hasId } from './has-id';
-import { isCustomLayout, isLayout, type NovelWidget } from './widgets';
+import { isLayout, type NovelWidget } from './widgets';
 
 /**
  * Add widgets to layouts with the specified ID.
@@ -12,7 +12,7 @@ const addToLayout = <Component>(
   widgets: NovelWidget<Component>[],
 ): NovelWidget<Component>[] => {
   return widgets.map((w) => {
-    if (isLayout(w) || isCustomLayout<Component>(w)) {
+    if (isLayout(w)) {
       // Found the target layout
       if (w.id === layoutId) {
         return {
@@ -21,7 +21,7 @@ const addToLayout = <Component>(
         };
       }
 
-      // Search in children for Layout and CustomLayout widgets
+      // Search in children for Layout widgets
       const children = addToLayout(widget, layoutId, w.children);
       return {
         ...w,
@@ -58,8 +58,7 @@ export const addWidget = <Component>(
   const layoutWidget = findById<Component>(widgets, layoutId);
   if (
     layoutWidget === null ||
-    (isLayout(layoutWidget) === false &&
-      isCustomLayout<Component>(layoutWidget) === false)
+    (isLayout(layoutWidget) === false && isLayout(layoutWidget) === false)
   ) {
     throw new Error(`Layout with id "${layoutId}" not found`);
   }

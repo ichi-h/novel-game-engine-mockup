@@ -1,9 +1,4 @@
-import {
-  isCustomLayout,
-  isLayout,
-  isTextBox,
-  type NovelWidget,
-} from './widgets';
+import { isLayout, isTextBox, type NovelWidget } from './widgets';
 
 /**
  * Recursively find a widget by ID
@@ -18,12 +13,8 @@ export const findById = <Component>(
       return widget;
     }
 
-    // Search in children for Layout, CustomLayout and TextBox widgets
-    if (
-      isLayout(widget) ||
-      isCustomLayout<Component>(widget) ||
-      isTextBox(widget)
-    ) {
+    // Search in children for Layout and TextBox widgets
+    if (isLayout(widget) || isTextBox(widget)) {
       const foundInChildren = findById(widget.children, id);
       if (foundInChildren) {
         return foundInChildren;

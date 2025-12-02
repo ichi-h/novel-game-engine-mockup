@@ -1,4 +1,3 @@
-import type { CustomLayoutWidget } from './custom-layout';
 import type { ImageWidget } from './image';
 import type { LayoutWidget } from './layout';
 import type { TextWidget } from './text';
@@ -11,7 +10,6 @@ export interface NovelWidgetBase {
 
 export type NovelWidget<Component = unknown> =
   | LayoutWidget<Component>
-  | CustomLayoutWidget<Component>
   | ImageWidget
   | TextBoxWidget
   | TextWidget;
