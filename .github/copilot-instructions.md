@@ -6,4 +6,3 @@
   - For example, if the developer speaks Japanese, respond in Japanese.
 - When writing comments, documentation, or similar items in the code, write them all in English.
 - Use Serena when referencing code or similar tasks.
-- Since this project uses Nix, you should run commands like `bun` within `nix develop --command`.

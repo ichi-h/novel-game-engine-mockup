@@ -35,6 +35,6 @@ When completing a task, ensure the following steps are performed:
 2. Propose test items to developer
 3. Wait for approval/feedback
 4. Generate test code
-5. Run `nix develop --command -- bun test --coverage`
+5. Run `bun test --coverage`
 6. Fix any failing tests
 7. Report results to developer

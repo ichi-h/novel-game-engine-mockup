@@ -27,9 +27,9 @@
 5. Run `bun run format` to format code
 
 ## Nix Development Environment
-- `nix develop` - Enter Nix development shell
-- `nix develop --command -- <command>` - Run command in Nix environment
-- Example: `nix develop --command -- bun test --coverage`
+- direnv is configured to automatically load the Nix environment
+- No need to use `nix develop` or `nix develop --command --` prefixes
+- Commands can be run directly (e.g., `bun test --coverage`)
 
 ## Git Hooks
 - Lefthook is automatically installed via `postinstall` script
