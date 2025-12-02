@@ -1,8 +1,9 @@
 import { generateInitModel, type NovelModel } from 'engine';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import './index.css';
 
+import { FadeTransition } from './components/FadeTransition';
 import { AudioConfirmPage } from './pages/AudioConfirmPage';
 import { GamePage } from './pages/GamePage';
 import { LoadPage } from './pages/LoadPage';
@@ -21,13 +22,40 @@ export function App() {
   // Store the current game model when navigating to save page
   const [savedGameModel, setSavedGameModel] = useState<NovelModel | null>(null);
 
+  // Fade transition state
+  const [isFading, setIsFading] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState<
+    (() => void) | null
+  >(null);
+
+  // Start fade transition to game page
+  const navigateToGameWithFade = useCallback((model: NovelModel) => {
+    setIsFading(true);
+    setPendingNavigation(() => () => {
+      setRouterState({ page: 'game', initialModel: model });
+    });
+  }, []);
+
+  // Handle fade out complete - switch page content
+  const handleFadeOutComplete = useCallback(() => {
+    if (pendingNavigation) {
+      pendingNavigation();
+    }
+  }, [pendingNavigation]);
+
+  // Handle transition complete - cleanup
+  const handleTransitionComplete = useCallback(() => {
+    setIsFading(false);
+    setPendingNavigation(null);
+  }, []);
+
   // Navigation handlers
   const handleAudioConfirm = () => {
     setRouterState({ page: 'title' });
   };
 
   const handleStartNewGame = () => {
-    setRouterState({ page: 'game', initialModel: generateInitModel() });
+    navigateToGameWithFade(generateInitModel());
   };
 
   const handleContinue = () => {
@@ -40,7 +68,7 @@ export function App() {
   };
 
   const handleLoadGame = (model: NovelModel) => {
-    setRouterState({ page: 'game', initialModel: model });
+    navigateToGameWithFade(model);
   };
 
   const handleBackToTitle = () => {
@@ -53,39 +81,57 @@ export function App() {
     }
   };
 
-  // Render current page based on router state
-  switch (routerState.page) {
-    case 'audio-confirm':
-      return <AudioConfirmPage onConfirm={handleAudioConfirm} />;
+  // Render page content based on router state
+  const renderPage = () => {
+    switch (routerState.page) {
+      case 'audio-confirm':
+        return <AudioConfirmPage onConfirm={handleAudioConfirm} />;
 
-    case 'title':
-      return (
-        <TitlePage
-          onStartNewGame={handleStartNewGame}
-          onContinue={handleContinue}
-        />
-      );
+      case 'title':
+        return (
+          <TitlePage
+            onStartNewGame={handleStartNewGame}
+            onContinue={handleContinue}
+          />
+        );
 
-    case 'game':
-      return (
-        <GamePage
-          initialModel={routerState.initialModel}
-          onOpenSave={handleOpenSave}
-          toTitle={handleBackToTitle}
-        />
-      );
+      case 'game':
+        return (
+          <GamePage
+            initialModel={routerState.initialModel}
+            onOpenSave={handleOpenSave}
+            toTitle={handleBackToTitle}
+          />
+        );
 
-    case 'save':
-      return (
-        <SavePage gameModel={routerState.gameModel} onBack={handleBackToGame} />
-      );
+      case 'save':
+        return (
+          <SavePage
+            gameModel={routerState.gameModel}
+            onBack={handleBackToGame}
+          />
+        );
 
-    case 'load':
-      return <LoadPage onLoad={handleLoadGame} onBack={handleBackToTitle} />;
+      case 'load':
+        return <LoadPage onLoad={handleLoadGame} onBack={handleBackToTitle} />;
 
-    default:
-      return <AudioConfirmPage onConfirm={handleAudioConfirm} />;
-  }
+      default:
+        return <AudioConfirmPage onConfirm={handleAudioConfirm} />;
+    }
+  };
+
+  return (
+    <>
+      {renderPage()}
+      <FadeTransition
+        isActive={isFading}
+        fadeOutDuration={400}
+        fadeInDuration={400}
+        onFadeOutComplete={handleFadeOutComplete}
+        onTransitionComplete={handleTransitionComplete}
+      />
+    </>
+  );
 }
 
 export default App;

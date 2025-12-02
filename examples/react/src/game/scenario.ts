@@ -2,6 +2,7 @@ import {
   addLayout,
   addTextBox,
   addTrack,
+  delay,
   type NovelMessage,
   playChannel,
   removeWidgets,
@@ -86,6 +87,7 @@ export const createNovelGame = (): NovelMessage[] => {
         'game-container',
         'w-full flex justify-center px-4 pb-4',
       ),
+      delay(1),
       addTextBox(
         TEXTBOX_ID,
         'textbox-area',
