@@ -76,6 +76,7 @@ export const textAnimationMiddleware = (
       {
         ...model,
         status: { value: 'Processed' },
+        index: model.index + 1,
       },
       sequenceMessage,
     );
@@ -85,6 +86,7 @@ export const textAnimationMiddleware = (
     {
       ...model,
       status: { value: 'Processed' },
+      index: model.index + 1,
     },
     msg,
   );

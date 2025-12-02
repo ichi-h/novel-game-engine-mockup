@@ -43,6 +43,7 @@ export interface NovelModel {
         value: 'Error';
         error: Error;
       };
+  index: number;
   mixer: Mixer;
   ui: NovelWidget[];
   isDelaying: boolean;
@@ -105,6 +106,7 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
 
   return {
     status: { value: 'Processed' },
+    index: 0,
     mixer: { channels: [], volume: 1.0 },
     ui: [],
     isDelaying: false,

@@ -20,21 +20,14 @@ import {
 import { useState } from 'react';
 
 import './index.css';
-import {
-  AudioFetcher,
-  createApplyMixer,
-  NovelWidgetDriver,
-} from 'driver';
+import { AudioFetcher, createApplyMixer, NovelWidgetDriver } from 'driver';
 import bgm from './bgm.mp3';
 import homeBg from './home.jpg';
 import logo from './logo.svg';
 import reactLogo from './react.svg';
 import shoppingMallBg from './shopping_mall.jpg';
 
-const useElement = elmish<
-  NovelModel,
-  NovelMessage
->();
+const useElement = elmish<NovelModel, NovelMessage>();
 
 // メッセージ生成ヘルパー関数
 const TEXTBOX_ID = 'main-textbox';
@@ -54,14 +47,10 @@ const CHARACTER_COLORS = {
 } as const;
 
 // テキストボックスをクリア
-const clearTextBox = (): NovelMessage =>
-  clearTextBoxMsg(TEXTBOX_ID);
+const clearTextBox = (): NovelMessage => clearTextBoxMsg(TEXTBOX_ID);
 
 // キャラクター名を表示
-const showCharacterName = (
-  name: string,
-  color: string,
-): NovelMessage =>
+const showCharacterName = (name: string, color: string): NovelMessage =>
   showText(
     TEXTBOX_ID,
     name,
@@ -92,10 +81,7 @@ const showCharacterDialog = (
 ];
 
 // キャラクター画像を表示
-const showCharacter = (
-  id: string,
-  src: string,
-): NovelMessage =>
+const showCharacter = (id: string, src: string): NovelMessage =>
   showImage(CHARACTER_LAYOUT_ID, src, id, COMMON_STYLES.characterImage);
 
 // キャラクター登場シーン（画像 + 名前 + 台詞）
@@ -113,10 +99,7 @@ const introduceCharacter = (
 ];
 
 // 背景を変更
-const changeBackground = (
-  id: string,
-  src: string,
-): NovelMessage =>
+const changeBackground = (id: string, src: string): NovelMessage =>
   showImage(
     BG_LAYER_ID,
     src,
@@ -127,6 +110,54 @@ const changeBackground = (
 // ノベルゲームのシーン定義
 const createNovelGame = (): NovelMessage[] => {
   return [
+    // 初期化メッセージ（自動実行）
+    sequence([
+      addTrack('bgm', bgm, undefined, 1, { start: 0, end: 7650432 }),
+      addLayout(
+        'root',
+        undefined,
+        'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
+      ),
+      addLayout(
+        'background-layer',
+        'root',
+        'absolute inset-0 flex items-center justify-center',
+      ),
+      addLayout(
+        'background-content-layer',
+        'background-layer',
+        'relative w-full h-full',
+      ),
+      showImage(
+        'background-content-layer',
+        homeBg,
+        'home-bg',
+        'absolute inset-0 w-full h-full object-cover',
+      ),
+      addLayout(
+        'content-layer',
+        'root',
+        'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
+      ),
+      addLayout(
+        'title-area',
+        'content-layer',
+        'flex-1 flex items-center justify-center',
+      ),
+      addTextBox(
+        'title',
+        'title-area',
+        'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
+      ),
+      showText(
+        'title',
+        '🛍️ ショッピングモールへ行こう！ 🛍️',
+        undefined,
+        'drop-shadow-2xl',
+        100,
+      ),
+    ]),
+
     // シーン2: タイトルフェードアウトとゲーム開始
     sequence([
       playChannel('bgm'),
@@ -275,54 +306,6 @@ const createNovelGame = (): NovelMessage[] => {
   ];
 };
 
-// 初期化メッセージ（自動実行）
-const initMessage: NovelMessage = sequence([
-  addTrack('bgm', bgm, undefined, 1, { start: 0, end: 7650432 }),
-  addLayout(
-    'root',
-    undefined,
-    'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
-  ),
-  addLayout(
-    'background-layer',
-    'root',
-    'absolute inset-0 flex items-center justify-center',
-  ),
-  addLayout(
-    'background-content-layer',
-    'background-layer',
-    'relative w-full h-full',
-  ),
-  showImage(
-    'background-content-layer',
-    homeBg,
-    'home-bg',
-    'absolute inset-0 w-full h-full object-cover',
-  ),
-  addLayout(
-    'content-layer',
-    'root',
-    'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
-  ),
-  addLayout(
-    'title-area',
-    'content-layer',
-    'flex-1 flex items-center justify-center',
-  ),
-  addTextBox(
-    'title',
-    'title-area',
-    'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
-  ),
-  showText(
-    'title',
-    '🛍️ ショッピングモールへ行こう！ 🛍️',
-    undefined,
-    'drop-shadow-2xl',
-    100,
-  ),
-]);
-
 const messages = createNovelGame();
 const initModel = generateInitModel();
 
@@ -330,31 +313,25 @@ const fetcher = new AudioFetcher();
 const applyMixer = createApplyMixer(fetcher);
 
 export function App() {
-  const [index, setIndex] = useState(0);
   const [model, setModel] = useState(initModel);
   const send = useElement(
     () => {
-      return [
-        model,
-        async () => {
-          return initMessage;
-        },
-      ];
+      if (model.index !== 0) return model;
+      const initMessage = messages[0];
+      return [model, initMessage && (async () => initMessage)];
     },
     update(applyMixer, [historyMiddleware, textAnimationMiddleware]),
     setModel,
   );
 
   const next = () => {
-    const nextIndex = model.status.value === 'Intercepted' ? index - 1 : index;
-    const msg = messages[nextIndex];
+    const msg = messages[model.index];
     if (!msg) {
       console.log('ゲーム終了');
       return;
     }
-    console.log(`シーン ${nextIndex + 1}:`, msg);
+    console.log(`シーン ${model.index + 1}:`, msg);
     send(msg);
-    setIndex(nextIndex + 1);
   };
 
   console.log('model', JSON.stringify(model, null, 2));
