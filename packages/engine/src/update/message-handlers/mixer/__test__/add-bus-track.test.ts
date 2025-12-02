@@ -9,6 +9,7 @@ import {
   addBusTrack,
   handleAddBusTrack,
 } from '../add-bus-track';
+import { handleApplyMixer } from '../apply-mixer';
 
 describe('addBusTrack', () => {
   describe('normal cases', () => {
@@ -53,7 +54,13 @@ describe('handleAddBusTrack', () => {
         type: 'AddBusTrack',
         id: 'bus-track-1',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleAddBusTrack(model, message, update);
@@ -91,7 +98,13 @@ describe('handleAddBusTrack', () => {
         volume: 0.7,
         parentBusTrackId: 'parent-bus-track',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleAddBusTrack(model, message, update);

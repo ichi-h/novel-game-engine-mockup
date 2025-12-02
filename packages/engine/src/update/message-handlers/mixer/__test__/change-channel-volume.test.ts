@@ -3,6 +3,7 @@ import type { BusTrack } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';
+import { handleApplyMixer } from '../apply-mixer';
 import {
   type ChangeChannelVolumeMessage,
   changeChannelVolume,
@@ -46,7 +47,13 @@ describe('handleChangeChannelVolume', () => {
         channelId: 'track-1',
         volume: 0.5,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleChangeChannelVolume(model, message, update);
@@ -95,7 +102,13 @@ describe('handleChangeChannelVolume', () => {
         channelId: 'track-2',
         volume: 0.3,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleChangeChannelVolume(model, message, update);
@@ -137,7 +150,13 @@ describe('handleChangeChannelVolume', () => {
         channelId: 'track-1',
         volume: 0.4,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleChangeChannelVolume(model, message, update);

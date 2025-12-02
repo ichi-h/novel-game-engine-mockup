@@ -8,6 +8,7 @@ import {
   type PlayChannelMessage,
   playChannel,
 } from '../play-channel';
+import { handleApplyMixer } from '../apply-mixer';
 
 describe('playChannel', () => {
   describe('normal cases', () => {
@@ -73,7 +74,13 @@ describe('handlePlayChannel', () => {
         type: 'PlayChannel',
         channelId: 'channel-1',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handlePlayChannel(model, message, update);
@@ -120,7 +127,13 @@ describe('handlePlayChannel', () => {
         delayMs: 100,
         offsetMs: 200,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handlePlayChannel(model, message, update);
@@ -178,7 +191,13 @@ describe('handlePlayChannel', () => {
         channelId: 'channel-2',
         fadeInMs: 500,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handlePlayChannel(model, message, update);
@@ -247,7 +266,13 @@ describe('handlePlayChannel', () => {
         fadeInMs: 800,
         delayMs: 150,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handlePlayChannel(model, message, update);

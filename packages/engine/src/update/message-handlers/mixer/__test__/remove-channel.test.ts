@@ -3,6 +3,7 @@ import type { BusTrack } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';
+import { handleApplyMixer } from '../apply-mixer';
 import {
   handleRemoveChannel,
   type RemoveChannelMessage,
@@ -57,7 +58,13 @@ describe('handleRemoveChannel', () => {
         type: 'RemoveChannel',
         channelId: 'track-2',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleRemoveChannel(model, message, update);
@@ -113,7 +120,13 @@ describe('handleRemoveChannel', () => {
         type: 'RemoveChannel',
         channelId: 'bus-track-1',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleRemoveChannel(model, message, update);
@@ -168,7 +181,13 @@ describe('handleRemoveChannel', () => {
         type: 'RemoveChannel',
         channelId: 'track-1',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleRemoveChannel(model, message, update);
@@ -218,7 +237,13 @@ describe('handleRemoveChannel', () => {
         type: 'RemoveChannel',
         channelId: 'nested-track',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleRemoveChannel(model, message, update);

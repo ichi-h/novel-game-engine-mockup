@@ -1,10 +1,11 @@
-import { describe, expect, mock, test } from 'bun:test';
+import { describe, expect, test, mock } from 'bun:test';
 import type { BusTrack } from '@/mixer';
 import * as mixerModule from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import type { ErrorMessage } from '@/update/message-handlers/general/error';
 import { type AddTrackMessage, addTrack, handleAddTrack } from '../add-track';
+import { handleApplyMixer } from '../apply-mixer';
 
 describe('addTrack', () => {
   describe('normal cases', () => {
@@ -57,7 +58,13 @@ describe('handleAddTrack', () => {
         id: 'track-1',
         src: 'audio/bgm.mp3',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleAddTrack(model, message, update);
@@ -98,7 +105,13 @@ describe('handleAddTrack', () => {
         volume: 0.7,
         loop: { start: 0, end: 44100 },
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleAddTrack(model, message, update);

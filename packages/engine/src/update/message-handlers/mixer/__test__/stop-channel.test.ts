@@ -8,6 +8,7 @@ import {
   type StopChannelMessage,
   stopChannel,
 } from '../stop-channel';
+import { handleApplyMixer } from '../apply-mixer';
 
 describe('stopChannel', () => {
   describe('normal cases', () => {
@@ -58,7 +59,13 @@ describe('handleStopChannel', () => {
         type: 'StopChannel',
         channelId: 'channel-1',
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleStopChannel(model, message, update);
@@ -99,7 +106,13 @@ describe('handleStopChannel', () => {
         channelId: 'channel-1',
         fadeOutMs: 2000,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleStopChannel(model, message, update);
@@ -154,7 +167,13 @@ describe('handleStopChannel', () => {
         channelId: 'channel-2',
         fadeOutMs: 1500,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleStopChannel(model, message, update);
@@ -222,7 +241,13 @@ describe('handleStopChannel', () => {
         channelId: 'track-1',
         fadeOutMs: 1000,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleStopChannel(model, message, update);

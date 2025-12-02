@@ -1,5 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel, type NovelModel } from '@/model';
+import type { NovelMessage } from '@/update/message';
+import { handleApplyMixer } from '../apply-mixer';
 import {
   type ChangeMasterVolumeMessage,
   changeMasterVolume,
@@ -32,7 +34,13 @@ describe('handleChangeMasterVolume', () => {
         type: 'ChangeMasterVolume',
         masterVolume: 0.7,
       };
-      const update = () => model;
+      const mockApplyMixer = async () => {};
+      const update = (model: NovelModel, msg: NovelMessage) => {
+        if (msg.type === 'ApplyMixer') {
+          return handleApplyMixer(model, msg, mockApplyMixer);
+        }
+        return model;
+      };
 
       // Act
       const result = handleChangeMasterVolume(model, message, update);
