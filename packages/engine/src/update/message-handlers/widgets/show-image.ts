@@ -25,10 +25,10 @@ export const showImage = (
   };
 };
 
-export const handleShowImage = <Component>(
-  model: NovelModel<Component>,
+export const handleShowImage = (
+  model: NovelModel,
   msg: ShowImageMessage,
-): NovelModel<Component> => {
+): NovelModel => {
   const newImg = img({
     src: msg.src,
     ...(msg.id !== undefined && { id: msg.id }),

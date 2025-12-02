@@ -17,19 +17,19 @@ export const error = (value: Error): ErrorMessage => {
   };
 };
 
-export const handleError = <Component>(
-  model: NovelModel<Component>,
+export const handleError = (
+  model: NovelModel,
   msg: ErrorMessage,
-): ReturnModel<NovelModel<Component>, never> => {
+): ReturnModel<NovelModel, never> => {
   return {
     ...model,
     status: { value: 'Error', error: msg.value },
   };
 };
 
-export const handleRecoverError = <Component>(
-  model: NovelModel<Component>,
-): ReturnModel<NovelModel<Component>, never> => {
+export const handleRecoverError = (
+  model: NovelModel,
+): ReturnModel<NovelModel, never> => {
   return {
     ...model,
     status: { value: 'Processed' },

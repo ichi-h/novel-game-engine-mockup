@@ -1,10 +1,9 @@
 import type { NovelModel, TextBoxWidget } from 'engine';
 import { NovelWidgetDriver } from '../novel-widget-driver';
-import type { ReactComponentDriver } from '../type';
 
 interface Props {
   widget: TextBoxWidget;
-  model: NovelModel<ReactComponentDriver>;
+  model: NovelModel;
 }
 
 export const TextBox = ({ widget, model }: Props) => {

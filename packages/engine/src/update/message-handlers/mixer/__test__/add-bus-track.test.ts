@@ -48,7 +48,7 @@ describe('handleAddBusTrack', () => {
   describe('normal cases', () => {
     test('adds BusTrack to mixer root level with default volume', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       const message: AddBusTrackMessage = {
         type: 'AddBusTrack',
         id: 'bus-track-1',
@@ -84,7 +84,7 @@ describe('handleAddBusTrack', () => {
         volume: 1.0,
         channels: [],
       };
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [parentBusTrack];
       const message: AddBusTrackMessage = {
         type: 'AddBusTrack',
@@ -134,7 +134,7 @@ describe('handleAddBusTrack', () => {
         volume: 1.0,
         channels: [],
       };
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [existingBusTrack];
       const message: AddBusTrackMessage = {
         type: 'AddBusTrack',
@@ -142,8 +142,8 @@ describe('handleAddBusTrack', () => {
       };
       let errorMessage: string | null = null;
       const update = (
-        _model: NovelModel<string>,
-        msg: NovelMessage<string>,
+        _model: NovelModel,
+        msg: NovelMessage,
       ) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
@@ -164,7 +164,7 @@ describe('handleAddBusTrack', () => {
 
     test('handles error when parentBusTrackId does not exist', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       const message: AddBusTrackMessage = {
         type: 'AddBusTrack',
         id: 'bus-track-1',
@@ -172,8 +172,8 @@ describe('handleAddBusTrack', () => {
       };
       let errorMessage: string | null = null;
       const update = (
-        _model: NovelModel<string>,
-        msg: NovelMessage<string>,
+        _model: NovelModel,
+        msg: NovelMessage,
       ) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
@@ -194,15 +194,15 @@ describe('handleAddBusTrack', () => {
 
     test('handles unknown error when adding BusTrack', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       const message: AddBusTrackMessage = {
         type: 'AddBusTrack',
         id: 'track-1',
       };
       let errorMessage: string | null = null;
       const update = (
-        _model: NovelModel<string>,
-        msg: NovelMessage<string>,
+        _model: NovelModel,
+        msg: NovelMessage,
       ) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;

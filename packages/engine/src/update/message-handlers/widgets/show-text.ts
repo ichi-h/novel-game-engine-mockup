@@ -50,10 +50,10 @@ export const calcAnimationTTL = (
   return maxDisplayTimePerChar * ((100 - speed) / 100) * charPosition;
 };
 
-export const handleShowText = <Component>(
-  model: NovelModel<Component>,
+export const handleShowText = (
+  model: NovelModel,
   msg: ShowTextMessage,
-): ReturnModel<NovelModel<Component>, TextAnimationCompletedMessage> => {
+): ReturnModel<NovelModel, TextAnimationCompletedMessage> => {
   const newText = text({
     content: msg.content,
     speed: msg.speed ?? model.config.textAnimationSpeed,
@@ -94,10 +94,10 @@ export const handleShowText = <Component>(
   ];
 };
 
-export const handleTextAnimationCompleted = <Component>(
-  model: NovelModel<Component>,
+export const handleTextAnimationCompleted = (
+  model: NovelModel,
   msg: TextAnimationCompletedMessage,
-): NovelModel<Component> => {
+): NovelModel => {
   return {
     ...model,
     animationTickets: model.animationTickets.filter(

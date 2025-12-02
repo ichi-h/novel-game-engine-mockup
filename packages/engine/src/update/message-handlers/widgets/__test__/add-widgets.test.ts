@@ -55,7 +55,7 @@ describe('handleAddWidgets - normal cases', () => {
       img({ id: 'img1', src: 'test1.png' }),
       img({ id: 'img2', src: 'test2.png' }),
     ];
-    const msg: AddWidgetsMessage<unknown> = {
+    const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,
     };
@@ -79,7 +79,7 @@ describe('handleAddWidgets - normal cases', () => {
       img({ id: 'img1', src: 'test1.png' }),
       img({ id: 'img2', src: 'test2.png' }),
     ];
-    const msg: AddWidgetsMessage<unknown> = {
+    const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,
       layoutId: 'parent',
@@ -99,7 +99,7 @@ describe('handleAddWidgets - normal cases', () => {
   test('handles empty widgets array without errors', () => {
     // Arrange
     const model = generateInitModel();
-    const msg: AddWidgetsMessage<unknown> = {
+    const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets: [],
     };
@@ -121,7 +121,7 @@ describe('handleAddWidgets - error cases', () => {
     model.ui = addWidget(model.ui, existingWidget);
 
     const widgets = [img({ id: 'duplicate-id', src: 'new.png' })];
-    const msg: AddWidgetsMessage<unknown> = {
+    const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,
     };
@@ -139,7 +139,7 @@ describe('handleAddWidgets - error cases', () => {
     // Arrange
     const model = generateInitModel();
     const widgets = [img({ id: 'img1', src: 'test.png' })];
-    const msg: AddWidgetsMessage<unknown> = {
+    const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,
       layoutId: 'non-existent-parent',
@@ -161,7 +161,7 @@ describe('handleAddWidgets - error cases', () => {
     model.ui = addWidget(model.ui, img({ id: 'image1', src: 'test.png' }));
 
     const widgets = [img({ id: 'img1', src: 'new.png' })];
-    const msg: AddWidgetsMessage<unknown> = {
+    const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,
       layoutId: 'image1', // Specify Image widget as parent

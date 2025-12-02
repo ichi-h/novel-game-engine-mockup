@@ -13,10 +13,10 @@ export const updateConfig = (config: NovelConfig): UpdateConfigMessage => {
   };
 };
 
-export const handleUpdateConfig = <Component>(
-  model: NovelModel<Component>,
+export const handleUpdateConfig = (
+  model: NovelModel,
   msg: UpdateConfigMessage,
-): NovelModel<Component> => {
+): NovelModel => {
   return {
     ...model,
     config: msg.config,

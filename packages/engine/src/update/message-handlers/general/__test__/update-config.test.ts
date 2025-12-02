@@ -54,7 +54,7 @@ describe('handleUpdateConfig', () => {
   describe('normal cases', () => {
     test('updates model config with new config', () => {
       // Arrange
-      const model = generateInitModel<string>();
+      const model = generateInitModel();
       const newConfig = {
         historyLength: {
           Delay: 30,

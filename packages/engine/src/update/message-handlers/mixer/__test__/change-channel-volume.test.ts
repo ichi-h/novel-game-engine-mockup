@@ -31,7 +31,7 @@ describe('handleChangeChannelVolume', () => {
   describe('normal cases', () => {
     test('updates volume of specified channel', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'track-1',
@@ -72,7 +72,7 @@ describe('handleChangeChannelVolume', () => {
 
     test('updates only specified channel when multiple channels exist', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'track-1',
@@ -142,7 +142,7 @@ describe('handleChangeChannelVolume', () => {
           },
         ],
       };
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [busTrack];
       const message: ChangeChannelVolumeMessage = {
         type: 'ChangeChannelVolume',
@@ -182,7 +182,7 @@ describe('handleChangeChannelVolume', () => {
   describe('error cases', () => {
     test('handles error when channelId does not exist', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'track-1',
@@ -199,8 +199,8 @@ describe('handleChangeChannelVolume', () => {
       };
       let errorMessage: string | null = null;
       const update = (
-        _model: NovelModel<string>,
-        msg: NovelMessage<string>,
+        _model: NovelModel,
+        msg: NovelMessage,
       ) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;

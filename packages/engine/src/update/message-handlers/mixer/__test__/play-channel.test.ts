@@ -59,7 +59,7 @@ describe('handlePlayChannel', () => {
   describe('normal cases', () => {
     test('changes channel to playing status with only required parameters', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -103,7 +103,7 @@ describe('handlePlayChannel', () => {
 
     test('changes channel to playing status with all optional parameters', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -151,7 +151,7 @@ describe('handlePlayChannel', () => {
 
     test('changes only specified channel when multiple channels exist', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -242,7 +242,7 @@ describe('handlePlayChannel', () => {
           },
         ],
       };
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [busTrack];
       const message: PlayChannelMessage = {
         type: 'PlayChannel',
@@ -285,7 +285,7 @@ describe('handlePlayChannel', () => {
   describe('error cases', () => {
     test('handles error when channelId does not exist', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -301,8 +301,8 @@ describe('handlePlayChannel', () => {
       };
       let errorMessage: string | null = null;
       const update = (
-        _model: NovelModel<string>,
-        msg: NovelMessage<string>,
+        _model: NovelModel,
+        msg: NovelMessage,
       ) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;

@@ -8,8 +8,8 @@ export interface NovelWidgetBase {
   type: string;
 }
 
-export type NovelWidget<Component = unknown> =
-  | LayoutWidget<Component>
+export type NovelWidget =
+  | LayoutWidget
   | ImageWidget
   | TextBoxWidget
   | TextWidget;

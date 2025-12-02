@@ -30,26 +30,26 @@ export interface AnimationTicket {
   nextMessageCaught: 'ignore' | 'complete' | 'interrupt';
 }
 
-export interface NovelModel<Component> {
+export interface NovelModel {
   status:
     | {
         value: 'Processed';
       }
     | {
         value: 'Intercepted';
-        message: NovelMessage<Component>;
+        message: NovelMessage;
       }
     | {
         value: 'Error';
         error: Error;
       };
   mixer: Mixer;
-  ui: NovelWidget<Component>[];
+  ui: NovelWidget[];
   isDelaying: boolean;
   isApplyingMixer: boolean;
   animationTickets: AnimationTicket[];
   history: {
-    [K in NovelMessageType]: Extract<NovelMessage<Component>, { type: K }>[];
+    [K in NovelMessageType]: Extract<NovelMessage, { type: K }>[];
   };
   config: NovelConfig;
 }
@@ -91,9 +91,7 @@ const createDefaultConfig = () =>
     textAnimationSpeed: 50,
   }) satisfies NovelConfig;
 
-export const generateInitModel = <Component>(
-  initConfig?: InitModelConfig,
-): NovelModel<Component> => {
+export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
   const defaultConfig = createDefaultConfig();
 
   const config: NovelConfig = {

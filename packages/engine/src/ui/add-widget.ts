@@ -6,11 +6,11 @@ import { isLayout, type NovelWidget } from './widgets';
  * Add widgets to layouts with the specified ID.
  * @returns Updated widgets array
  */
-const addToLayout = <Component>(
-  widget: NovelWidget<Component>,
+const addToLayout = (
+  widget: NovelWidget,
   layoutId: string,
-  widgets: NovelWidget<Component>[],
-): NovelWidget<Component>[] => {
+  widgets: NovelWidget[],
+): NovelWidget[] => {
   return widgets.map((w) => {
     if (isLayout(w)) {
       // Found the target layout
@@ -41,11 +41,11 @@ const addToLayout = <Component>(
  * @throws Error if layoutId doesn't exist
  * @throws Error if widget.id already exists (checks recursively)
  */
-export const addWidget = <Component>(
-  widgets: NovelWidget<Component>[],
-  widget: NovelWidget<Component>,
+export const addWidget = (
+  widgets: NovelWidget[],
+  widget: NovelWidget,
   layoutId?: string,
-): NovelWidget<Component>[] => {
+): NovelWidget[] => {
   if (widget.id !== undefined && hasId(widgets, widget.id)) {
     throw new Error(`Widget with id "${widget.id}" already exists`);
   }
@@ -55,7 +55,7 @@ export const addWidget = <Component>(
     return [...widgets, widget];
   }
 
-  const layoutWidget = findById<Component>(widgets, layoutId);
+  const layoutWidget = findById(widgets, layoutId);
   if (
     layoutWidget === null ||
     (isLayout(layoutWidget) === false && isLayout(layoutWidget) === false)

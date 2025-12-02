@@ -23,18 +23,18 @@ import type {
   UpdateConfigMessage,
 } from './message-handlers';
 
-export type NovelMessage<Component> =
+export type NovelMessage =
   // General
   | DelayMessage
   | DelayCompletedMessage
-  | SequenceMessage<NovelMessage<Component>>
+  | SequenceMessage<NovelMessage>
   | UpdateConfigMessage
   | ErrorMessage
   | RecoverErrorMessage
   // Widgets
   | AddLayoutMessage
   | ShowImageMessage
-  | AddWidgetsMessage<Component>
+  | AddWidgetsMessage
   | AddTextBoxMessage
   | ShowTextMessage
   | TextAnimationCompletedMessage
@@ -50,4 +50,4 @@ export type NovelMessage<Component> =
   | RemoveChannelMessage
   | ApplyMixerCompletedMessage;
 
-export type NovelMessageType = NovelMessage<unknown>['type'];
+export type NovelMessageType = NovelMessage['type'];

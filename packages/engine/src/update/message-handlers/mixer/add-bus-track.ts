@@ -25,12 +25,12 @@ export const addBusTrack = (
   };
 };
 
-export const handleAddBusTrack = <Component>(
-  model: NovelModel<Component>,
+export const handleAddBusTrack = (
+  model: NovelModel,
   msg: AddBusTrackMessage,
-  update: Update<NovelModel<Component>, NovelMessage<Component>>,
+  update: Update<NovelModel, NovelMessage>,
   applyMixer: ApplyMixer,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+): ReturnModel<NovelModel, NovelMessage> => {
   const newBusTrack: BusTrack = {
     id: msg.id,
     type: 'BusTrack',

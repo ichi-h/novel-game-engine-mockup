@@ -44,7 +44,7 @@ describe('handleStopChannel', () => {
   describe('normal cases', () => {
     test('stops channel without fadeOutMs', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -85,7 +85,7 @@ describe('handleStopChannel', () => {
 
     test('stops channel with fadeOutMs', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -127,7 +127,7 @@ describe('handleStopChannel', () => {
 
     test('stops only specified channel when multiple channels exist', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -218,7 +218,7 @@ describe('handleStopChannel', () => {
           },
         ],
       };
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [busTrack];
       const message: StopChannelMessage = {
         type: 'StopChannel',
@@ -259,7 +259,7 @@ describe('handleStopChannel', () => {
   describe('error cases', () => {
     test('handles error when channelId does not exist', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.channels = [
         {
           id: 'channel-1',
@@ -275,8 +275,8 @@ describe('handleStopChannel', () => {
       };
       let errorMessage: string | null = null;
       const update = (
-        _model: NovelModel<string>,
-        msg: NovelMessage<string>,
+        _model: NovelModel,
+        msg: NovelMessage,
       ) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;

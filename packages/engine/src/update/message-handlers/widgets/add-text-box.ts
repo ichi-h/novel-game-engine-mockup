@@ -22,10 +22,10 @@ export const addTextBox = (
   };
 };
 
-export const handleAddTextBox = <Component>(
-  model: NovelModel<Component>,
+export const handleAddTextBox = (
+  model: NovelModel,
   msg: AddTextBoxMessage,
-): NovelModel<Component> => {
+): NovelModel => {
   const newTextBox = textBox({
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),

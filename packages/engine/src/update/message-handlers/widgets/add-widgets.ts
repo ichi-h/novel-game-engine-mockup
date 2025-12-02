@@ -2,16 +2,16 @@ import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
 import { addWidget, type NovelWidget } from '@/ui';
 
-export interface AddWidgetsMessage<Component> extends BaseMessage {
+export interface AddWidgetsMessage extends BaseMessage {
   type: 'AddWidgets';
-  widgets: NovelWidget<Component>[];
+  widgets: NovelWidget[];
   layoutId?: string;
 }
 
-export const addWidgets = <Component>(
-  widgets: NovelWidget<Component>[],
+export const addWidgets = (
+  widgets: NovelWidget[],
   layoutId?: string,
-): AddWidgetsMessage<Component> => {
+): AddWidgetsMessage => {
   return {
     type: 'AddWidgets',
     widgets,
@@ -19,10 +19,10 @@ export const addWidgets = <Component>(
   };
 };
 
-export const handleAddWidgets = <Component>(
-  model: NovelModel<Component>,
-  msg: AddWidgetsMessage<Component>,
-): NovelModel<Component> => {
+export const handleAddWidgets = (
+  model: NovelModel,
+  msg: AddWidgetsMessage,
+): NovelModel => {
   return {
     ...model,
     ui: msg.widgets.reduce(

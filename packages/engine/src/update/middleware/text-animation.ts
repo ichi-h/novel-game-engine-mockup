@@ -16,11 +16,11 @@ const ignoreMessageTypes: NovelMessageType[] = [
   'UpdateConfig',
 ];
 
-export const textAnimationMiddleware = <Component>(
-  model: NovelModel<Component>,
-  msg: NovelMessage<Component>,
-  next: MiddlewareNext<Component>,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+export const textAnimationMiddleware = (
+  model: NovelModel,
+  msg: NovelMessage,
+  next: MiddlewareNext,
+): ReturnModel<NovelModel, NovelMessage> => {
   if (
     ignoreMessageTypes.includes(msg.type) ||
     (msg.type === 'Sequence' &&

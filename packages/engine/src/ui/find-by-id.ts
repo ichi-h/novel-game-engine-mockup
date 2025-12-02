@@ -4,10 +4,10 @@ import { isLayout, isTextBox, type NovelWidget } from './widgets';
  * Recursively find a widget by ID
  * @returns The found widget or null if not found
  */
-export const findById = <Component>(
-  widgets: NovelWidget<Component>[],
+export const findById = (
+  widgets: NovelWidget[],
   id: string,
-): NovelWidget<Component> | null => {
+): NovelWidget | null => {
   for (const widget of widgets) {
     if (widget.id === id) {
       return widget;

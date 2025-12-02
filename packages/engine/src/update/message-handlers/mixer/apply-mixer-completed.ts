@@ -7,11 +7,11 @@ export interface ApplyMixerCompletedMessage extends BaseMessage {
   error: Error | null;
 }
 
-export const handleApplyMixerCompleted = <Component>(
-  model: NovelModel<Component>,
+export const handleApplyMixerCompleted = (
+  model: NovelModel,
   msg: ApplyMixerCompletedMessage,
-  update: Update<NovelModel<Component>, NovelMessage<Component>>,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+  update: Update<NovelModel, NovelMessage>,
+): ReturnModel<NovelModel, NovelMessage> => {
   const updatedModel = {
     ...model,
     isApplyingMixer: false,

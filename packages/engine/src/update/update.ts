@@ -27,31 +27,31 @@ import {
   handleUpdateConfig,
 } from './message-handlers';
 
-export type MiddlewareNext<Component> = (
-  model: NovelModel<Component>,
-  msg: NovelMessage<Component>,
-) => ReturnModel<NovelModel<Component>, NovelMessage<Component>>;
+export type MiddlewareNext = (
+  model: NovelModel,
+  msg: NovelMessage,
+) => ReturnModel<NovelModel, NovelMessage>;
 
-export type Middleware<Component> = (
-  model: NovelModel<Component>,
-  msg: NovelMessage<Component>,
-  next: MiddlewareNext<Component>,
-) => ReturnModel<NovelModel<Component>, NovelMessage<Component>>;
+export type Middleware = (
+  model: NovelModel,
+  msg: NovelMessage,
+  next: MiddlewareNext,
+) => ReturnModel<NovelModel, NovelMessage>;
 
 export const update =
-  <Component>(
+  (
     applyMixer: ApplyMixer,
-    middlewares: Middleware<Component>[] = [],
+    middlewares: Middleware[] = [],
   ) =>
   (
-    model: NovelModel<Component>,
-    msg: NovelMessage<Component>,
-  ): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
-    const reducer: MiddlewareNext<Component> = (
-      model: NovelModel<Component>,
-      msg: NovelMessage<Component>,
+    model: NovelModel,
+    msg: NovelMessage,
+  ): ReturnModel<NovelModel, NovelMessage> => {
+    const reducer: MiddlewareNext = (
+      model: NovelModel,
+      msg: NovelMessage,
     ) => {
-      const updateWrapped = update<Component>(applyMixer, []);
+      const updateWrapped = update(applyMixer, []);
 
       switch (msg.type) {
         // General
@@ -123,7 +123,7 @@ export const update =
     }
 
     const composeMiddlewares = middlewares.reduceRight<
-      MiddlewareNext<Component>
+      MiddlewareNext
     >((next, cur) => {
       return (model, msg) => cur(model, msg, next);
     }, reducer);

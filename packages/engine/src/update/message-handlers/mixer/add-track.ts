@@ -39,12 +39,12 @@ export const addTrack = (
   };
 };
 
-export const handleAddTrack = <Component>(
-  model: NovelModel<Component>,
+export const handleAddTrack = (
+  model: NovelModel,
   msg: AddTrackMessage,
-  update: Update<NovelModel<Component>, NovelMessage<Component>>,
+  update: Update<NovelModel, NovelMessage>,
   applyMixer: ApplyMixer,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+): ReturnModel<NovelModel, NovelMessage> => {
   const track: Track = {
     id: msg.id,
     type: 'Track',

@@ -17,10 +17,10 @@ export const delay = (durationMs: number): DelayMessage => {
   };
 };
 
-export const handleDelay = <Component>(
-  model: NovelModel<Component>,
+export const handleDelay = (
+  model: NovelModel,
   msg: DelayMessage,
-): ReturnModel<NovelModel<Component>, DelayCompletedMessage> => {
+): ReturnModel<NovelModel, DelayCompletedMessage> => {
   model.isDelaying = true;
   return [
     model,
@@ -33,10 +33,10 @@ export const handleDelay = <Component>(
   ];
 };
 
-export const handleDelayCompleted = <Component>(
-  model: NovelModel<Component>,
+export const handleDelayCompleted = (
+  model: NovelModel,
   _msg: DelayCompletedMessage,
-): NovelModel<Component> => {
+): NovelModel => {
   model.isDelaying = false;
   return model;
 };

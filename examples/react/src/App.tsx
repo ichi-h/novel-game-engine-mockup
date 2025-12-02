@@ -24,7 +24,6 @@ import {
   AudioFetcher,
   createApplyMixer,
   NovelWidgetDriver,
-  type ReactComponentDriver,
 } from 'driver';
 import bgm from './bgm.mp3';
 import homeBg from './home.jpg';
@@ -33,8 +32,8 @@ import reactLogo from './react.svg';
 import shoppingMallBg from './shopping_mall.jpg';
 
 const useElement = elmish<
-  NovelModel<ReactComponentDriver>,
-  NovelMessage<ReactComponentDriver>
+  NovelModel,
+  NovelMessage
 >();
 
 // メッセージ生成ヘルパー関数
@@ -55,14 +54,14 @@ const CHARACTER_COLORS = {
 } as const;
 
 // テキストボックスをクリア
-const clearTextBox = (): NovelMessage<ReactComponentDriver> =>
+const clearTextBox = (): NovelMessage =>
   clearTextBoxMsg(TEXTBOX_ID);
 
 // キャラクター名を表示
 const showCharacterName = (
   name: string,
   color: string,
-): NovelMessage<ReactComponentDriver> =>
+): NovelMessage =>
   showText(
     TEXTBOX_ID,
     name,
@@ -72,11 +71,11 @@ const showCharacterName = (
   );
 
 // 台詞を表示
-const showDialog = (text: string): NovelMessage<ReactComponentDriver> =>
+const showDialog = (text: string): NovelMessage =>
   showText(TEXTBOX_ID, text, undefined, COMMON_STYLES.dialogText);
 
 // ナレーション（キャラクター名なし）
-const showNarration = (text: string): NovelMessage<ReactComponentDriver>[] => [
+const showNarration = (text: string): NovelMessage[] => [
   clearTextBox(),
   showDialog(text),
 ];
@@ -86,7 +85,7 @@ const showCharacterDialog = (
   name: string,
   color: string,
   text: string,
-): NovelMessage<ReactComponentDriver>[] => [
+): NovelMessage[] => [
   clearTextBox(),
   showCharacterName(name, color),
   showDialog(text),
@@ -96,7 +95,7 @@ const showCharacterDialog = (
 const showCharacter = (
   id: string,
   src: string,
-): NovelMessage<ReactComponentDriver> =>
+): NovelMessage =>
   showImage(CHARACTER_LAYOUT_ID, src, id, COMMON_STYLES.characterImage);
 
 // キャラクター登場シーン（画像 + 名前 + 台詞）
@@ -106,7 +105,7 @@ const introduceCharacter = (
   name: string,
   color: string,
   text: string,
-): NovelMessage<ReactComponentDriver>[] => [
+): NovelMessage[] => [
   clearTextBox(),
   showCharacter(id, src),
   showCharacterName(name, color),
@@ -117,7 +116,7 @@ const introduceCharacter = (
 const changeBackground = (
   id: string,
   src: string,
-): NovelMessage<ReactComponentDriver> =>
+): NovelMessage =>
   showImage(
     BG_LAYER_ID,
     src,
@@ -126,7 +125,7 @@ const changeBackground = (
   );
 
 // ノベルゲームのシーン定義
-const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
+const createNovelGame = (): NovelMessage[] => {
   return [
     // シーン2: タイトルフェードアウトとゲーム開始
     sequence([
@@ -277,7 +276,7 @@ const createNovelGame = (): NovelMessage<ReactComponentDriver>[] => {
 };
 
 // 初期化メッセージ（自動実行）
-const initMessage: NovelMessage<ReactComponentDriver> = sequence([
+const initMessage: NovelMessage = sequence([
   addTrack('bgm', bgm, undefined, 1, { start: 0, end: 7650432 }),
   addLayout(
     'root',
@@ -325,7 +324,7 @@ const initMessage: NovelMessage<ReactComponentDriver> = sequence([
 ]);
 
 const messages = createNovelGame();
-const initModel = generateInitModel<ReactComponentDriver>();
+const initModel = generateInitModel();
 
 const fetcher = new AudioFetcher();
 const applyMixer = createApplyMixer(fetcher);

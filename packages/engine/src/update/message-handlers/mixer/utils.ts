@@ -5,10 +5,10 @@ import type { NovelMessage } from '@/update/message';
 /**
  * Create a command that applies mixer changes and dispatches ApplyMixerCompleted message.
  */
-export const createApplyMixerCommand = <Component>(
+export const createApplyMixerCommand = (
   updatedMixer: Mixer,
   applyMixer: ApplyMixer,
-): Cmd<NovelMessage<Component>> => {
+): Cmd<NovelMessage> => {
   return async () => {
     let error: Error | null = null;
     try {

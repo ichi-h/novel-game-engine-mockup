@@ -38,12 +38,12 @@ export const playChannel = (
   };
 };
 
-export const handlePlayChannel = <Component>(
-  model: NovelModel<Component>,
+export const handlePlayChannel = (
+  model: NovelModel,
   msg: PlayChannelMessage,
-  update: Update<NovelModel<Component>, NovelMessage<Component>>,
+  update: Update<NovelModel, NovelMessage>,
   applyMixer: ApplyMixer,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+): ReturnModel<NovelModel, NovelMessage> => {
   if (!hasId(model.mixer, msg.channelId)) {
     return update(model, {
       type: 'Error',

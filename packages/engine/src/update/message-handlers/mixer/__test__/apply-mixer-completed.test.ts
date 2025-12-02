@@ -11,7 +11,7 @@ describe('handleApplyMixerCompleted', () => {
   describe('normal cases', () => {
     test('updates model with isApplyingMixer set to false when error is null', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.isApplyingMixer = true;
       const message: ApplyMixerCompletedMessage = {
         type: 'ApplyMixerCompleted',
@@ -32,18 +32,18 @@ describe('handleApplyMixerCompleted', () => {
 
     test('dispatches Error message when error is not null', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.isApplyingMixer = true;
       const testError = new Error('Test mixer error');
       const message: ApplyMixerCompletedMessage = {
         type: 'ApplyMixerCompleted',
         error: testError,
       };
-      let capturedMessage: NovelMessage<string> | undefined;
-      let capturedModel: NovelModel<string> | undefined;
+      let capturedMessage: NovelMessage | undefined;
+      let capturedModel: NovelModel | undefined;
       const update = (
-        _model: NovelModel<string>,
-        msg: NovelMessage<string>,
+        _model: NovelModel,
+        msg: NovelMessage,
       ) => {
         capturedModel = _model;
         capturedMessage = msg;

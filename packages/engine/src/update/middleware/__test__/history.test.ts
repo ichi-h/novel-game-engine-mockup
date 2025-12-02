@@ -7,19 +7,19 @@ import type { NovelMessage } from '../../message';
 import type { MiddlewareNext } from '../../update';
 import { historyMiddleware } from '../history';
 
-const generateInitModel = (): NovelModel<string> =>
-  _generateInitModel<string>();
+const generateInitModel = (): NovelModel =>
+  _generateInitModel();
 
 describe('historyMiddleware', () => {
   describe('normal cases', () => {
     test('adds message to history correctly', () => {
       // Arrange
       const initialModel = generateInitModel();
-      const message: NovelMessage<string> = {
+      const message: NovelMessage = {
         type: 'Delay',
         durationMs: 1000,
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(initialModel, message, next);
@@ -36,14 +36,14 @@ describe('historyMiddleware', () => {
     test('preserves command when next returns [model, cmd]', () => {
       // Arrange
       const initialModel = generateInitModel();
-      const message: NovelMessage<string> = {
+      const message: NovelMessage = {
         type: 'ShowText',
         textBoxId: 'textbox1',
         content: 'Hello',
       };
       const mockCmd = () =>
         Promise.resolve({ type: 'DelayCompleted' as const });
-      const next: MiddlewareNext<string> = (model, _msg) => [model, mockCmd];
+      const next: MiddlewareNext = (model, _msg) => [model, mockCmd];
 
       // Act
       const result = historyMiddleware(initialModel, message, next);
@@ -59,11 +59,11 @@ describe('historyMiddleware', () => {
     test('sets command to undefined when next returns only model', () => {
       // Arrange
       const initialModel = generateInitModel();
-      const message: NovelMessage<string> = {
+      const message: NovelMessage = {
         type: 'Error',
         value: new Error('Test error'),
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(initialModel, message, next);
@@ -84,7 +84,7 @@ describe('historyMiddleware', () => {
         { type: 'AddLayout' as const, id: 'layout3' },
       ];
       const model = generateInitModel();
-      const initialModel: NovelModel<string> = {
+      const initialModel: NovelModel = {
         ...model,
         history: {
           ...model.history,
@@ -98,11 +98,11 @@ describe('historyMiddleware', () => {
           },
         },
       };
-      const newMessage: NovelMessage<string> = {
+      const newMessage: NovelMessage = {
         type: 'AddLayout',
         id: 'layout4',
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(initialModel, newMessage, next);
@@ -124,7 +124,7 @@ describe('historyMiddleware', () => {
         { type: 'ShowImage' as const, layoutId: 'layout1', src: 'image2.png' },
       ];
       const initialModel = generateInitModel();
-      const model: NovelModel<string> = {
+      const model: NovelModel = {
         ...initialModel,
         history: {
           ...initialModel.history,
@@ -138,12 +138,12 @@ describe('historyMiddleware', () => {
           },
         },
       };
-      const newMessage: NovelMessage<string> = {
+      const newMessage: NovelMessage = {
         type: 'ShowImage',
         layoutId: 'layout1',
         src: 'image3.png',
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(model, newMessage, next);
@@ -165,7 +165,7 @@ describe('historyMiddleware', () => {
         { type: 'PlayChannel' as const, channelId: 'ch2' },
       ];
       const initialModel = generateInitModel();
-      const model: NovelModel<string> = {
+      const model: NovelModel = {
         ...initialModel,
         history: {
           ...initialModel.history,
@@ -179,11 +179,11 @@ describe('historyMiddleware', () => {
           },
         },
       };
-      const newMessage: NovelMessage<string> = {
+      const newMessage: NovelMessage = {
         type: 'PlayChannel',
         channelId: 'ch3',
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(model, newMessage, next);
@@ -199,18 +199,18 @@ describe('historyMiddleware', () => {
 
     test('manages history independently for different message types', () => {
       // Arrange
-      const delayMessage: NovelMessage<string> = {
+      const delayMessage: NovelMessage = {
         type: 'Delay',
         durationMs: 500,
       };
-      const initialModel: NovelModel<string> = {
+      const initialModel: NovelModel = {
         ...generateInitModel(),
         history: {
           ...generateInitModel().history,
           AddLayout: [{ type: 'AddLayout' as const, id: 'existing' }],
         },
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(initialModel, delayMessage, next);
@@ -230,22 +230,22 @@ describe('historyMiddleware', () => {
 
     test('preserves existing history when adding new message', () => {
       // Arrange
-      const existingMessage: NovelMessage<string> = {
+      const existingMessage: NovelMessage = {
         type: 'StopChannel',
         channelId: 'ch1',
       };
-      const initialModel: NovelModel<string> = {
+      const initialModel: NovelModel = {
         ...generateInitModel(),
         history: {
           ...generateInitModel().history,
           StopChannel: [existingMessage],
         },
       };
-      const newMessage: NovelMessage<string> = {
+      const newMessage: NovelMessage = {
         type: 'StopChannel',
         channelId: 'ch2',
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(initialModel, newMessage, next);
@@ -262,12 +262,12 @@ describe('historyMiddleware', () => {
     test('adds first message to empty history', () => {
       // Arrange
       const initialModel = generateInitModel();
-      const message: NovelMessage<string> = {
+      const message: NovelMessage = {
         type: 'AddTextBox',
         id: 'textbox1',
         layoutId: 'layout1',
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(initialModel, message, next);
@@ -283,7 +283,7 @@ describe('historyMiddleware', () => {
     test('does not retain history when historyLength is 0', () => {
       // Arrange
       const initialModel = generateInitModel();
-      const model: NovelModel<string> = {
+      const model: NovelModel = {
         ...initialModel,
         config: {
           ...initialModel.config,
@@ -293,11 +293,11 @@ describe('historyMiddleware', () => {
           },
         },
       };
-      const message: NovelMessage<string> = {
+      const message: NovelMessage = {
         type: 'ChangeMasterVolume',
         masterVolume: 0.5,
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(model, message, next);
@@ -317,7 +317,7 @@ describe('historyMiddleware', () => {
         volume: 0.3,
       };
       const initialModel = generateInitModel();
-      const model: NovelModel<string> = {
+      const model: NovelModel = {
         ...initialModel,
         history: {
           ...initialModel.history,
@@ -331,12 +331,12 @@ describe('historyMiddleware', () => {
           },
         },
       };
-      const newMessage: NovelMessage<string> = {
+      const newMessage: NovelMessage = {
         type: 'ChangeChannelVolume',
         channelId: 'ch2',
         volume: 0.8,
       };
-      const next: MiddlewareNext<string> = (model, _msg) => model;
+      const next: MiddlewareNext = (model, _msg) => model;
 
       // Act
       const result = historyMiddleware(model, newMessage, next);

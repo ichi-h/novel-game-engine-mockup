@@ -1,10 +1,9 @@
 import type { LayoutWidget, NovelModel } from 'engine';
 import { NovelWidgetDriver } from '../novel-widget-driver';
-import type { ReactComponentDriver } from '../type';
 
 interface Props {
-  widget: LayoutWidget<ReactComponentDriver>;
-  model: NovelModel<ReactComponentDriver>;
+  widget: LayoutWidget;
+  model: NovelModel;
 }
 
 export const Layout = ({ widget, model }: Props) => {

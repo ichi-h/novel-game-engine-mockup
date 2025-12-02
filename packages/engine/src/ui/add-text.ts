@@ -11,11 +11,11 @@ import {
  * Add TextWidget to TextBoxWidget with the specified ID.
  * @returns Updated widgets array, or null if textbox not found
  */
-const addToTextBox = <Component>(
+const addToTextBox = (
   textWidget: TextWidget,
   textBoxId: string,
-  widgets: NovelWidget<Component>[],
-): NovelWidget<Component>[] => {
+  widgets: NovelWidget[],
+): NovelWidget[] => {
   return widgets.map((w) => {
     // Found the target textbox
     if (w.id === textBoxId && isTextBox(w)) {
@@ -48,16 +48,16 @@ const addToTextBox = <Component>(
  * @throws Error if textBoxId doesn't exist
  * @throws Error if textWidget.id already exists
  */
-export const addText = <Component>(
-  widgets: NovelWidget<Component>[],
+export const addText = (
+  widgets: NovelWidget[],
   textWidget: TextWidget,
   textBoxId: string,
-): NovelWidget<Component>[] => {
+): NovelWidget[] => {
   if (textWidget.id !== undefined && hasId(widgets, textWidget.id)) {
     throw new Error(`Widget with id "${textWidget.id}" already exists`);
   }
 
-  const widget = findById<Component>(widgets, textBoxId);
+  const widget = findById(widgets, textBoxId);
   if (widget === null || isTextBox(widget) === false) {
     throw new Error(`TextBox with id "${textBoxId}" not found`);
   }

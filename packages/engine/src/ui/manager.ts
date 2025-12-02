@@ -5,14 +5,14 @@ import {
   type TextWidget,
 } from './widgets';
 
-export class WidgetManager<Component = unknown> {
-  private _widgets: NovelWidget<Component>[];
+export class WidgetManager {
+  private _widgets: NovelWidget[];
 
-  constructor(widgets: NovelWidget<Component>[] = []) {
+  constructor(widgets: NovelWidget[] = []) {
     this._widgets = widgets;
   }
 
-  public get widgets(): readonly NovelWidget<Component>[] {
+  public get widgets(): readonly NovelWidget[] {
     return Object.freeze([...this._widgets]);
   }
 
@@ -23,7 +23,7 @@ export class WidgetManager<Component = unknown> {
    * @throws Error if layoutId doesn't exist
    * @throws Error if widget.id already exists (checks recursively)
    */
-  addWidget(widget: NovelWidget<Component>, layoutId?: string): void {
+  addWidget(widget: NovelWidget, layoutId?: string): void {
     // Check for duplicate IDs recursively
     if (widget.id !== undefined && this.hasId(widget.id)) {
       throw new Error(`Widget with id "${widget.id}" already exists`);
@@ -73,10 +73,7 @@ export class WidgetManager<Component = unknown> {
    * Recursively checks if an ID exists in widgets
    * @returns true if found, false otherwise
    */
-  private hasIdInWidgets(
-    id: string,
-    widgets: NovelWidget<Component>[],
-  ): boolean {
+  private hasIdInWidgets(id: string, widgets: NovelWidget[]): boolean {
     for (const obj of widgets) {
       if (obj.id === id) {
         return true;
@@ -104,10 +101,7 @@ export class WidgetManager<Component = unknown> {
    * Recursively find a widget by ID
    * @returns The found widget or null if not found
    */
-  private findById(
-    id: string,
-    widgets?: NovelWidget<Component>[],
-  ): NovelWidget<Component> | null {
+  private findById(id: string, widgets?: NovelWidget[]): NovelWidget | null {
     const searchWidgets = widgets ?? this._widgets;
 
     for (const obj of searchWidgets) {
@@ -140,9 +134,9 @@ export class WidgetManager<Component = unknown> {
    * @returns true if the layout was found and widget was added, false otherwise
    */
   private addToLayout(
-    widget: NovelWidget<Component>,
+    widget: NovelWidget,
     layoutId: string,
-    widgets: NovelWidget<Component>[],
+    widgets: NovelWidget[],
   ): boolean {
     for (const obj of widgets) {
       if (obj.id === layoutId) {
@@ -172,7 +166,7 @@ export class WidgetManager<Component = unknown> {
   private addToTextBox(
     textWidget: TextWidget,
     textBoxId: string,
-    widgets: NovelWidget<Component>[],
+    widgets: NovelWidget[],
   ): boolean {
     for (const obj of widgets) {
       // Found the target textbox
@@ -228,11 +222,8 @@ export class WidgetManager<Component = unknown> {
    * @param id - The ID of the widget to remove
    * @param widgets - The array of widgets to remove from
    */
-  private removeByIdFromWidgets(
-    id: string,
-    widgets: NovelWidget<Component>[],
-  ): NovelWidget<Component>[] {
-    const result: NovelWidget<Component>[] = [];
+  private removeByIdFromWidgets(id: string, widgets: NovelWidget[]): NovelWidget[] {
+    const result: NovelWidget[] = [];
 
     for (const widget of widgets) {
       if (widget.id === id) {

@@ -1,10 +1,9 @@
 import type { NovelModel, NovelWidget } from 'engine';
-import type { ReactComponentDriver } from './type';
 import { Image, Layout, Text, TextBox } from './widgets';
 
 interface Props {
-  widgets: NovelWidget<ReactComponentDriver>[];
-  model: NovelModel<ReactComponentDriver>;
+  widgets: NovelWidget[];
+  model: NovelModel;
 }
 
 export const NovelWidgetDriver = ({ widgets, model }: Props) => {

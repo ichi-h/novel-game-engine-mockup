@@ -27,7 +27,7 @@ describe('handleChangeMasterVolume', () => {
   describe('normal cases', () => {
     test('updates master volume', () => {
       // Arrange
-      const model: NovelModel<string> = generateInitModel();
+      const model: NovelModel = generateInitModel();
       model.mixer.volume = 1.0;
       const message: ChangeMasterVolumeMessage = {
         type: 'ChangeMasterVolume',

@@ -22,11 +22,11 @@ export const addLayout = (
   };
 };
 
-export const handleAddLayout = <Component>(
-  model: NovelModel<Component>,
+export const handleAddLayout = (
+  model: NovelModel,
   msg: AddLayoutMessage,
-): NovelModel<Component> => {
-  const newLayout = layout<Component>({
+): NovelModel => {
+  const newLayout = layout({
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),
   })([]);

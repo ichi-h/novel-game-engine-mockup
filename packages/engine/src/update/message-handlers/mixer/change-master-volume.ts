@@ -18,11 +18,11 @@ export const changeMasterVolume = (
   };
 };
 
-export const handleChangeMasterVolume = <Component>(
-  model: NovelModel<Component>,
+export const handleChangeMasterVolume = (
+  model: NovelModel,
   msg: ChangeMasterVolumeMessage,
   applyMixer: ApplyMixer,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+): ReturnModel<NovelModel, NovelMessage> => {
   const mixer = {
     ...model.mixer,
     volume: msg.masterVolume,

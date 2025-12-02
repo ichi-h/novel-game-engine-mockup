@@ -3,11 +3,11 @@ import type { NovelModel } from '../../model';
 import type { NovelMessage } from '../message';
 import type { MiddlewareNext } from '../update';
 
-export const historyMiddleware = <Component>(
-  model: NovelModel<Component>,
-  msg: NovelMessage<Component>,
-  next: MiddlewareNext<Component>,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+export const historyMiddleware = (
+  model: NovelModel,
+  msg: NovelMessage,
+  next: MiddlewareNext,
+): ReturnModel<NovelModel, NovelMessage> => {
   const result = next(model, msg);
 
   const [newModel, cmd] = Array.isArray(result)

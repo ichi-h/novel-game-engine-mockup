@@ -8,7 +8,7 @@ describe('sequence', () => {
   describe('normal cases', () => {
     test('creates message with required fields', () => {
       // Arrange
-      const messages: NovelMessage<string>[] = [
+      const messages: NovelMessage[] = [
         { type: 'ShowText', textBoxId: 'box1', content: 'Hello' },
         { type: 'Delay', durationMs: 100 },
       ];
@@ -29,12 +29,12 @@ describe('handleSequence', () => {
   describe('normal cases', () => {
     test('processes empty message array', async () => {
       // Arrange
-      const model = generateInitModel<string>();
-      const msg: SequenceMessage<NovelMessage<string>> = {
+      const model = generateInitModel();
+      const msg: SequenceMessage<NovelMessage> = {
         type: 'Sequence',
         messages: [],
       };
-      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+      const mockUpdate: Update<NovelModel, NovelMessage> = (
         m,
         _msg,
       ) => m;
@@ -48,10 +48,10 @@ describe('handleSequence', () => {
 
     test('processes all messages when no Delay is present', async () => {
       // Arrange
-      const model = generateInitModel<string>();
+      const model = generateInitModel();
       let callCount = 0;
 
-      const msg: SequenceMessage<NovelMessage<string>> = {
+      const msg: SequenceMessage<NovelMessage> = {
         type: 'Sequence',
         messages: [
           {
@@ -67,7 +67,7 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+      const mockUpdate: Update<NovelModel, NovelMessage> = (
         m,
         _msg,
       ) => {
@@ -85,10 +85,10 @@ describe('handleSequence', () => {
 
     test('stops processing at Delay message and returns remaining messages', async () => {
       // Arrange
-      const model = generateInitModel<string>();
+      const model = generateInitModel();
       const processedMessages: string[] = [];
 
-      const msg: SequenceMessage<NovelMessage<string>> = {
+      const msg: SequenceMessage<NovelMessage> = {
         type: 'Sequence',
         messages: [
           {
@@ -105,7 +105,7 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+      const mockUpdate: Update<NovelModel, NovelMessage> = (
         m,
         msg,
       ) => {
@@ -134,10 +134,10 @@ describe('handleSequence', () => {
 
     test('stops at first Delay when multiple Delays are present', async () => {
       // Arrange
-      const model = generateInitModel<string>();
+      const model = generateInitModel();
       const processedMessages: string[] = [];
 
-      const msg: SequenceMessage<NovelMessage<string>> = {
+      const msg: SequenceMessage<NovelMessage> = {
         type: 'Sequence',
         messages: [
           {
@@ -160,7 +160,7 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+      const mockUpdate: Update<NovelModel, NovelMessage> = (
         m,
         msg,
       ) => {
@@ -191,20 +191,20 @@ describe('handleSequence', () => {
 
     test('correctly processes messages that return commands', async () => {
       // Arrange
-      const model = generateInitModel<string>();
+      const model = generateInitModel();
 
-      const msg: SequenceMessage<NovelMessage<string>> = {
+      const msg: SequenceMessage<NovelMessage> = {
         type: 'Sequence',
         messages: [{ type: 'Delay', durationMs: 1 }],
       };
 
-      const mockCmd: Cmd<NovelMessage<string>> = async () => ({
+      const mockCmd: Cmd<NovelMessage> = async () => ({
         type: 'ShowText',
         textBoxId: 'box1',
         content: 'From command',
       });
 
-      const mockUpdate: Update<NovelModel<string>, NovelMessage<string>> = (
+      const mockUpdate: Update<NovelModel, NovelMessage> = (
         m,
         _msg,
       ) => {

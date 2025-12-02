@@ -17,17 +17,17 @@ export const sequence = <Message extends BaseMessage>(
   };
 };
 
-export const handleSequence = <Component>(
-  model: NovelModel<Component>,
-  msg: SequenceMessage<NovelMessage<Component>>,
-  update: Update<NovelModel<Component>, NovelMessage<Component>>,
-): ReturnModel<NovelModel<Component>, NovelMessage<Component>> => {
+export const handleSequence = (
+  model: NovelModel,
+  msg: SequenceMessage<NovelMessage>,
+  update: Update<NovelModel, NovelMessage>,
+): ReturnModel<NovelModel, NovelMessage> => {
   if (msg.messages.length === 0) {
     return model;
   }
 
-  const messages: NovelMessage<Component>[] = [];
-  const restMessages: NovelMessage<Component>[] = [];
+  const messages: NovelMessage[] = [];
+  const restMessages: NovelMessage[] = [];
   const delayIndex = msg.messages.findIndex((m) => m.type === 'Delay');
 
   if (delayIndex !== -1) {
@@ -38,8 +38,8 @@ export const handleSequence = <Component>(
   }
 
   const result = messages.reduce<{
-    model: NovelModel<Component>;
-    cmds: Cmd<NovelMessage<Component>>[];
+    model: NovelModel;
+    cmds: Cmd<NovelMessage>[];
   }>(
     (acc, cur) => {
       const updateResult = update(acc.model, cur);
@@ -62,7 +62,7 @@ export const handleSequence = <Component>(
     result.model,
     async () => {
       const cmdMsgs = await Promise.all(result.cmds.map((cmd) => cmd()));
-      const msg: SequenceMessage<NovelMessage<Component>> = {
+      const msg: SequenceMessage<NovelMessage> = {
         type: 'Sequence',
         messages: [...restMessages, ...cmdMsgs],
       };
