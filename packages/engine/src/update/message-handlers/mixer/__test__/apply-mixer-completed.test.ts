@@ -41,10 +41,7 @@ describe('handleApplyMixerCompleted', () => {
       };
       let capturedMessage: NovelMessage | undefined;
       let capturedModel: NovelModel | undefined;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         capturedModel = _model;
         capturedMessage = msg;
         return _model;

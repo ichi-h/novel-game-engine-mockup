@@ -222,7 +222,10 @@ export class WidgetManager {
    * @param id - The ID of the widget to remove
    * @param widgets - The array of widgets to remove from
    */
-  private removeByIdFromWidgets(id: string, widgets: NovelWidget[]): NovelWidget[] {
+  private removeByIdFromWidgets(
+    id: string,
+    widgets: NovelWidget[],
+  ): NovelWidget[] {
     const result: NovelWidget[] = [];
 
     for (const widget of widgets) {

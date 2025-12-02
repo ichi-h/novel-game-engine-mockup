@@ -39,18 +39,12 @@ export type Middleware = (
 ) => ReturnModel<NovelModel, NovelMessage>;
 
 export const update =
-  (
-    applyMixer: ApplyMixer,
-    middlewares: Middleware[] = [],
-  ) =>
+  (applyMixer: ApplyMixer, middlewares: Middleware[] = []) =>
   (
     model: NovelModel,
     msg: NovelMessage,
   ): ReturnModel<NovelModel, NovelMessage> => {
-    const reducer: MiddlewareNext = (
-      model: NovelModel,
-      msg: NovelMessage,
-    ) => {
+    const reducer: MiddlewareNext = (model: NovelModel, msg: NovelMessage) => {
       const updateWrapped = update(applyMixer, []);
 
       switch (msg.type) {
@@ -122,11 +116,12 @@ export const update =
       return reducer(model, msg);
     }
 
-    const composeMiddlewares = middlewares.reduceRight<
-      MiddlewareNext
-    >((next, cur) => {
-      return (model, msg) => cur(model, msg, next);
-    }, reducer);
+    const composeMiddlewares = middlewares.reduceRight<MiddlewareNext>(
+      (next, cur) => {
+        return (model, msg) => cur(model, msg, next);
+      },
+      reducer,
+    );
 
     return composeMiddlewares(model, msg);
   };

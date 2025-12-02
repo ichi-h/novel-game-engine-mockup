@@ -141,10 +141,7 @@ describe('handleAddBusTrack', () => {
         id: 'bus-track-1', // Duplicate ID
       };
       let errorMessage: string | null = null;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
         }
@@ -171,10 +168,7 @@ describe('handleAddBusTrack', () => {
         parentBusTrackId: 'non-existent-parent',
       };
       let errorMessage: string | null = null;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
         }
@@ -200,10 +194,7 @@ describe('handleAddBusTrack', () => {
         id: 'track-1',
       };
       let errorMessage: string | null = null;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
         }

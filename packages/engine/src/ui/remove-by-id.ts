@@ -38,7 +38,10 @@ const removeByIdFromWidgets = (
  * @param id - The ID of the widget to remove
  * @throws Error if the widget with the specified ID does not exist
  */
-export const removeById = (widgets: NovelWidget[], id: string): NovelWidget[] => {
+export const removeById = (
+  widgets: NovelWidget[],
+  id: string,
+): NovelWidget[] => {
   if (hasId(widgets, id) === false) {
     throw new Error(`Widget with id "${id}" not found`);
   }

@@ -153,10 +153,7 @@ describe('handleAddTrack', () => {
         src: 'audio/bgm.mp3',
       };
       let errorMessage: string | null = null;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
         }
@@ -184,10 +181,7 @@ describe('handleAddTrack', () => {
         busTrackId: 'non-existent-bus-track',
       };
       let errorMessage: string | null = null;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
         }
@@ -214,10 +208,7 @@ describe('handleAddTrack', () => {
         src: 'audio/bgm.mp3',
       };
       let errorMessage: string | null = null;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
         }

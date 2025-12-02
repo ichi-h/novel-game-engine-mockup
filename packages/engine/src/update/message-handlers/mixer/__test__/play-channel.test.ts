@@ -300,10 +300,7 @@ describe('handlePlayChannel', () => {
         channelId: 'non-existent-channel',
       };
       let errorMessage: string | null = null;
-      const update = (
-        _model: NovelModel,
-        msg: NovelMessage,
-      ) => {
+      const update = (_model: NovelModel, msg: NovelMessage) => {
         if (msg.type === 'Error') {
           errorMessage = (msg as ErrorMessage).value.message;
         }

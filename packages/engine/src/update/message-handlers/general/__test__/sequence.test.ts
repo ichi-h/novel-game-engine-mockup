@@ -34,10 +34,7 @@ describe('handleSequence', () => {
         type: 'Sequence',
         messages: [],
       };
-      const mockUpdate: Update<NovelModel, NovelMessage> = (
-        m,
-        _msg,
-      ) => m;
+      const mockUpdate: Update<NovelModel, NovelMessage> = (m, _msg) => m;
 
       // Act
       const result = handleSequence(model, msg, mockUpdate);
@@ -67,10 +64,7 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel, NovelMessage> = (
-        m,
-        _msg,
-      ) => {
+      const mockUpdate: Update<NovelModel, NovelMessage> = (m, _msg) => {
         callCount++;
         return m;
       };
@@ -105,10 +99,7 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel, NovelMessage> = (
-        m,
-        msg,
-      ) => {
+      const mockUpdate: Update<NovelModel, NovelMessage> = (m, msg) => {
         processedMessages.push(msg.type);
         return m;
       };
@@ -160,10 +151,7 @@ describe('handleSequence', () => {
         ],
       };
 
-      const mockUpdate: Update<NovelModel, NovelMessage> = (
-        m,
-        msg,
-      ) => {
+      const mockUpdate: Update<NovelModel, NovelMessage> = (m, msg) => {
         processedMessages.push(msg.type);
         return m;
       };
@@ -204,10 +192,7 @@ describe('handleSequence', () => {
         content: 'From command',
       });
 
-      const mockUpdate: Update<NovelModel, NovelMessage> = (
-        m,
-        _msg,
-      ) => {
+      const mockUpdate: Update<NovelModel, NovelMessage> = (m, _msg) => {
         return [m, mockCmd];
       };
 

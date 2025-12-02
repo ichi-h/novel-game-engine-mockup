@@ -7,8 +7,7 @@ import type { NovelMessage } from '../../message';
 import type { MiddlewareNext } from '../../update';
 import { historyMiddleware } from '../history';
 
-const generateInitModel = (): NovelModel =>
-  _generateInitModel();
+const generateInitModel = (): NovelModel => _generateInitModel();
 
 describe('historyMiddleware', () => {
   describe('normal cases', () => {
