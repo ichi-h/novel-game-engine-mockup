@@ -45,7 +45,9 @@ export const Text = ({ widget, isAnimating, model }: Props) => {
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    setIsRendered(true);
+    requestAnimationFrame(() => {
+      setIsRendered(true);
+    });
   }, []);
 
   if (!isAnimating) {
