@@ -29,7 +29,7 @@ describe('handleChangeMasterVolume', () => {
     test('updates master volume', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.volume = 1.0;
+      model.mixer.value.volume = 1.0;
       const message: ChangeMasterVolumeMessage = {
         type: 'ChangeMasterVolume',
         masterVolume: 0.7,
@@ -50,8 +50,8 @@ describe('handleChangeMasterVolume', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.volume).toBe(0.7);
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.value.volume).toBe(0.7);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });

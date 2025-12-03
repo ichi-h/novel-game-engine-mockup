@@ -61,7 +61,7 @@ describe('handlePlayChannel', () => {
     test('changes channel to playing status with only required parameters', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'channel-1',
           type: 'Track',
@@ -90,8 +90,8 @@ describe('handlePlayChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const channel = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const channel = updatedModel.mixer.value.channels[0];
       expect(channel?.id).toBe('channel-1');
       expect(channel?.type).toBe('Track');
       if (channel?.type === 'Track') {
@@ -102,7 +102,7 @@ describe('handlePlayChannel', () => {
         expect(channel).not.toHaveProperty('delayMs');
         expect(channel).not.toHaveProperty('offsetMs');
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -110,7 +110,7 @@ describe('handlePlayChannel', () => {
     test('changes channel to playing status with all optional parameters', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'channel-1',
           type: 'Track',
@@ -143,8 +143,8 @@ describe('handlePlayChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const channel = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const channel = updatedModel.mixer.value.channels[0];
       expect(channel?.id).toBe('channel-1');
       expect(channel?.type).toBe('Track');
       if (channel?.type === 'Track') {
@@ -155,7 +155,7 @@ describe('handlePlayChannel', () => {
         expect(channel.delayMs).toBe(100);
         expect(channel.offsetMs).toBe(200);
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -163,7 +163,7 @@ describe('handlePlayChannel', () => {
     test('changes only specified channel when multiple channels exist', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'channel-1',
           type: 'Track',
@@ -207,10 +207,10 @@ describe('handlePlayChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(3);
-      const channel1 = updatedModel.mixer.channels[0];
-      const channel2 = updatedModel.mixer.channels[1];
-      const channel3 = updatedModel.mixer.channels[2];
+      expect(updatedModel.mixer.value.channels).toHaveLength(3);
+      const channel1 = updatedModel.mixer.value.channels[0];
+      const channel2 = updatedModel.mixer.value.channels[1];
+      const channel3 = updatedModel.mixer.value.channels[2];
 
       // channel-1 is unchanged
       expect(channel1?.id).toBe('channel-1');
@@ -237,7 +237,7 @@ describe('handlePlayChannel', () => {
         expect(channel3.volume).toBe(0.6);
       }
 
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -259,7 +259,7 @@ describe('handlePlayChannel', () => {
         ],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [busTrack];
+      model.mixer.value.channels = [busTrack];
       const message: PlayChannelMessage = {
         type: 'PlayChannel',
         channelId: 'track-1',
@@ -282,8 +282,8 @@ describe('handlePlayChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const updatedBusTrack = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const updatedBusTrack = updatedModel.mixer.value.channels[0];
       expect(updatedBusTrack).toBeDefined();
       if (updatedBusTrack && updatedBusTrack.type === 'BusTrack') {
         expect(updatedBusTrack.channels).toHaveLength(1);
@@ -297,7 +297,7 @@ describe('handlePlayChannel', () => {
           expect(track.delayMs).toBe(150);
         }
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -307,7 +307,7 @@ describe('handlePlayChannel', () => {
     test('handles error when channelId does not exist', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'channel-1',
           type: 'Track',

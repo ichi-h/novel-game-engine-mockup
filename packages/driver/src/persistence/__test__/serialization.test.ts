@@ -29,19 +29,20 @@ describe('serialization', () => {
         expect(result.status).toEqual({ value: 'Processed' });
       });
 
-      test('serializes model with Intercepted status unchanged', () => {
+      test('serializes model with Inserted status unchanged', () => {
         // Arrange
         const message = { type: 'Delay' as const, durationMs: 1000 };
+        const before = { type: 'DelayCompleted' as const };
         const model: NovelModel = {
           ...createBaseModel(),
-          status: { value: 'Intercepted', message },
+          status: { value: 'Inserted', message, before },
         };
 
         // Act
         const result = serializeModel(model);
 
         // Assert
-        expect(result.status).toEqual({ value: 'Intercepted', message });
+        expect(result.status).toEqual({ value: 'Inserted', message, before });
       });
 
       test('serializes model with Error status by converting Error to plain object', () => {
@@ -84,19 +85,20 @@ describe('serialization', () => {
         expect(result.status).toEqual({ value: 'Processed' });
       });
 
-      test('deserializes model with Intercepted status unchanged', () => {
+      test('deserializes model with Inserted status unchanged', () => {
         // Arrange
         const message = { type: 'Delay' as const, durationMs: 1000 };
+        const before = { type: 'DelayCompleted' as const };
         const serialized: SerializedNovelModel = {
           ...createBaseModel(),
-          status: { value: 'Intercepted', message },
+          status: { value: 'Inserted', message, before },
         };
 
         // Act
         const result = deserializeModel(serialized);
 
         // Assert
-        expect(result.status).toEqual({ value: 'Intercepted', message });
+        expect(result.status).toEqual({ value: 'Inserted', message, before });
       });
 
       test('deserializes model with Error status by reconstructing Error instance', () => {
@@ -133,8 +135,6 @@ describe('serialization', () => {
       const model: NovelModel = {
         ...createBaseModel(),
         status: { value: 'Processed' },
-        isDelaying: true,
-        mixer: { channels: [], volume: 0.5 },
       };
 
       // Act

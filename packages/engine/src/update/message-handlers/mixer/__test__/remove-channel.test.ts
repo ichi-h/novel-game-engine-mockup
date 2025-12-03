@@ -31,7 +31,7 @@ describe('handleRemoveChannel', () => {
     test('removes track from mixer root level', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'track-1',
           type: 'Track',
@@ -74,10 +74,10 @@ describe('handleRemoveChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(2);
-      expect(updatedModel.mixer.channels[0]?.id).toBe('track-1');
-      expect(updatedModel.mixer.channels[1]?.id).toBe('track-3');
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.value.channels).toHaveLength(2);
+      expect(updatedModel.mixer.value.channels[0]?.id).toBe('track-1');
+      expect(updatedModel.mixer.value.channels[1]?.id).toBe('track-3');
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -106,7 +106,7 @@ describe('handleRemoveChannel', () => {
         ],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         busTrack,
         {
           id: 'track-3',
@@ -136,18 +136,18 @@ describe('handleRemoveChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      expect(updatedModel.mixer.channels[0]?.id).toBe('track-3');
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      expect(updatedModel.mixer.value.channels[0]?.id).toBe('track-3');
       // Verify that child channels (track-1 and track-2) are also removed
-      const hasTrack1 = updatedModel.mixer.channels.some(
+      const hasTrack1 = updatedModel.mixer.value.channels.some(
         (c) => c.id === 'track-1',
       );
-      const hasTrack2 = updatedModel.mixer.channels.some(
+      const hasTrack2 = updatedModel.mixer.value.channels.some(
         (c) => c.id === 'track-2',
       );
       expect(hasTrack1).toBe(false);
       expect(hasTrack2).toBe(false);
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -176,7 +176,7 @@ describe('handleRemoveChannel', () => {
         ],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [busTrack];
+      model.mixer.value.channels = [busTrack];
       const message: RemoveChannelMessage = {
         type: 'RemoveChannel',
         channelId: 'track-1',
@@ -197,14 +197,14 @@ describe('handleRemoveChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const updatedBusTrack = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const updatedBusTrack = updatedModel.mixer.value.channels[0];
       expect(updatedBusTrack).toBeDefined();
       if (updatedBusTrack && updatedBusTrack.type === 'BusTrack') {
         expect(updatedBusTrack.channels).toHaveLength(1);
         expect(updatedBusTrack.channels[0]?.id).toBe('track-2');
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -232,7 +232,7 @@ describe('handleRemoveChannel', () => {
         channels: [nestedBusTrack],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [parentBusTrack];
+      model.mixer.value.channels = [parentBusTrack];
       const message: RemoveChannelMessage = {
         type: 'RemoveChannel',
         channelId: 'nested-track',
@@ -253,8 +253,8 @@ describe('handleRemoveChannel', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const parentBus = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const parentBus = updatedModel.mixer.value.channels[0];
       expect(parentBus).toBeDefined();
       if (parentBus && parentBus.type === 'BusTrack') {
         expect(parentBus.channels).toHaveLength(1);
@@ -263,7 +263,7 @@ describe('handleRemoveChannel', () => {
           expect(childBus.channels).toHaveLength(0);
         }
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -273,7 +273,7 @@ describe('handleRemoveChannel', () => {
     test('handles error when channelId does not exist', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'track-1',
           type: 'Track',

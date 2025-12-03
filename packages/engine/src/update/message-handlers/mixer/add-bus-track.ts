@@ -37,12 +37,19 @@ export const handleAddBusTrack = (
   };
 
   try {
-    const mixer = addChannel(model.mixer, newBusTrack, msg.parentBusTrackId);
+    const mixer = addChannel(
+      model.mixer.value,
+      newBusTrack,
+      msg.parentBusTrackId,
+    );
 
     return update(
       {
         ...model,
-        mixer,
+        mixer: {
+          ...model.mixer,
+          value: mixer,
+        },
       },
       {
         type: 'ApplyMixer',

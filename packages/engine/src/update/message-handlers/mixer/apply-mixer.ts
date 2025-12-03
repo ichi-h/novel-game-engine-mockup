@@ -26,12 +26,15 @@ export const handleApplyMixer = (
   return [
     {
       ...model,
-      isApplyingMixer: true,
+      mixer: {
+        ...model.mixer,
+        isApplying: true,
+      },
     },
     async () => {
       let error: Error | null = null;
       try {
-        await applyMixer(model.mixer);
+        await applyMixer(model.mixer.value);
       } catch (e) {
         error = e instanceof Error ? e : new Error(String(e));
       }
@@ -50,7 +53,10 @@ export const handleApplyMixerCompleted = (
 ): ReturnModel<NovelModel, NovelMessage> => {
   const updatedModel = {
     ...model,
-    isApplyingMixer: false,
+    mixer: {
+      ...model.mixer,
+      isApplying: false,
+    },
   };
 
   if (msg.error !== null) {
@@ -61,4 +67,4 @@ export const handleApplyMixerCompleted = (
   }
 
   return updatedModel;
-};
+};;

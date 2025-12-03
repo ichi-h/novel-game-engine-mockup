@@ -70,14 +70,14 @@ describe('handleAddBusTrack', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      expect(updatedModel.mixer.channels[0]).toEqual({
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      expect(updatedModel.mixer.value.channels[0]).toEqual({
         id: 'bus-track-1',
         type: 'BusTrack',
         volume: 1.0,
         channels: [],
       });
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -91,7 +91,7 @@ describe('handleAddBusTrack', () => {
         channels: [],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [parentBusTrack];
+      model.mixer.value.channels = [parentBusTrack];
       const message: AddBusTrackMessage = {
         type: 'AddBusTrack',
         id: 'child-bus-track',
@@ -114,8 +114,8 @@ describe('handleAddBusTrack', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const parent = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const parent = updatedModel.mixer.value.channels[0];
       expect(parent).toBeDefined();
       if (parent) {
         expect(parent.type).toBe('BusTrack');
@@ -130,7 +130,7 @@ describe('handleAddBusTrack', () => {
           });
         }
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -146,7 +146,7 @@ describe('handleAddBusTrack', () => {
         channels: [],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [existingBusTrack];
+      model.mixer.value.channels = [existingBusTrack];
       const message: AddBusTrackMessage = {
         type: 'AddBusTrack',
         id: 'bus-track-1', // Duplicate ID

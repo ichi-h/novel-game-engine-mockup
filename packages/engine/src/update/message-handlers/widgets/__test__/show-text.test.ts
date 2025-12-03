@@ -53,7 +53,7 @@ describe('showText', () => {
         'text1',
         'font-weight: bold;',
         50,
-        'complete',
+        'merge',
       );
 
       // Assert
@@ -64,7 +64,7 @@ describe('showText', () => {
         id: 'text1',
         style: 'font-weight: bold;',
         speed: 50,
-        nextMessageCaught: 'complete',
+        nextMessageCaught: 'merge',
       });
     });
   });
@@ -279,7 +279,7 @@ describe('handleShowText - normal cases', () => {
       expect(hasId(newModel.ui, 'text1')).toBe(true);
       expect(newModel.animationTickets).toHaveLength(1);
       expect(newModel.animationTickets[0]?.id).toBe('text1');
-      expect(newModel.animationTickets[0]?.nextMessageCaught).toBe('interrupt');
+      expect(newModel.animationTickets[0]?.nextMessageCaught).toBe('insert');
       expect(cmd).toBeDefined();
     }
   });
@@ -312,7 +312,7 @@ describe('handleShowText - normal cases', () => {
     }
   });
 
-  test('sets nextMessageCaught to "complete" when specified', () => {
+  test('sets nextMessageCaught to "merge" when specified', () => {
     // Arrange
     const model = generateInitModel();
     model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
@@ -324,7 +324,7 @@ describe('handleShowText - normal cases', () => {
       textBoxId: 'textbox1',
       content: 'Complete text',
       speed: 50,
-      nextMessageCaught: 'complete',
+      nextMessageCaught: 'merge',
     };
 
     // Act
@@ -335,7 +335,7 @@ describe('handleShowText - normal cases', () => {
     if (Array.isArray(result)) {
       const [newModel, _cmd] = result;
       expect(newModel.animationTickets).toHaveLength(1);
-      expect(newModel.animationTickets[0]?.nextMessageCaught).toBe('complete');
+      expect(newModel.animationTickets[0]?.nextMessageCaught).toBe('merge');
     }
   });
 
@@ -361,8 +361,8 @@ describe('handleShowText - normal cases', () => {
     if (Array.isArray(result)) {
       const [_newModel, cmd] = result;
       if (cmd) {
-        const completedMsg = await cmd();
-        expect(completedMsg).toEqual({
+        const mergedMsg = await cmd();
+        expect(mergedMsg).toEqual({
           type: 'TextAnimationCompleted',
           id: 'text1',
         });
@@ -456,7 +456,7 @@ describe('handleTextAnimationCompleted', () => {
       // Arrange
       const model = generateInitModel();
       model.animationTickets = [
-        { id: 'text1', ttl: 1000, nextMessageCaught: 'interrupt' },
+        { id: 'text1', ttl: 1000, nextMessageCaught: 'insert' },
       ];
 
       const msg: TextAnimationCompletedMessage = {
@@ -475,9 +475,9 @@ describe('handleTextAnimationCompleted', () => {
       // Arrange
       const model = generateInitModel();
       model.animationTickets = [
-        { id: 'text1', ttl: 1000, nextMessageCaught: 'interrupt' },
-        { id: 'text2', ttl: 2000, nextMessageCaught: 'complete' },
-        { id: 'text3', ttl: 3000, nextMessageCaught: 'interrupt' },
+        { id: 'text1', ttl: 1000, nextMessageCaught: 'insert' },
+        { id: 'text2', ttl: 2000, nextMessageCaught: 'merge' },
+        { id: 'text3', ttl: 3000, nextMessageCaught: 'insert' },
       ];
 
       const msg: TextAnimationCompletedMessage = {
@@ -498,7 +498,7 @@ describe('handleTextAnimationCompleted', () => {
       // Arrange
       const model = generateInitModel();
       model.animationTickets = [
-        { id: 'text1', ttl: 1000, nextMessageCaught: 'interrupt' },
+        { id: 'text1', ttl: 1000, nextMessageCaught: 'insert' },
       ];
 
       const msg: TextAnimationCompletedMessage = {

@@ -42,7 +42,7 @@ describe('handleApplyMixer', () => {
       expect(Array.isArray(result)).toBe(true);
       if (Array.isArray(result)) {
         const [updatedModel, cmd] = result;
-        expect(updatedModel.isApplyingMixer).toBe(true);
+        expect(updatedModel.mixer.isApplying).toBe(true);
         expect(cmd).toBeDefined();
         expect(typeof cmd).toBe('function');
 
@@ -76,7 +76,7 @@ describe('handleApplyMixer', () => {
       expect(Array.isArray(result)).toBe(true);
       if (Array.isArray(result)) {
         const [updatedModel, cmd] = result;
-        expect(updatedModel.isApplyingMixer).toBe(true);
+        expect(updatedModel.mixer.isApplying).toBe(true);
         expect(cmd).toBeDefined();
 
         // Execute the command and verify it returns error
@@ -130,7 +130,7 @@ describe('handleApplyMixerCompleted', () => {
     test('updates model with isApplyingMixer set to false when error is null', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.isApplyingMixer = true;
+      model.mixer.isApplying = true;
       const message: ApplyMixerCompletedMessage = {
         type: 'ApplyMixerCompleted',
         error: null,
@@ -143,7 +143,7 @@ describe('handleApplyMixerCompleted', () => {
       // Assert
       expect(Array.isArray(result)).toBe(false);
       if (!Array.isArray(result)) {
-        expect(result.isApplyingMixer).toBe(false);
+        expect(result.mixer.isApplying).toBe(false);
         expect(result.status.value).not.toBe('Error');
       }
     });
@@ -151,7 +151,7 @@ describe('handleApplyMixerCompleted', () => {
     test('dispatches Error message when error is not null', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.isApplyingMixer = true;
+      model.mixer.isApplying = true;
       const testError = new Error('Test mixer error');
       const message: ApplyMixerCompletedMessage = {
         type: 'ApplyMixerCompleted',
@@ -170,7 +170,7 @@ describe('handleApplyMixerCompleted', () => {
 
       // Assert
       expect(capturedModel).toBeDefined();
-      expect(capturedModel?.isApplyingMixer).toBe(false);
+      expect(capturedModel?.mixer.isApplying).toBe(false);
       expect(capturedMessage).toBeDefined();
       expect(capturedMessage?.type).toBe('Error');
       if (capturedMessage?.type === 'Error') {

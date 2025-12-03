@@ -41,10 +41,10 @@ describe('handleDelay / handleDelayCompleted - normal cases', () => {
     const nextModel = res[0];
     const cmd = res[1];
 
-    // model is mutated to set isDelaying
-    expect(nextModel.isDelaying).toBe(true);
-    // returns the same model reference (implementation mutates)
-    expect(nextModel).toBe(model);
+    // model status is set to Delaying
+    expect(nextModel.status.value).toBe('Delaying');
+    // returns a new model object
+    expect(nextModel).not.toBe(model);
     // command is a function
     expect(typeof cmd).toBe('function');
   });
@@ -69,8 +69,8 @@ describe('handleDelay / handleDelayCompleted - normal cases', () => {
     // simulate dispatching the message to the completed handler
     const completedMsg: DelayCompletedMessage = result;
     const after = handleDelayCompleted(model, completedMsg);
-    expect(after.isDelaying).toBe(false);
-    // handler returns the same model reference
-    expect(after).toBe(model);
+    expect(after.status.value).toBe('Processed');
+    // handler returns a new model object
+    expect(after).not.toBe(model);
   });
 });

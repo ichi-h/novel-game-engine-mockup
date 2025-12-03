@@ -23,31 +23,44 @@ export interface AnimationTicket {
   /**
    * The behavior when the next message is sent
    *
-   * - ignore: Do nothing
-   * - complete: Complete the animation
-   * - interrupt: Replace the received message with a message that completes the animation
+   * - ignore: Do nothing.
+   * - merge: Merge the animation completed message with the next message.
+   * - insert: Insert the animation completed message before the scheduled message.
+   *   At this point, the scheduled message is held until the user takes the next action.
    */
-  nextMessageCaught: 'ignore' | 'complete' | 'interrupt';
+  nextMessageCaught: 'ignore' | 'merge' | 'insert';
 }
 
+export type NovelStatus =
+  | {
+      value: 'Processed';
+    }
+  | {
+      value: 'Merged';
+      message: NovelMessage;
+    }
+  | {
+      value: 'Inserted';
+      message: NovelMessage;
+      before: NovelMessage;
+    }
+  | {
+      value: 'Delaying';
+      remainingTime: number;
+    }
+  | {
+      value: 'Error';
+      error: Error;
+    };
+
 export interface NovelModel {
-  status:
-    | {
-        value: 'Processed';
-      }
-    | {
-        value: 'Intercepted';
-        message: NovelMessage;
-      }
-    | {
-        value: 'Error';
-        error: Error;
-      };
+  status: NovelStatus;
   index: number;
-  mixer: Mixer;
+  mixer: {
+    value: Mixer;
+    isApplying: boolean;
+  };
   ui: NovelWidget[];
-  isDelaying: boolean;
-  isApplyingMixer: boolean;
   animationTickets: AnimationTicket[];
   history: {
     [K in NovelMessageType]: Extract<NovelMessage, { type: K }>[];
@@ -108,10 +121,11 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
   return {
     status: { value: 'Processed' },
     index: 0,
-    mixer: { channels: [], volume: 1.0 },
+    mixer: {
+      value: { volume: 1, channels: [] },
+      isApplying: false,
+    },
     ui: [],
-    isDelaying: false,
-    isApplyingMixer: false,
     animationTickets: [],
     history: {
       Delay: [],

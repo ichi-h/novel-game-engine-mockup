@@ -66,7 +66,7 @@ export const handleShowText = (
       ? {
           id: newText.id,
           ttl: calcAnimationTTL(newText.speed, msg.content.length),
-          nextMessageCaught: msg.nextMessageCaught ?? 'interrupt',
+          nextMessageCaught: msg.nextMessageCaught ?? 'insert',
         }
       : null;
 

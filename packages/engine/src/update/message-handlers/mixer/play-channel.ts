@@ -41,7 +41,7 @@ export const handlePlayChannel = (
   msg: PlayChannelMessage,
   update: Update<NovelModel, NovelMessage>,
 ): ReturnModel<NovelModel, NovelMessage> => {
-  if (!hasId(model.mixer, msg.channelId)) {
+  if (!hasId(model.mixer.value, msg.channelId)) {
     return update(model, {
       type: 'Error',
       value: new Error(
@@ -63,12 +63,15 @@ export const handlePlayChannel = (
           ...(offsetMs !== undefined ? { offsetMs } : {}),
         }
       : c,
-  )(model.mixer);
+  )(model.mixer.value);
 
   return update(
     {
       ...model,
-      mixer,
+      mixer: {
+        ...model.mixer,
+        value: mixer,
+      },
     },
     {
       type: 'ApplyMixer',

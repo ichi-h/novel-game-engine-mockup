@@ -1,6 +1,7 @@
 # Project Overview
 
 ## Purpose
+
 This is a novel game engine mockup project that implements a visual novel/interactive story engine using the Elmish architecture pattern. The project consists of:
 
 - **elmish**: A TypeScript implementation of the Elm architecture
@@ -9,6 +10,7 @@ This is a novel game engine mockup project that implements a visual novel/intera
 - **examples/react**: A React example application demonstrating the engine
 
 ## Tech Stack
+
 - **Runtime**: Bun (v1.3.0)
 - **Language**: TypeScript (strict mode)
 - **Testing**: Bun test framework with coverage support
@@ -18,7 +20,9 @@ This is a novel game engine mockup project that implements a visual novel/intera
 - **Git Hooks**: Lefthook
 
 ## Architecture
+
 The project follows a monorepo structure with:
+
 - Workspace packages in `packages/*`
 - Example applications in `examples/*`
 - The engine uses an Elmish (Elm Architecture) pattern with:
@@ -30,14 +34,18 @@ The project follows a monorepo structure with:
 ## Package Details
 
 ### packages/elmish
+
 TypeScript implementation of the Elm architecture providing:
+
 - State management with Model-Update-View pattern
 - Command system for side effects
 - Type-safe message dispatching
 
 ### packages/engine
+
 Core novel game engine with:
-- **Model**: Game state including status, mixer, UI widgets, animations, history, and config
+
+- **Model**: Game state with NovelStatus (Processed/Merged/Inserted/Delaying/Error), mixer object containing value and isApplying flag, UI widgets, animationTickets, message history, and config
 - **Messages**: Type-safe actions/events for state transitions
 - **Update handlers**: Organized in subdirectories (mixer/, general/, widgets/)
 - **UI Manager**: Widget hierarchy management (layouts, text boxes, images, text)
@@ -45,13 +53,16 @@ Core novel game engine with:
 - **Middleware**: Message processing pipeline
 
 ### packages/driver
+
 Driver layer providing platform-specific implementations:
+
 - **mixer/**: Audio mixer implementation with fetching capabilities
 - **persistence/**: Model serialization and persistence (localStorage, etc.)
 - **react/**: React widget components and driver for rendering NovelModel
 
 ## Key Components
-- **NovelModel**: State with status (Processed/Intercepted/Error), index, mixer, UI widgets, delays, animations, history, and config
+
+- **NovelModel**: State with status (Processed/Merged/Inserted/Delaying/Error), index, mixer (with value and isApplying flag), UI widgets, animationTickets, history, and config
 - **Messages**: Type-safe actions/events in the game
 - **Update handlers**: Process messages and update state (organized by category)
 - **UI Manager**: Manages widget hierarchy (layouts, text boxes, images, text)

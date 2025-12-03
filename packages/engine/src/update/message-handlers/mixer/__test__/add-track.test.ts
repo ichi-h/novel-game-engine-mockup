@@ -74,15 +74,15 @@ describe('handleAddTrack', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      expect(updatedModel.mixer.channels[0]).toEqual({
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      expect(updatedModel.mixer.value.channels[0]).toEqual({
         id: 'track-1',
         type: 'Track',
         playStatus: 'Standby',
         volume: 1.0,
         src: 'audio/bgm.mp3',
       });
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -96,7 +96,7 @@ describe('handleAddTrack', () => {
         channels: [],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [parentBusTrack];
+      model.mixer.value.channels = [parentBusTrack];
       const message: AddTrackMessage = {
         type: 'AddTrack',
         id: 'track-1',
@@ -121,8 +121,8 @@ describe('handleAddTrack', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const parent = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const parent = updatedModel.mixer.value.channels[0];
       expect(parent).toBeDefined();
       if (parent) {
         expect(parent.type).toBe('BusTrack');
@@ -139,7 +139,7 @@ describe('handleAddTrack', () => {
           });
         }
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -149,7 +149,7 @@ describe('handleAddTrack', () => {
     test('handles error when adding Track with duplicate ID', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'track-1',
           type: 'Track',

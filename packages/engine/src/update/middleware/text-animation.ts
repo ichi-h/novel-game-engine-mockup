@@ -30,22 +30,22 @@ export const textAnimationMiddleware = (
     return next(model, msg);
   }
 
-  const completeAnimationTickets = model.animationTickets.filter(
-    (t) => t.nextMessageCaught === 'complete',
+  const mergeAnimationTickets = model.animationTickets.filter(
+    (t) => t.nextMessageCaught === 'merge',
   );
-  const interruptAnimationTickets = model.animationTickets.filter(
-    (t) => t.nextMessageCaught === 'interrupt',
+  const insertAnimationTickets = model.animationTickets.filter(
+    (t) => t.nextMessageCaught === 'insert',
   );
 
-  if (interruptAnimationTickets.length > 0) {
+  if (insertAnimationTickets.length > 0) {
     const sequenceMessage = sequence([
-      ...interruptAnimationTickets.map(
+      ...insertAnimationTickets.map(
         (t): TextAnimationCompletedMessage => ({
           type: 'TextAnimationCompleted',
           id: t.id,
         }),
       ),
-      ...completeAnimationTickets.map(
+      ...mergeAnimationTickets.map(
         (t): TextAnimationCompletedMessage => ({
           type: 'TextAnimationCompleted',
           id: t.id,
@@ -56,15 +56,15 @@ export const textAnimationMiddleware = (
     return next(
       {
         ...model,
-        status: { value: 'Intercepted', message: msg },
+        status: { value: 'Inserted', message: msg, before: sequenceMessage },
       },
       sequenceMessage,
     );
   }
 
-  if (completeAnimationTickets.length > 0) {
+  if (mergeAnimationTickets.length > 0) {
     const sequenceMessage = sequence([
-      ...completeAnimationTickets.map(
+      ...mergeAnimationTickets.map(
         (t): TextAnimationCompletedMessage => ({
           type: 'TextAnimationCompleted',
           id: t.id,
@@ -76,7 +76,7 @@ export const textAnimationMiddleware = (
     return next(
       {
         ...model,
-        status: { value: 'Processed' },
+        status: { value: 'Merged', message: sequenceMessage },
         index: model.index + 1,
       },
       sequenceMessage,

@@ -25,7 +25,7 @@ export const handleStopChannel = (
   msg: StopChannelMessage,
   update: Update<NovelModel, NovelMessage>,
 ): ReturnModel<NovelModel, NovelMessage> => {
-  if (!hasId(model.mixer, msg.channelId)) {
+  if (!hasId(model.mixer.value, msg.channelId)) {
     return update(model, {
       type: 'Error',
       value: new Error(
@@ -42,12 +42,15 @@ export const handleStopChannel = (
           ...(msg.fadeOutMs !== undefined ? { fadeOutMs: msg.fadeOutMs } : {}),
         }
       : c,
-  )(model.mixer);
+  )(model.mixer.value);
 
   return update(
     {
       ...model,
-      mixer,
+      mixer: {
+        ...model.mixer,
+        value: mixer,
+      },
     },
     {
       type: 'ApplyMixer',

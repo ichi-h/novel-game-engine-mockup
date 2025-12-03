@@ -33,7 +33,7 @@ describe('handleChangeChannelVolume', () => {
     test('updates volume of specified channel', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'track-1',
           type: 'Track',
@@ -63,10 +63,10 @@ describe('handleChangeChannelVolume', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      expect(updatedModel.mixer.channels[0]?.volume).toBe(0.5);
-      expect(updatedModel.mixer.channels[0]?.id).toBe('track-1');
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      expect(updatedModel.mixer.value.channels[0]?.volume).toBe(0.5);
+      expect(updatedModel.mixer.value.channels[0]?.id).toBe('track-1');
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -74,7 +74,7 @@ describe('handleChangeChannelVolume', () => {
     test('updates only specified channel when multiple channels exist', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'track-1',
           type: 'Track',
@@ -118,11 +118,11 @@ describe('handleChangeChannelVolume', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(3);
-      expect(updatedModel.mixer.channels[0]?.volume).toBe(1.0); // Unchanged
-      expect(updatedModel.mixer.channels[1]?.volume).toBe(0.3); // Changed
-      expect(updatedModel.mixer.channels[2]?.volume).toBe(0.6); // Unchanged
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.value.channels).toHaveLength(3);
+      expect(updatedModel.mixer.value.channels[0]?.volume).toBe(1.0); // Unchanged
+      expect(updatedModel.mixer.value.channels[1]?.volume).toBe(0.3); // Changed
+      expect(updatedModel.mixer.value.channels[2]?.volume).toBe(0.6); // Unchanged
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -144,7 +144,7 @@ describe('handleChangeChannelVolume', () => {
         ],
       };
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [busTrack];
+      model.mixer.value.channels = [busTrack];
       const message: ChangeChannelVolumeMessage = {
         type: 'ChangeChannelVolume',
         channelId: 'track-1',
@@ -166,15 +166,15 @@ describe('handleChangeChannelVolume', () => {
       const [updatedModel, cmd] = Array.isArray(result)
         ? result
         : [result, undefined];
-      expect(updatedModel.mixer.channels).toHaveLength(1);
-      const updatedBusTrack = updatedModel.mixer.channels[0];
+      expect(updatedModel.mixer.value.channels).toHaveLength(1);
+      const updatedBusTrack = updatedModel.mixer.value.channels[0];
       expect(updatedBusTrack).toBeDefined();
       if (updatedBusTrack && updatedBusTrack.type === 'BusTrack') {
         expect(updatedBusTrack.channels).toHaveLength(1);
         expect(updatedBusTrack.channels[0]?.volume).toBe(0.4);
         expect(updatedBusTrack.channels[0]?.id).toBe('track-1');
       }
-      expect(updatedModel.isApplyingMixer).toBe(true);
+      expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
     });
@@ -184,7 +184,7 @@ describe('handleChangeChannelVolume', () => {
     test('handles error when channelId does not exist', () => {
       // Arrange
       const model: NovelModel = generateInitModel();
-      model.mixer.channels = [
+      model.mixer.value.channels = [
         {
           id: 'track-1',
           type: 'Track',

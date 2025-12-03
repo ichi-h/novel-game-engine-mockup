@@ -22,15 +22,16 @@ export const handleChangeMasterVolume = (
   msg: ChangeMasterVolumeMessage,
   update: Update<NovelModel, NovelMessage>,
 ): ReturnModel<NovelModel, NovelMessage> => {
-  const mixer = {
-    ...model.mixer,
-    volume: msg.masterVolume,
-  };
-
   return update(
     {
       ...model,
-      mixer,
+      mixer: {
+        ...model.mixer,
+        value: {
+          ...model.mixer.value,
+          volume: msg.masterVolume,
+        },
+      },
     },
     {
       type: 'ApplyMixer',

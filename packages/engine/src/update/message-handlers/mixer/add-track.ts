@@ -47,12 +47,15 @@ export const handleAddTrack = (
   };
 
   try {
-    const mixer = addChannel(model.mixer, track, msg.busTrackId);
+    const mixer = addChannel(model.mixer.value, track, msg.busTrackId);
 
     return update(
       {
         ...model,
-        mixer,
+        mixer: {
+          ...model.mixer,
+          value: mixer,
+        },
       },
       {
         type: 'ApplyMixer',
