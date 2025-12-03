@@ -21,6 +21,7 @@ import type {
   ShowImageMessage,
   ShowTextMessage,
   StopChannelMessage,
+  SwitchScenarioMessage,
   TextAnimationCompletedMessage,
   UpdateConfigMessage,
 } from './message-handlers';
@@ -28,6 +29,7 @@ import type {
 export type NovelMessage =
   // General
   | NextMessage
+  | SwitchScenarioMessage
   | DelayMessage
   | DelayCompletedMessage
   | SequenceMessage<NovelMessage>

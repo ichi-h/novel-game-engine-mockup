@@ -80,6 +80,7 @@ export type InitModelConfig = DeepPartial<NovelConfig>;
 export const defaultConfig: NovelConfig = {
   historyLength: {
     Next: 200,
+    SwitchScenario: 10,
     Delay: 10,
     DelayCompleted: 10,
     Sequence: 10,
@@ -129,6 +130,7 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
     animationTickets: [],
     history: {
       Next: [],
+      SwitchScenario: [],
       Delay: [],
       DelayCompleted: [],
       Sequence: [],

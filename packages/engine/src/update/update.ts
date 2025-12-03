@@ -25,6 +25,7 @@ import {
   handleShowImage,
   handleShowText,
   handleStopChannel,
+  handleSwitchScenario,
   handleTextAnimationCompleted,
   handleUpdateConfig,
 } from './message-handlers';
@@ -53,6 +54,8 @@ export const update =
         // General
         case 'Next':
           return handleNext(model, msg, updateWrapped);
+        case 'SwitchScenario':
+          return handleSwitchScenario(model, msg);
         case 'Delay':
           return handleDelay(model, msg);
         case 'DelayCompleted':
