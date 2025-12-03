@@ -48,7 +48,7 @@ export const GamePage = ({
   );
 
   const next = () => {
-    if (model.isDelaying || model.isApplyingMixer) {
+    if (model.status.value === 'Delaying' || model.mixer.isApplying) {
       return;
     }
 
