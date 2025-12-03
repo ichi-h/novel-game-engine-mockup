@@ -52,6 +52,9 @@ export type NovelStatus =
       value: 'AwaitingAction';
     }
   | {
+      value: 'RequestingNext';
+    }
+  | {
       value: 'Error';
       error: Error;
     };

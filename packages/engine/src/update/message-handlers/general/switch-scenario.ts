@@ -27,7 +27,7 @@ export const handleSwitchScenario = (
 
   let newModel: NovelModel = {
     ...model,
-    status: { value: 'Processed' },
+    status: { value: 'RequestingNext' },
     currentScenario: msg.scenario,
     index: newIndex,
   };

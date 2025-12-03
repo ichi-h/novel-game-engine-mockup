@@ -8,7 +8,7 @@ import {
   update,
 } from 'engine';
 import { getApplyMixer } from 'libs/mixer-driver';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { scenarios } from '../game/scenario';
 
 interface GamePageProps {
@@ -85,16 +85,11 @@ export const GamePage = ({
     onOpenSave(model);
   };
 
-  // Track previous scenario to detect scenario switches
-  const prevScenarioRef = useRef(model.currentScenario);
-
-  // Auto-advance when scenario switches
+  // Auto-advance when engine requests next message
   useEffect(() => {
-    if (prevScenarioRef.current !== model.currentScenario) {
-      prevScenarioRef.current = model.currentScenario;
-      // Scenario has switched, send the first message of the new scenario
+    if (model.status.value === 'RequestingNext') {
       const msg = getCurrentMessage(model);
-      if (msg && model.status.value === 'Processed') {
+      if (msg) {
         send({ type: 'Next', message: msg });
       }
     }
