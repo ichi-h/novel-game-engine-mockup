@@ -14,6 +14,7 @@ import {
   handleChangeChannelVolume,
   handleChangeMasterVolume,
   handleClearTextBox,
+  handleAwaitAction,
   handleDelay,
   handleDelayCompleted,
   handleError,
@@ -57,6 +58,8 @@ export const update =
           return handleNext(model, msg, updateWrapped);
         case 'SwitchScenario':
           return handleSwitchScenario(model, msg);
+        case 'AwaitAction':
+          return handleAwaitAction(model, msg);
         case 'Delay':
           return handleDelay(model, msg);
         case 'DelayCompleted':

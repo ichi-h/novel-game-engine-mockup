@@ -49,6 +49,9 @@ export type NovelStatus =
       remainingTime: number;
     }
   | {
+      value: 'AwaitingAction';
+    }
+  | {
       value: 'Error';
       error: Error;
     };
@@ -81,6 +84,7 @@ export const defaultConfig: NovelConfig = {
   historyLength: {
     Next: 200,
     SwitchScenario: 10,
+    AwaitAction: 10,
     Delay: 10,
     DelayCompleted: 10,
     Sequence: 10,
@@ -132,6 +136,7 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
     history: {
       Next: [],
       SwitchScenario: [],
+      AwaitAction: [],
       Delay: [],
       DelayCompleted: [],
       Sequence: [],

@@ -7,6 +7,7 @@ import type {
   AddWidgetsMessage,
   ApplyMixerCompletedMessage,
   ApplyMixerMessage,
+  AwaitActionMessage,
   ChangeChannelVolumeMessage,
   ChangeMasterVolumeMessage,
   ClearTextBoxMessage,
@@ -31,6 +32,7 @@ export type NovelMessage =
   // General
   | NextMessage
   | SwitchScenarioMessage
+  | AwaitActionMessage
   | DelayMessage
   | DelayCompletedMessage
   | SequenceMessage<NovelMessage>
