@@ -78,7 +78,7 @@ describe('handleSwitchScenario', () => {
       // Assert
       expect(result.currentScenario).toBe('chapter2');
       expect(result.index).toBe(0);
-      expect(result.status).toEqual({ value: 'Delaying', remainingTime: 1000 });
+      expect(result.status).toEqual({ value: 'RequestingNext' });
       expect(result.mixer.value.channels).toHaveLength(1);
       expect(result.ui).toHaveLength(1);
       expect(result.animationTickets).toHaveLength(1);
@@ -122,7 +122,7 @@ describe('handleSwitchScenario', () => {
       // Assert
       expect(result.currentScenario).toBe('ending_good');
       expect(result.index).toBe(0);
-      expect(result.status).toEqual({ value: 'Processed' });
+      expect(result.status).toEqual({ value: 'RequestingNext' });
       expect(result.mixer.value.channels).toHaveLength(0);
       expect(result.mixer.isApplying).toBe(false);
       expect(result.ui).toHaveLength(0);
@@ -164,7 +164,7 @@ describe('handleSwitchScenario', () => {
       // Assert
       expect(result.currentScenario).toBe('chapter3');
       expect(result.index).toBe(10);
-      expect(result.status).toEqual({ value: 'Processed' });
+      expect(result.status).toEqual({ value: 'RequestingNext' });
       expect(result.mixer.value.channels).toHaveLength(0);
       expect(result.ui).toHaveLength(0);
     });
