@@ -1,7 +1,9 @@
 import {
+  addButton,
   addLayout,
   addTextBox,
   addTrack,
+  awaitAction,
   delay,
   type NovelMessage,
   playChannel,
@@ -10,6 +12,7 @@ import {
   showImage,
   showText,
   stopChannel,
+  switchScenario,
 } from 'engine';
 
 import bgm from '../bgm.mp3';
@@ -33,9 +36,36 @@ import {
 } from './helpers';
 
 /**
- * Create the novel game scenario
+ * Scenario names
  */
-export const createNovelGame = (): NovelMessage[] => {
+export const SCENARIOS = {
+  main: 'main',
+  helpBun: 'help-bun',
+  helpReact: 'help-react',
+  ending: 'ending',
+} as const;
+
+/**
+ * Type for all scenarios
+ */
+export type Scenarios = Record<string, NovelMessage[]>;
+
+/**
+ * Create all scenarios for the novel game
+ */
+export const createScenarios = (): Scenarios => {
+  return {
+    [SCENARIOS.main]: createMainScenario(),
+    [SCENARIOS.helpBun]: createHelpBunScenario(),
+    [SCENARIOS.helpReact]: createHelpReactScenario(),
+    [SCENARIOS.ending]: createEndingScenario(),
+  };
+};
+
+/**
+ * Main scenario - Introduction and choice
+ */
+const createMainScenario = (): NovelMessage[] => {
   return [
     // Scene 1: Game start
     sequence([
@@ -128,52 +158,197 @@ export const createNovelGame = (): NovelMessage[] => {
       showDialog('ショッピングモールに到着！広くて綺麗な建物だ。'),
     ]),
 
-    // Scene 5: Looking for clothing store
+    // Scene 5: Both characters appear and need help
     sequence([
       clearTextBox(),
       showCharacter('bun-char', logo),
       showCharacter('react-char', reactLogo),
       showCharacterName('Bunちゃん', CHARACTER_COLORS.bun),
-      showDialog('あ！あそこに可愛い服屋さんがある！行ってみよう！💕'),
+      showDialog('あ！あそこに可愛い服屋さんがある！行ってみたい！💕'),
     ]),
 
-    // Scene 6: Choosing clothes
+    // Scene 6: React-kun wants to go elsewhere
     sequence(
       showCharacterDialog(
         'Reactくん',
         CHARACTER_COLORS.react,
-        'わぁ！この青いTシャツかっこいい！これにしようかな！',
+        'えー、僕はあっちのゲームショップに行きたいんだけど...',
       ),
     ),
 
-    // Scene 7: Bun-chan chooses clothes
+    // Scene 7: Player must choose
+    sequence([
+      clearTextBox(),
+      showCharacterName('おまえ', CHARACTER_COLORS.player),
+      showDialog('どっちに付き合おうかな...'),
+    ]),
+
+    // Scene 8: Choice - Show buttons and await action
+    sequence([
+      clearTextBox(),
+      showDialog('誰と一緒に行く？'),
+      addLayout(
+        'choice-buttons',
+        'textbox-area',
+        'flex gap-4 mt-4 justify-center',
+      ),
+      addButton(
+        'Bunちゃんと服を見に行く 👗',
+        switchScenario(SCENARIOS.helpBun),
+        'choice-buttons',
+        'btn-bun',
+        'px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
+      ),
+      addButton(
+        'Reactくんとゲームショップへ 🎮',
+        switchScenario(SCENARIOS.helpReact),
+        'choice-buttons',
+        'btn-react',
+        'px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
+      ),
+      awaitAction(),
+    ]),
+  ];
+};
+
+/**
+ * Help Bun-chan scenario - Go to clothing store
+ */
+const createHelpBunScenario = (): NovelMessage[] => {
+  return [
+    // Clean up choice buttons
+    sequence([
+      removeWidgets(['choice-buttons']),
+      clearTextBox(),
+      showCharacterName('おまえ', CHARACTER_COLORS.player),
+      showDialog('Bunちゃん、一緒に服を見に行こうか。'),
+    ]),
+
+    // Bun-chan is happy
     sequence(
       showCharacterDialog(
         'Bunちゃん',
         CHARACTER_COLORS.bun,
-        '私はこのピンクのワンピースにする！お兄ちゃん、似合うかな？',
+        'やったー！お兄ちゃん大好き！💕',
       ),
     ),
 
-    // Scene 8: Player's response
+    // React-kun understands
+    sequence(
+      showCharacterDialog(
+        'Reactくん',
+        CHARACTER_COLORS.react,
+        'いいよ、僕は後で見に行くね。',
+      ),
+    ),
+
+    // At the clothing store
+    sequence(
+      showCharacterDialog(
+        'Bunちゃん',
+        CHARACTER_COLORS.bun,
+        'わぁ！このピンクのワンピース可愛い！お兄ちゃん、似合うかな？',
+      ),
+    ),
+
+    // Player responds
     sequence(
       showCharacterDialog(
         'おまえ',
         CHARACTER_COLORS.player,
-        'とても似合ってるよ！二人とも良い服を見つけられて良かったね。',
+        'とても似合ってるよ！可愛いね。',
       ),
     ),
 
-    // Scene 9: Checkout
+    // Bun-chan is very happy
+    sequence(
+      showCharacterDialog(
+        'Bunちゃん',
+        CHARACTER_COLORS.bun,
+        'えへへ、ありがとう！これ買ってもらおうっと！✨',
+      ),
+    ),
+
+    // Switch to ending
+    sequence([switchScenario(SCENARIOS.ending)]),
+  ];
+};
+
+/**
+ * Help React-kun scenario - Go to game shop
+ */
+const createHelpReactScenario = (): NovelMessage[] => {
+  return [
+    // Clean up choice buttons
+    sequence([
+      removeWidgets(['choice-buttons']),
+      clearTextBox(),
+      showCharacterName('おまえ', CHARACTER_COLORS.player),
+      showDialog('Reactくん、ゲームショップに行こうか。'),
+    ]),
+
+    // React-kun is happy
+    sequence(
+      showCharacterDialog(
+        'Reactくん',
+        CHARACTER_COLORS.react,
+        'やった！兄ちゃん最高！🎮',
+      ),
+    ),
+
+    // Bun-chan understands
+    sequence(
+      showCharacterDialog(
+        'Bunちゃん',
+        CHARACTER_COLORS.bun,
+        'うん、私は先に服を見てくるね〜',
+      ),
+    ),
+
+    // At the game shop
+    sequence(
+      showCharacterDialog(
+        'Reactくん',
+        CHARACTER_COLORS.react,
+        'うわぁ！新作のRPGが出てる！これ、面白そうだなぁ！',
+      ),
+    ),
+
+    // Player responds
     sequence(
       showCharacterDialog(
         'おまえ',
         CHARACTER_COLORS.player,
-        'じゃあ、お会計をしようか。',
+        'へぇ、確かに面白そうだね。買って一緒に遊ぼうか。',
       ),
     ),
 
-    // Scene 10: On the way home
+    // React-kun is very happy
+    sequence(
+      showCharacterDialog(
+        'Reactくん',
+        CHARACTER_COLORS.react,
+        '本当!? ありがとう兄ちゃん！早く帰って遊びたい！',
+      ),
+    ),
+
+    // Switch to ending
+    sequence([switchScenario(SCENARIOS.ending)]),
+  ];
+};
+
+/**
+ * Common ending scenario
+ */
+const createEndingScenario = (): NovelMessage[] => {
+  return [
+    // Everyone gathers
+    sequence([
+      clearTextBox(),
+      showDialog('買い物を終えて、みんなで合流した。'),
+    ]),
+
+    // On the way home
     sequence(
       showCharacterDialog(
         'Bunちゃん',
@@ -182,7 +357,7 @@ export const createNovelGame = (): NovelMessage[] => {
       ),
     ),
 
-    // Scene 11: React-kun's words
+    // React-kun agrees
     sequence(
       showCharacterDialog(
         'Reactくん',
@@ -191,12 +366,12 @@ export const createNovelGame = (): NovelMessage[] => {
       ),
     ),
 
-    // Scene 12: Ending narration
+    // Ending narration
     sequence(
       showNarration('楽しい一日だった。家族と過ごす時間は本当に大切だな。'),
     ),
 
-    // Scene 13: The End
+    // The End
     sequence([
       stopChannel('bgm', 3000),
       removeWidgets([
@@ -218,6 +393,6 @@ export const createNovelGame = (): NovelMessage[] => {
 };
 
 /**
- * Pre-generated messages for the game
+ * Pre-generated scenarios for the game
  */
-export const messages = createNovelGame();
+export const scenarios = createScenarios();

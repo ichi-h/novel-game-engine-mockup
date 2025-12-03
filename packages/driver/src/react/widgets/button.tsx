@@ -6,7 +6,8 @@ interface Props {
 }
 
 export const Button = ({ widget, send }: Props) => {
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     send(widget.onClick as NovelMessage);
   };
 

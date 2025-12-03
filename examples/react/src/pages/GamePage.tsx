@@ -8,8 +8,8 @@ import {
   update,
 } from 'engine';
 import { getApplyMixer } from 'libs/mixer-driver';
-import { useMemo, useState } from 'react';
-import { messages } from '../game/scenario';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { scenarios } from '../game/scenario';
 
 interface GamePageProps {
   initialModel: NovelModel;
@@ -18,6 +18,17 @@ interface GamePageProps {
 }
 
 const applyMixer = getApplyMixer();
+
+/**
+ * Get the current message from scenarios based on model state
+ */
+const getCurrentMessage = (model: NovelModel): NovelMessage | undefined => {
+  const currentScenario = scenarios[model.currentScenario];
+  if (!currentScenario) {
+    return undefined;
+  }
+  return currentScenario[model.index];
+};
 
 /**
  * Game page component
@@ -40,7 +51,7 @@ export const GamePage = ({
       if (model.index !== 0) {
         return [model, async () => ({ type: 'ApplyMixer' })];
       }
-      const initMessage = messages[0];
+      const initMessage = getCurrentMessage(model);
       return [
         model,
         initMessage && (async () => ({ type: 'Next', message: initMessage })),
@@ -51,11 +62,16 @@ export const GamePage = ({
   );
 
   const next = () => {
-    if (model.status.value === 'Delaying' || model.mixer.isApplying) {
+    // Don't proceed if delaying, applying mixer, or awaiting user action
+    if (
+      model.status.value === 'Delaying' ||
+      model.status.value === 'AwaitingAction' ||
+      model.mixer.isApplying
+    ) {
       return;
     }
 
-    const msg = messages[model.index];
+    const msg = getCurrentMessage(model);
     if (!msg) {
       cleanupMixer();
       toTitle();
@@ -68,6 +84,21 @@ export const GamePage = ({
     e.stopPropagation();
     onOpenSave(model);
   };
+
+  // Track previous scenario to detect scenario switches
+  const prevScenarioRef = useRef(model.currentScenario);
+
+  // Auto-advance when scenario switches
+  useEffect(() => {
+    if (prevScenarioRef.current !== model.currentScenario) {
+      prevScenarioRef.current = model.currentScenario;
+      // Scenario has switched, send the first message of the new scenario
+      const msg = getCurrentMessage(model);
+      if (msg && model.status.value === 'Processed') {
+        send({ type: 'Next', message: msg });
+      }
+    }
+  }, [model, send]);
 
   return (
     <div className="relative w-screen h-screen">

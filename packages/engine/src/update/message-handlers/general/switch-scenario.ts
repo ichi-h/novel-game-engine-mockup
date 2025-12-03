@@ -8,6 +8,17 @@ export type SwitchScenarioMessage = {
   resetState?: boolean;
 };
 
+export const switchScenario = (
+  scenario: string,
+  index?: number,
+  resetState?: boolean,
+): SwitchScenarioMessage => ({
+  type: 'SwitchScenario',
+  scenario,
+  ...(index !== undefined ? { index } : {}),
+  ...(resetState !== undefined ? { resetState } : {}),
+});
+
 export const handleSwitchScenario = (
   model: NovelModel,
   msg: SwitchScenarioMessage,
@@ -16,6 +27,7 @@ export const handleSwitchScenario = (
 
   let newModel: NovelModel = {
     ...model,
+    status: { value: 'Processed' },
     currentScenario: msg.scenario,
     index: newIndex,
   };
@@ -23,7 +35,6 @@ export const handleSwitchScenario = (
   if (msg.resetState) {
     newModel = {
       ...newModel,
-      status: { value: 'Processed' },
       mixer: {
         value: clearAllChannels(newModel.mixer.value),
         isApplying: false,
