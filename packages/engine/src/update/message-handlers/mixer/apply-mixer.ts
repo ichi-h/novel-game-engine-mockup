@@ -67,4 +67,4 @@ export const handleApplyMixerCompleted = (
   }
 
   return updatedModel;
-};;
+};
