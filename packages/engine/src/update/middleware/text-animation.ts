@@ -1,32 +1,18 @@
 import type { ReturnModel } from 'elmish';
 import type { NovelModel } from '../../model';
-import type { NovelMessage, NovelMessageType } from '../message';
+import type { NovelMessage } from '../message';
 import {
   sequence,
   type TextAnimationCompletedMessage,
 } from '../message-handlers';
 import type { MiddlewareNext } from '../update';
 
-const ignoreMessageTypes: NovelMessageType[] = [
-  'TextAnimationCompleted',
-  'DelayCompleted',
-  'Error',
-  'RecoverError',
-  'ApplyMixer',
-  'ApplyMixerCompleted',
-  'UpdateConfig',
-];
-
 export const textAnimationMiddleware = (
   model: NovelModel,
   msg: NovelMessage,
   next: MiddlewareNext,
 ): ReturnModel<NovelModel, NovelMessage> => {
-  if (
-    ignoreMessageTypes.includes(msg.type) ||
-    (msg.type === 'Sequence' &&
-      msg.messages.some((m) => ignoreMessageTypes.includes(m.type)))
-  ) {
+  if (msg.type !== 'Next') {
     return next(model, msg);
   }
 
@@ -56,7 +42,7 @@ export const textAnimationMiddleware = (
     return next(
       {
         ...model,
-        status: { value: 'Inserted', message: msg, before: sequenceMessage },
+        status: { value: 'Inserted', message: sequenceMessage, before: msg },
       },
       sequenceMessage,
     );
@@ -77,7 +63,6 @@ export const textAnimationMiddleware = (
       {
         ...model,
         status: { value: 'Merged', message: sequenceMessage },
-        index: model.index + 1,
       },
       sequenceMessage,
     );
@@ -87,7 +72,6 @@ export const textAnimationMiddleware = (
     {
       ...model,
       status: { value: 'Processed' },
-      index: model.index + 1,
     },
     msg,
   );

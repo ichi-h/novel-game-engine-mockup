@@ -41,7 +41,10 @@ export const GamePage = ({
         return [model, async () => ({ type: 'ApplyMixer' })];
       }
       const initMessage = messages[0];
-      return [model, initMessage && (async () => initMessage)];
+      return [
+        model,
+        initMessage && (async () => ({ type: 'Next', message: initMessage })),
+      ];
     },
     update(applyMixer, [historyMiddleware, textAnimationMiddleware]),
     setModel,
@@ -58,7 +61,7 @@ export const GamePage = ({
       toTitle();
       return;
     }
-    send(msg);
+    send({ type: 'Next', message: msg });
   };
 
   const handleOpenSave = (e: React.MouseEvent) => {

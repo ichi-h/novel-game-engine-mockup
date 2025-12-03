@@ -55,6 +55,7 @@ export type NovelStatus =
 
 export interface NovelModel {
   status: NovelStatus;
+  currentScenario: string;
   index: number;
   mixer: {
     value: Mixer;
@@ -76,39 +77,37 @@ type DeepPartial<T> = T extends object
 
 export type InitModelConfig = DeepPartial<NovelConfig>;
 
-export const createDefaultConfig = () =>
-  ({
-    historyLength: {
-      Delay: 10,
-      DelayCompleted: 10,
-      Sequence: 10,
-      Error: 200,
-      RecoverError: 10,
-      UpdateConfig: 10,
-      AddLayout: 10,
-      ShowImage: 10,
-      AddWidgets: 10,
-      AddTextBox: 200,
-      ShowText: 10,
-      TextAnimationCompleted: 10,
-      ClearTextBox: 10,
-      RemoveWidgets: 10,
-      AddTrack: 10,
-      AddBusTrack: 10,
-      PlayChannel: 10,
-      StopChannel: 10,
-      ChangeMasterVolume: 10,
-      ChangeChannelVolume: 10,
-      RemoveChannel: 10,
-      ApplyMixer: 10,
-      ApplyMixerCompleted: 10,
-    },
-    textAnimationSpeed: 50,
-  }) satisfies NovelConfig;
+export const defaultConfig: NovelConfig = {
+  historyLength: {
+    Next: 200,
+    Delay: 10,
+    DelayCompleted: 10,
+    Sequence: 10,
+    Error: 200,
+    RecoverError: 10,
+    UpdateConfig: 10,
+    AddLayout: 10,
+    ShowImage: 10,
+    AddWidgets: 10,
+    AddTextBox: 10,
+    ShowText: 10,
+    TextAnimationCompleted: 10,
+    ClearTextBox: 10,
+    RemoveWidgets: 10,
+    AddTrack: 10,
+    AddBusTrack: 10,
+    PlayChannel: 10,
+    StopChannel: 10,
+    ChangeMasterVolume: 10,
+    ChangeChannelVolume: 10,
+    RemoveChannel: 10,
+    ApplyMixer: 10,
+    ApplyMixerCompleted: 10,
+  },
+  textAnimationSpeed: 50,
+};
 
 export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
-  const defaultConfig = createDefaultConfig();
-
   const config: NovelConfig = {
     historyLength: {
       ...defaultConfig.historyLength,
@@ -120,6 +119,7 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
 
   return {
     status: { value: 'Processed' },
+    currentScenario: 'main',
     index: 0,
     mixer: {
       value: { volume: 1, channels: [] },
@@ -128,6 +128,7 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
     ui: [],
     animationTickets: [],
     history: {
+      Next: [],
       Delay: [],
       DelayCompleted: [],
       Sequence: [],

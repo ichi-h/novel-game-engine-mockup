@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { createDefaultConfig, generateInitModel } from '@/model';
+import { defaultConfig, generateInitModel } from '@/model';
 import {
   handleUpdateConfig,
   type UpdateConfigMessage,
@@ -10,15 +10,14 @@ describe('updateConfig', () => {
   describe('normal cases', () => {
     test('creates message with required fields', () => {
       // Arrange
-      const config = createDefaultConfig();
 
       // Act
-      const result = updateConfig(config);
+      const result = updateConfig(defaultConfig);
 
       // Assert
       expect(result).toEqual({
         type: 'UpdateConfig',
-        config,
+        config: defaultConfig,
       });
     });
   });
@@ -29,7 +28,6 @@ describe('handleUpdateConfig', () => {
     test('updates model config with new config', () => {
       // Arrange
       const model = generateInitModel();
-      const defaultConfig = createDefaultConfig();
       const newConfig = {
         ...defaultConfig,
         historyLength: {

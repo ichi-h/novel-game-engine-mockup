@@ -12,6 +12,7 @@ import type {
   DelayCompletedMessage,
   DelayMessage,
   ErrorMessage,
+  NextMessage,
   PlayChannelMessage,
   RecoverErrorMessage,
   RemoveChannelMessage,
@@ -26,6 +27,7 @@ import type {
 
 export type NovelMessage =
   // General
+  | NextMessage
   | DelayMessage
   | DelayCompletedMessage
   | SequenceMessage<NovelMessage>

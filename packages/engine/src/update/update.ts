@@ -16,6 +16,7 @@ import {
   handleDelay,
   handleDelayCompleted,
   handleError,
+  handleNext,
   handlePlayChannel,
   handleRecoverError,
   handleRemoveChannel,
@@ -50,6 +51,8 @@ export const update =
 
       switch (msg.type) {
         // General
+        case 'Next':
+          return handleNext(model, msg, updateWrapped);
         case 'Delay':
           return handleDelay(model, msg);
         case 'DelayCompleted':
