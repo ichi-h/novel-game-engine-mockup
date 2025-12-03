@@ -5,3 +5,4 @@ export * from './next';
 export * from './sequence';
 export * from './switch-scenario';
 export * from './update-config';
+export * from './update-custom-state';

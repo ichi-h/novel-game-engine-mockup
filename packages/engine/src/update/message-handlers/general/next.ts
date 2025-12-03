@@ -2,16 +2,20 @@ import type { ReturnModel, Update } from 'elmish';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 
-export type NextMessage = {
+export type NextMessage<
+  CustomState = unknown,
+> = {
   type: 'Next';
-  message: NovelMessage;
+  message: NovelMessage<CustomState>;
 };
 
-export const handleNext = (
-  model: NovelModel,
-  msg: NextMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+export const handleNext = <
+  CustomState = unknown,
+>(
+  model: NovelModel<CustomState>,
+  msg: NextMessage<CustomState>,
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   const result = update(model, msg.message);
 
   const [newModel, cmd] = Array.isArray(result)

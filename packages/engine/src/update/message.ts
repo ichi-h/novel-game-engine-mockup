@@ -26,17 +26,21 @@ import type {
   SwitchScenarioMessage,
   TextAnimationCompletedMessage,
   UpdateConfigMessage,
+  UpdateCustomStateMessage,
 } from './message-handlers';
 
-export type NovelMessage =
+export type NovelMessage<
+  CustomState = unknown,
+> =
   // General
-  | NextMessage
+  | NextMessage<CustomState>
   | SwitchScenarioMessage
   | AwaitActionMessage
   | DelayMessage
   | DelayCompletedMessage
-  | SequenceMessage<NovelMessage>
+  | SequenceMessage<NovelMessage<CustomState>>
   | UpdateConfigMessage
+  | UpdateCustomStateMessage<CustomState>
   | ErrorMessage
   | RecoverErrorMessage
   // Widgets

@@ -59,7 +59,9 @@ export type NovelStatus =
       error: Error;
     };
 
-export interface NovelModel {
+export interface NovelModel<
+  CustomState = unknown,
+> {
   status: NovelStatus;
   currentScenario: string;
   index: number;
@@ -73,6 +75,7 @@ export interface NovelModel {
     [K in NovelMessageType]: Extract<NovelMessage, { type: K }>[];
   };
   config: NovelConfig;
+  customState?: CustomState;
 }
 
 type DeepPartial<T> = T extends object
@@ -94,6 +97,7 @@ export const defaultConfig: NovelConfig = {
     Error: 200,
     RecoverError: 10,
     UpdateConfig: 10,
+    UpdateCustomState: 10,
     AddLayout: 10,
     ShowImage: 10,
     AddButton: 10,
@@ -116,7 +120,12 @@ export const defaultConfig: NovelConfig = {
   textAnimationSpeed: 50,
 };
 
-export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
+export const generateInitModel = <
+  CustomState = unknown,
+>(
+  customState?: CustomState,
+  initConfig?: InitModelConfig,
+): NovelModel<CustomState> => {
   const config: NovelConfig = {
     historyLength: {
       ...defaultConfig.historyLength,
@@ -146,6 +155,7 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
       Error: [],
       RecoverError: [],
       UpdateConfig: [],
+      UpdateCustomState: [],
       AddLayout: [],
       ShowImage: [],
       AddButton: [],
@@ -166,5 +176,6 @@ export const generateInitModel = (initConfig?: InitModelConfig): NovelModel => {
       ApplyMixerCompleted: [],
     },
     config,
+    ...(customState !== undefined ? { customState } : {}),
   };
 };

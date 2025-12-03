@@ -30,6 +30,7 @@ import {
   handleSwitchScenario,
   handleTextAnimationCompleted,
   handleUpdateConfig,
+  handleUpdateCustomState,
 } from './message-handlers';
 
 export type MiddlewareNext = (
@@ -68,6 +69,8 @@ export const update =
           return handleSequence(model, msg, updateWrapped);
         case 'UpdateConfig':
           return handleUpdateConfig(model, msg);
+        case 'UpdateCustomState':
+          return handleUpdateCustomState(model, msg);
         case 'Error':
           return handleError(model, msg);
         case 'RecoverError':
