@@ -1,3 +1,4 @@
+import type { ButtonWidget } from './button';
 import type { ImageWidget } from './image';
 import type { LayoutWidget } from './layout';
 import type { TextWidget } from './text';
@@ -12,4 +13,5 @@ export type NovelWidget =
   | LayoutWidget
   | ImageWidget
   | TextBoxWidget
-  | TextWidget;
+  | TextWidget
+  | ButtonWidget;

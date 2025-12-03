@@ -85,7 +85,7 @@ export const GamePage = ({
         tabIndex={0}
         aria-label="次のシーンへ進む"
       >
-        <NovelWidgetDriver widgets={model.ui} model={model} />
+        <NovelWidgetDriver widgets={model.ui} model={model} send={send} />
       </div>
 
       {/* Menu button */}

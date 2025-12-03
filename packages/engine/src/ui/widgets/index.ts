@@ -1,3 +1,4 @@
+export * from './button';
 export * from './core';
 export * from './image';
 export * from './layout';

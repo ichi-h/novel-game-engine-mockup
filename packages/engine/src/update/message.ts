@@ -1,5 +1,6 @@
 import type {
   AddBusTrackMessage,
+  AddButtonMessage,
   AddLayoutMessage,
   AddTextBoxMessage,
   AddTrackMessage,
@@ -40,6 +41,7 @@ export type NovelMessage =
   | AddLayoutMessage
   | ShowImageMessage
   | AddWidgetsMessage
+  | AddButtonMessage
   | AddTextBoxMessage
   | ShowTextMessage
   | TextAnimationCompletedMessage

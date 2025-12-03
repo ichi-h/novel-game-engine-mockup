@@ -1,3 +1,4 @@
+export * from './add-button';
 export * from './add-layout';
 export * from './add-text-box';
 export * from './add-widgets';

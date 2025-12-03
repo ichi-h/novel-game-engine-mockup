@@ -4,6 +4,7 @@ import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
 import {
   handleAddBusTrack,
+  handleAddButton,
   handleAddLayout,
   handleAddTextBox,
   handleAddTrack,
@@ -74,6 +75,8 @@ export const update =
           return handleAddLayout(model, msg);
         case 'ShowImage':
           return handleShowImage(model, msg);
+        case 'AddButton':
+          return handleAddButton(model, msg);
         case 'AddTextBox':
           return handleAddTextBox(model, msg);
         case 'ShowText':

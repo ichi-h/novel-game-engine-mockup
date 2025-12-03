@@ -1,12 +1,13 @@
-import type { NovelModel, NovelWidget } from 'engine';
-import { Image, Layout, Text, TextBox } from './widgets';
+import type { NovelMessage, NovelModel, NovelWidget } from 'engine';
+import { Button, Image, Layout, Text, TextBox } from './widgets';
 
 interface Props {
   widgets: NovelWidget[];
   model: NovelModel;
+  send: (msg: NovelMessage) => void;
 }
 
-export const NovelWidgetDriver = ({ widgets, model }: Props) => {
+export const NovelWidgetDriver = ({ widgets, model, send }: Props) => {
   return (
     <>
       {widgets.map((widget, i) => {
@@ -21,6 +22,7 @@ export const NovelWidgetDriver = ({ widgets, model }: Props) => {
                 key={`${widget.type}_${widget.id}_${i}`}
                 widget={widget}
                 model={model}
+                send={send}
               />
             );
           case 'TextBox':
@@ -29,6 +31,7 @@ export const NovelWidgetDriver = ({ widgets, model }: Props) => {
                 key={`${widget.type}_${widget.id}_${i}`}
                 widget={widget}
                 model={model}
+                send={send}
               />
             );
           case 'Text':
@@ -40,6 +43,14 @@ export const NovelWidgetDriver = ({ widgets, model }: Props) => {
                   (ticket) => ticket.id === widget.id,
                 )}
                 model={model}
+              />
+            );
+          case 'Button':
+            return (
+              <Button
+                key={`${widget.type}_${widget.id}_${i}`}
+                widget={widget}
+                send={send}
               />
             );
           default:
