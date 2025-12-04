@@ -1,10 +1,8 @@
 import {
-  addButton,
-  addImage,
-  addLayout,
   addText,
   addTextBox,
   addTrack,
+  addWidgets,
   awaitAction,
   delay,
   type NovelMessage,
@@ -13,6 +11,7 @@ import {
   sequence,
   stopChannel,
   switchScenario,
+  w,
 } from 'engine';
 
 import bgm from '../bgm.mp3';
@@ -75,54 +74,53 @@ const createMainScenario = (): NovelMessage[] => {
         volume: 1,
         loop: { start: 0, end: 7650432 },
       }),
-      addLayout({
-        id: 'root',
-        style:
-          'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
-      }),
-      addLayout({
-        id: 'background-layer',
-        parentLayoutId: 'root',
-        style: 'absolute inset-0 flex items-center justify-center',
-      }),
-      addLayout({
-        id: 'background-content-layer',
-        parentLayoutId: 'background-layer',
-        style: 'relative w-full h-full',
-      }),
-      addImage({
-        layoutId: 'background-content-layer',
-        src: homeBg,
-        id: 'home-bg',
-        style: 'absolute inset-0 w-full h-full object-cover',
-      }),
-      addLayout({
-        id: 'content-layer',
-        parentLayoutId: 'root',
-        style:
-          'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
-      }),
-      addLayout({
-        id: 'title-area',
-        parentLayoutId: 'content-layer',
-        style: 'flex-1 flex items-center justify-center',
-      }),
+      addWidgets([
+        w.layout({
+          id: 'root',
+          style:
+            'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
+        })([
+          w.layout({
+            id: 'background-layer',
+            style: 'absolute inset-0 flex items-center justify-center',
+          })([
+            w.layout({
+              id: 'background-content-layer',
+              style: 'relative w-full h-full',
+            })([
+              w.img({
+                id: 'home-bg',
+                src: homeBg,
+                style: 'absolute inset-0 w-full h-full object-cover',
+              }),
+            ]),
+          ]),
+          w.layout({
+            id: 'content-layer',
+            style:
+              'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
+          })([
+            w.layout({
+              id: 'title-area',
+              style: 'flex-1 flex items-center justify-center',
+            })([]),
+            w.layout({
+              id: 'game-container',
+              style: 'w-full h-full flex flex-col',
+            })([
+              w.layout({
+                id: CHARACTER_LAYOUT_ID,
+                style: 'flex-1 flex items-center justify-around px-8',
+              })([]),
+              w.layout({
+                id: 'textbox-area',
+                style: 'w-full flex justify-center px-4 pb-4',
+              })([]),
+            ]),
+          ]),
+        ]),
+      ]),
       playChannel({ channelId: 'bgm' }),
-      addLayout({
-        id: 'game-container',
-        parentLayoutId: 'content-layer',
-        style: 'w-full h-full flex flex-col',
-      }),
-      addLayout({
-        id: CHARACTER_LAYOUT_ID,
-        parentLayoutId: 'game-container',
-        style: 'flex-1 flex items-center justify-around px-8',
-      }),
-      addLayout({
-        id: 'textbox-area',
-        parentLayoutId: 'game-container',
-        style: 'w-full flex justify-center px-4 pb-4',
-      }),
       delay(500),
       addTextBox({
         id: TEXTBOX_ID,
@@ -194,27 +192,30 @@ const createMainScenario = (): NovelMessage[] => {
     sequence([
       clearTextBox(),
       showDialog('誰と一緒に行く？'),
-      addLayout({
-        id: 'choice-buttons',
-        parentLayoutId: 'textbox-area',
-        style: 'flex gap-4 mt-4 justify-center',
-      }),
-      addButton({
-        label: 'Bunちゃんと服を見に行く 👗',
-        onClick: switchScenario({ scenario: SCENARIOS.helpBun }),
-        layoutId: 'choice-buttons',
-        id: 'btn-bun',
-        style:
-          'px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
-      }),
-      addButton({
-        label: 'Reactくんとゲームショップへ 🎮',
-        onClick: switchScenario({ scenario: SCENARIOS.helpReact }),
-        layoutId: 'choice-buttons',
-        id: 'btn-react',
-        style:
-          'px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
-      }),
+      addWidgets(
+        [
+          w.layout({
+            id: 'choice-buttons',
+            style: 'flex gap-4 mt-4 justify-center',
+          })([
+            w.button({
+              label: 'Bunちゃんと服を見に行く 👗',
+              onClick: switchScenario({ scenario: SCENARIOS.helpBun }),
+              id: 'btn-bun',
+              style:
+                'px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
+            }),
+            w.button({
+              label: 'Reactくんとゲームショップへ 🎮',
+              onClick: switchScenario({ scenario: SCENARIOS.helpReact }),
+              id: 'btn-react',
+              style:
+                'px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
+            }),
+          ]),
+        ],
+        'textbox-area',
+      ),
       awaitAction(),
     ]),
   ];
