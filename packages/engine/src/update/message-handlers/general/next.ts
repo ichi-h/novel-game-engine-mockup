@@ -2,16 +2,12 @@ import type { ReturnModel, Update } from 'elmish';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 
-export type NextMessage<
-  CustomState = unknown,
-> = {
+export type NextMessage<CustomState = unknown> = {
   type: 'Next';
   message: NovelMessage<CustomState>;
 };
 
-export const handleNext = <
-  CustomState = unknown,
->(
+export const handleNext = <CustomState = unknown>(
   model: NovelModel<CustomState>,
   msg: NextMessage<CustomState>,
   update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
