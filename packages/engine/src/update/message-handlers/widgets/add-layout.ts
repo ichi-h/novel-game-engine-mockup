@@ -9,11 +9,11 @@ export interface AddLayoutMessage extends BaseMessage {
   style?: string;
 }
 
-export const addLayout = (
-  id: string,
-  parentLayoutId?: string,
-  style?: string,
-): AddLayoutMessage => {
+export const addLayout = ({
+  id,
+  parentLayoutId,
+  style,
+}: Omit<AddLayoutMessage, 'type'>): AddLayoutMessage => {
   return {
     type: 'AddLayout',
     id,

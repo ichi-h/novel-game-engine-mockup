@@ -11,11 +11,11 @@ export interface AddBusTrackMessage extends BaseMessage {
   parentBusTrackId?: string;
 }
 
-export const addBusTrack = (
-  id: string,
-  volume?: Volume,
-  parentBusTrackId?: string,
-): AddBusTrackMessage => {
+export const addBusTrack = ({
+  id,
+  volume,
+  parentBusTrackId,
+}: Omit<AddBusTrackMessage, 'type'>): AddBusTrackMessage => {
   return {
     type: 'AddBusTrack',
     id,

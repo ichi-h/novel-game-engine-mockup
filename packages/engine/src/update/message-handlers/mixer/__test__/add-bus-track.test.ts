@@ -18,7 +18,7 @@ describe('addBusTrack', () => {
       const id = 'bus-track-1';
 
       // Act
-      const message = addBusTrack(id);
+      const message = addBusTrack({ id });
 
       // Assert
       expect(message.type).toBe('AddBusTrack');
@@ -34,7 +34,7 @@ describe('addBusTrack', () => {
       const parentBusTrackId = 'parent-bus-track';
 
       // Act
-      const message = addBusTrack(id, volume, parentBusTrackId);
+      const message = addBusTrack({ id, volume, parentBusTrackId });
 
       // Assert
       expect(message.type).toBe('AddBusTrack');

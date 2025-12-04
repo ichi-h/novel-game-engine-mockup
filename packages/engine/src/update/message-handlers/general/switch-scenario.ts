@@ -8,11 +8,11 @@ export type SwitchScenarioMessage = {
   resetState?: boolean;
 };
 
-export const switchScenario = (
-  scenario: string,
-  index?: number,
-  resetState?: boolean,
-): SwitchScenarioMessage => ({
+export const switchScenario = ({
+  scenario,
+  index,
+  resetState,
+}: Omit<SwitchScenarioMessage, 'type'>): SwitchScenarioMessage => ({
   type: 'SwitchScenario',
   scenario,
   ...(index !== undefined ? { index } : {}),

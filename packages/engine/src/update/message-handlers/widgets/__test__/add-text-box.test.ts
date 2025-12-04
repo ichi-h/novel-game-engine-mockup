@@ -11,7 +11,7 @@ describe('addTextBox', () => {
   describe('normal cases', () => {
     test('creates message with only required fields', () => {
       // Arrange & Act
-      const result = addTextBox('textbox1', 'parent');
+      const result = addTextBox({ id: 'textbox1', layoutId: 'parent' });
 
       // Assert
       expect(result).toEqual({
@@ -23,7 +23,11 @@ describe('addTextBox', () => {
 
     test('creates message with all optional fields', () => {
       // Arrange & Act
-      const result = addTextBox('textbox1', 'parent', 'padding: 10px;');
+      const result = addTextBox({
+        id: 'textbox1',
+        layoutId: 'parent',
+        style: 'padding: 10px;',
+      });
 
       // Assert
       expect(result).toEqual({

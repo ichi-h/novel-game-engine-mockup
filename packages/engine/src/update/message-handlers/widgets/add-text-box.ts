@@ -9,11 +9,11 @@ export interface AddTextBoxMessage extends BaseMessage {
   style?: string;
 }
 
-export const addTextBox = (
-  id: string,
-  layoutId: string,
-  style?: string,
-): AddTextBoxMessage => {
+export const addTextBox = ({
+  id,
+  layoutId,
+  style,
+}: Omit<AddTextBoxMessage, 'type'>): AddTextBoxMessage => {
   return {
     type: 'AddTextBox',
     id,

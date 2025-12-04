@@ -12,13 +12,13 @@ export interface AddButtonMessage extends BaseMessage {
   style?: string;
 }
 
-export const addButton = (
-  label: string,
-  onClick: NovelMessage,
-  layoutId?: string,
-  id?: string,
-  style?: string,
-): AddButtonMessage => {
+export const addButton = ({
+  id,
+  layoutId,
+  label,
+  onClick,
+  style,
+}: Omit<AddButtonMessage, 'type'>): AddButtonMessage => {
   return {
     type: 'AddButton',
     label,

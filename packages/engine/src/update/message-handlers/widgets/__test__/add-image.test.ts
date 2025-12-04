@@ -7,7 +7,7 @@ describe('addImage', () => {
   describe('normal cases', () => {
     test('creates message with only required fields', () => {
       // Arrange & Act
-      const result = addImage('parent', 'test.png');
+      const result = addImage({ layoutId: 'parent', src: 'test.png' });
 
       // Assert
       expect(result).toEqual({
@@ -19,7 +19,12 @@ describe('addImage', () => {
 
     test('creates message with all optional fields', () => {
       // Arrange & Act
-      const result = addImage('parent', 'test.png', 'img1', 'width: 100px;');
+      const result = addImage({
+        layoutId: 'parent',
+        src: 'test.png',
+        id: 'img1',
+        style: 'width: 100px;',
+      });
 
       // Assert
       expect(result).toEqual({

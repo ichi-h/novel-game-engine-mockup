@@ -11,7 +11,7 @@ describe('addLayout', () => {
   describe('normal cases', () => {
     test('creates message with only required fields', () => {
       // Arrange & Act
-      const result = addLayout('layout1');
+      const result = addLayout({ id: 'layout1' });
 
       // Assert
       expect(result).toEqual({
@@ -22,7 +22,11 @@ describe('addLayout', () => {
 
     test('creates message with all optional fields', () => {
       // Arrange & Act
-      const result = addLayout('layout1', 'parent', 'display: flex;');
+      const result = addLayout({
+        id: 'layout1',
+        parentLayoutId: 'parent',
+        style: 'display: flex;',
+      });
 
       // Assert
       expect(result).toEqual({

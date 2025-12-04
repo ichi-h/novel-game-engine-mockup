@@ -15,7 +15,7 @@ describe('addTrack', () => {
       const src = 'audio/bgm.mp3';
 
       // Act
-      const message = addTrack(id, src);
+      const message = addTrack({ id, src });
 
       // Assert
       expect(message.type).toBe('AddTrack');
@@ -35,7 +35,7 @@ describe('addTrack', () => {
       const loop = { start: 0, end: 44100 };
 
       // Act
-      const message = addTrack(id, src, busTrackId, volume, loop);
+      const message = addTrack({ id, src, busTrackId, volume, loop });
 
       // Assert
       expect(message.type).toBe('AddTrack');

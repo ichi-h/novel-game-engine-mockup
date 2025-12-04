@@ -14,7 +14,10 @@ describe('addText', () => {
   describe('normal cases', () => {
     test('creates message with only required fields', () => {
       // Arrange & Act
-      const result = addText('textbox1', 'Hello, World!');
+      const result = addText({
+        textBoxId: 'textbox1',
+        content: 'Hello, World!',
+      });
 
       // Assert
       expect(result).toEqual({
@@ -26,13 +29,13 @@ describe('addText', () => {
 
     test('creates message with all optional fields', () => {
       // Arrange & Act
-      const result = addText(
-        'textbox1',
-        'Hello, World!',
-        'text1',
-        'font-weight: bold;',
-        50,
-      );
+      const result = addText({
+        textBoxId: 'textbox1',
+        content: 'Hello, World!',
+        id: 'text1',
+        style: 'font-weight: bold;',
+        speed: 50,
+      });
 
       // Assert
       expect(result).toEqual({
@@ -47,14 +50,14 @@ describe('addText', () => {
 
     test('creates message with nextMessageCaught parameter', () => {
       // Arrange & Act
-      const result = addText(
-        'textbox1',
-        'Hello, World!',
-        'text1',
-        'font-weight: bold;',
-        50,
-        'merge',
-      );
+      const result = addText({
+        textBoxId: 'textbox1',
+        content: 'Hello, World!',
+        id: 'text1',
+        style: 'font-weight: bold;',
+        speed: 50,
+        nextMessageCaught: 'merge',
+      });
 
       // Assert
       expect(result).toEqual({

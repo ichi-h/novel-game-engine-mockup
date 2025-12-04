@@ -17,7 +17,7 @@ describe('stopChannel', () => {
       const channelId = 'channel-1';
 
       // Act
-      const message = stopChannel(channelId);
+      const message = stopChannel({ channelId });
 
       // Assert
       expect(message.type).toBe('StopChannel');
@@ -31,7 +31,7 @@ describe('stopChannel', () => {
       const fadeOutMs = 2000;
 
       // Act
-      const message = stopChannel(channelId, fadeOutMs);
+      const message = stopChannel({ channelId, fadeOutMs });
 
       // Assert
       expect(message.type).toBe('StopChannel');

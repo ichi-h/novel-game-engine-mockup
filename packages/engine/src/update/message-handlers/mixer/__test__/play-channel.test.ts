@@ -17,7 +17,7 @@ describe('playChannel', () => {
       const channelId = 'channel-1';
 
       // Act
-      const message = playChannel(channelId);
+      const message = playChannel({ channelId });
 
       // Assert
       expect(message.type).toBe('PlayChannel');
@@ -37,13 +37,13 @@ describe('playChannel', () => {
       const fadeOutMs = 2000;
 
       // Act
-      const message = playChannel(
+      const message = playChannel({
         channelId,
         delayMs,
         offsetMs,
         fadeInMs,
         fadeOutMs,
-      );
+      });
 
       // Assert
       expect(message.type).toBe('PlayChannel');

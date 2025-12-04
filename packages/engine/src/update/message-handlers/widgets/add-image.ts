@@ -10,12 +10,12 @@ export interface AddImageMessage extends BaseMessage {
   style?: string;
 }
 
-export const addImage = (
-  layoutId: string,
-  src: string,
-  id?: string,
-  style?: string,
-): AddImageMessage => {
+export const addImage = ({
+  layoutId,
+  src,
+  id,
+  style,
+}: Omit<AddImageMessage, 'type'>): AddImageMessage => {
   return {
     type: 'ShowImage',
     layoutId,

@@ -18,7 +18,7 @@ describe('changeChannelVolume', () => {
       const volume = 0.5;
 
       // Act
-      const message = changeChannelVolume(channelId, volume);
+      const message = changeChannelVolume({ channelId, volume });
 
       // Assert
       expect(message.type).toBe('ChangeChannelVolume');

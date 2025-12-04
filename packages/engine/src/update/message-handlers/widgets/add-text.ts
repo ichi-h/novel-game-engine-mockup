@@ -17,14 +17,14 @@ export interface TextAnimationCompletedMessage extends BaseMessage {
   id: string;
 }
 
-export const addText = (
-  textBoxId: string,
-  content: string,
-  id?: string,
-  style?: string,
-  speed?: number,
-  nextMessageCaught?: AnimationTicket['nextMessageCaught'],
-): ShowAddMessage => {
+export const addText = ({
+  textBoxId,
+  content,
+  id,
+  style,
+  speed,
+  nextMessageCaught,
+}: Omit<ShowAddMessage, 'type'>): ShowAddMessage => {
   return {
     type: 'ShowText',
     textBoxId,

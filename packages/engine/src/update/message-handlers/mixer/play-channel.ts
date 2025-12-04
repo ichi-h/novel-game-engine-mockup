@@ -19,13 +19,13 @@ export interface PlayChannelMessage extends BaseMessage {
   offsetMs?: OffsetMs;
 }
 
-export const playChannel = (
-  channelId: string,
-  delayMs?: DelayMs,
-  offsetMs?: OffsetMs,
-  fadeInMs?: FadeInMs,
-  fadeOutMs?: FadeOutMs,
-): PlayChannelMessage => {
+export const playChannel = ({
+  channelId,
+  delayMs,
+  offsetMs,
+  fadeInMs,
+  fadeOutMs,
+}: Omit<PlayChannelMessage, 'type'>): PlayChannelMessage => {
   return {
     type: 'PlayChannel',
     channelId,

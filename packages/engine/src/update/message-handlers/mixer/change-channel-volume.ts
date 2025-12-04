@@ -9,10 +9,10 @@ export interface ChangeChannelVolumeMessage extends BaseMessage {
   volume: Volume;
 }
 
-export const changeChannelVolume = (
-  channelId: string,
-  volume: Volume,
-): ChangeChannelVolumeMessage => {
+export const changeChannelVolume = ({
+  channelId,
+  volume,
+}: Omit<ChangeChannelVolumeMessage, 'type'>): ChangeChannelVolumeMessage => {
   return {
     type: 'ChangeChannelVolume',
     channelId,

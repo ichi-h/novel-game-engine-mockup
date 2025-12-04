@@ -29,19 +29,22 @@ export const clearTextBox = (): NovelMessage => clearTextBoxMsg(TEXTBOX_ID);
  * Show character name
  */
 export const showCharacterName = (name: string, color: string): NovelMessage =>
-  addText(
-    TEXTBOX_ID,
-    name,
-    undefined,
-    `${color} ${COMMON_STYLES.nameText}`,
-    100,
-  );
+  addText({
+    textBoxId: TEXTBOX_ID,
+    content: name,
+    style: `${color} ${COMMON_STYLES.nameText}`,
+    speed: 100,
+  });
 
 /**
  * Show dialog text
  */
 export const showDialog = (text: string): NovelMessage =>
-  addText(TEXTBOX_ID, text, undefined, COMMON_STYLES.dialogText);
+  addText({
+    textBoxId: TEXTBOX_ID,
+    content: text,
+    style: COMMON_STYLES.dialogText,
+  });
 
 /**
  * Show narration (without character name)
@@ -68,7 +71,12 @@ export const showCharacterDialog = (
  * Show character image
  */
 export const showCharacter = (id: string, src: string): NovelMessage =>
-  addImage(CHARACTER_LAYOUT_ID, src, id, COMMON_STYLES.characterImage);
+  addImage({
+    layoutId: CHARACTER_LAYOUT_ID,
+    src,
+    id,
+    style: COMMON_STYLES.characterImage,
+  });
 
 /**
  * Show character intro scene (image + name + text)
@@ -90,9 +98,9 @@ export const introduceCharacter = (
  * Change background image
  */
 export const changeBackground = (id: string, src: string): NovelMessage =>
-  addImage(
-    BG_LAYER_ID,
+  addImage({
+    layoutId: BG_LAYER_ID,
     src,
     id,
-    'absolute inset-0 w-full h-full object-cover animate-fade-in',
-  );
+    style: 'absolute inset-0 w-full h-full object-cover animate-fade-in',
+  });

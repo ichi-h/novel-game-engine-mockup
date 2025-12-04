@@ -9,10 +9,10 @@ export interface StopChannelMessage extends BaseMessage {
   fadeOutMs?: FadeOutMs;
 }
 
-export const stopChannel = (
-  channelId: string,
-  fadeOutMs?: FadeOutMs,
-): StopChannelMessage => {
+export const stopChannel = ({
+  channelId,
+  fadeOutMs,
+}: Omit<StopChannelMessage, 'type'>): StopChannelMessage => {
   return {
     type: 'StopChannel',
     channelId,

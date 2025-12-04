@@ -15,13 +15,13 @@ export interface AddTrackMessage extends BaseMessage {
   };
 }
 
-export const addTrack = (
-  id: string,
-  src: string,
-  busTrackId?: string,
-  volume?: Volume,
-  loop?: { start: Samples; end: Samples },
-): AddTrackMessage => {
+export const addTrack = ({
+  id,
+  src,
+  busTrackId,
+  volume,
+  loop,
+}: Omit<AddTrackMessage, 'type'>): AddTrackMessage => {
   return {
     type: 'AddTrack',
     id,

@@ -69,60 +69,67 @@ const createMainScenario = (): NovelMessage[] => {
   return [
     // Scene 1: Game start
     sequence([
-      addTrack('bgm', bgm, undefined, 1, { start: 0, end: 7650432 }),
-      addLayout(
-        'root',
-        undefined,
-        'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
-      ),
-      addLayout(
-        'background-layer',
-        'root',
-        'absolute inset-0 flex items-center justify-center',
-      ),
-      addLayout(
-        'background-content-layer',
-        'background-layer',
-        'relative w-full h-full',
-      ),
-      addImage(
-        'background-content-layer',
-        homeBg,
-        'home-bg',
-        'absolute inset-0 w-full h-full object-cover',
-      ),
-      addLayout(
-        'content-layer',
-        'root',
-        'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
-      ),
-      addLayout(
-        'title-area',
-        'content-layer',
-        'flex-1 flex items-center justify-center',
-      ),
-      playChannel('bgm'),
-      addLayout(
-        'game-container',
-        'content-layer',
-        'w-full h-full flex flex-col',
-      ),
-      addLayout(
-        CHARACTER_LAYOUT_ID,
-        'game-container',
-        'flex-1 flex items-center justify-around px-8',
-      ),
-      addLayout(
-        'textbox-area',
-        'game-container',
-        'w-full flex justify-center px-4 pb-4',
-      ),
+      addTrack({
+        id: 'bgm',
+        src: bgm,
+        volume: 1,
+        loop: { start: 0, end: 7650432 },
+      }),
+      addLayout({
+        id: 'root',
+        style:
+          'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
+      }),
+      addLayout({
+        id: 'background-layer',
+        parentLayoutId: 'root',
+        style: 'absolute inset-0 flex items-center justify-center',
+      }),
+      addLayout({
+        id: 'background-content-layer',
+        parentLayoutId: 'background-layer',
+        style: 'relative w-full h-full',
+      }),
+      addImage({
+        layoutId: 'background-content-layer',
+        src: homeBg,
+        id: 'home-bg',
+        style: 'absolute inset-0 w-full h-full object-cover',
+      }),
+      addLayout({
+        id: 'content-layer',
+        parentLayoutId: 'root',
+        style:
+          'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
+      }),
+      addLayout({
+        id: 'title-area',
+        parentLayoutId: 'content-layer',
+        style: 'flex-1 flex items-center justify-center',
+      }),
+      playChannel({ channelId: 'bgm' }),
+      addLayout({
+        id: 'game-container',
+        parentLayoutId: 'content-layer',
+        style: 'w-full h-full flex flex-col',
+      }),
+      addLayout({
+        id: CHARACTER_LAYOUT_ID,
+        parentLayoutId: 'game-container',
+        style: 'flex-1 flex items-center justify-around px-8',
+      }),
+      addLayout({
+        id: 'textbox-area',
+        parentLayoutId: 'game-container',
+        style: 'w-full flex justify-center px-4 pb-4',
+      }),
       delay(500),
-      addTextBox(
-        TEXTBOX_ID,
-        'textbox-area',
-        'w-full h-56 max-w-4xl bg-white/95 backdrop-blur-md border-4 border-pink-300 rounded-3xl p-8 shadow-2xl',
-      ),
+      addTextBox({
+        id: TEXTBOX_ID,
+        layoutId: 'textbox-area',
+        style:
+          'w-full h-56 max-w-4xl bg-white/95 backdrop-blur-md border-4 border-pink-300 rounded-3xl p-8 shadow-2xl',
+      }),
       showDialog(
         '今日は休日。妹のBunちゃんと弟のReactくんと一緒にショッピングモールへ出かけることにした。',
       ),
@@ -187,25 +194,27 @@ const createMainScenario = (): NovelMessage[] => {
     sequence([
       clearTextBox(),
       showDialog('誰と一緒に行く？'),
-      addLayout(
-        'choice-buttons',
-        'textbox-area',
-        'flex gap-4 mt-4 justify-center',
-      ),
-      addButton(
-        'Bunちゃんと服を見に行く 👗',
-        switchScenario(SCENARIOS.helpBun),
-        'choice-buttons',
-        'btn-bun',
-        'px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
-      ),
-      addButton(
-        'Reactくんとゲームショップへ 🎮',
-        switchScenario(SCENARIOS.helpReact),
-        'choice-buttons',
-        'btn-react',
-        'px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
-      ),
+      addLayout({
+        id: 'choice-buttons',
+        parentLayoutId: 'textbox-area',
+        style: 'flex gap-4 mt-4 justify-center',
+      }),
+      addButton({
+        label: 'Bunちゃんと服を見に行く 👗',
+        onClick: switchScenario({ scenario: SCENARIOS.helpBun }),
+        layoutId: 'choice-buttons',
+        id: 'btn-bun',
+        style:
+          'px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
+      }),
+      addButton({
+        label: 'Reactくんとゲームショップへ 🎮',
+        onClick: switchScenario({ scenario: SCENARIOS.helpReact }),
+        layoutId: 'choice-buttons',
+        id: 'btn-react',
+        style:
+          'px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
+      }),
       awaitAction(),
     ]),
   ];
@@ -270,7 +279,7 @@ const createHelpBunScenario = (): NovelMessage[] => {
     ),
 
     // Switch to ending
-    sequence([switchScenario(SCENARIOS.ending)]),
+    sequence([switchScenario({ scenario: SCENARIOS.ending })]),
   ];
 };
 
@@ -333,7 +342,7 @@ const createHelpReactScenario = (): NovelMessage[] => {
     ),
 
     // Switch to ending
-    sequence([switchScenario(SCENARIOS.ending)]),
+    sequence([switchScenario({ scenario: SCENARIOS.ending })]),
   ];
 };
 
@@ -373,7 +382,7 @@ const createEndingScenario = (): NovelMessage[] => {
 
     // The End
     sequence([
-      stopChannel('bgm', 3000),
+      stopChannel({ channelId: 'bgm', fadeOutMs: 3000 }),
       removeWidgets([
         TEXTBOX_ID,
         'bun-char',
@@ -382,12 +391,18 @@ const createEndingScenario = (): NovelMessage[] => {
         CHARACTER_LAYOUT_ID,
         'game-container',
       ]),
-      addTextBox(
-        'end-title',
-        'title-area',
-        'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
-      ),
-      addText('end-title', 'おしまい', undefined, 'drop-shadow-2xl', 100),
+      addTextBox({
+        id: 'end-title',
+        layoutId: 'title-area',
+        style:
+          'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
+      }),
+      addText({
+        textBoxId: 'end-title',
+        content: 'おしまい',
+        style: 'drop-shadow-2xl',
+        speed: 100,
+      }),
     ]),
   ];
 };
