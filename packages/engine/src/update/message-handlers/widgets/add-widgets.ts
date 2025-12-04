@@ -1,15 +1,15 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
-import { addWidget, type NovelWidget } from '@/ui';
+import { addWidget, type w } from '@/ui';
 
 export interface AddWidgetsMessage extends BaseMessage {
   type: 'AddWidgets';
-  widgets: NovelWidget[];
+  widgets: w.NovelWidget[];
   layoutId?: string;
 }
 
 export const addWidgets = (
-  widgets: NovelWidget[],
+  widgets: w.NovelWidget[],
   layoutId?: string,
 ): AddWidgetsMessage => {
   return {

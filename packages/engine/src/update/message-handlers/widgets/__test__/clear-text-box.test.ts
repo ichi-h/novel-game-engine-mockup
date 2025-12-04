@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { addWidget, hasId, layout, text, textBox } from '@/ui';
+import { addWidget, hasId, w } from '@/ui';
 import {
   type ClearTextBoxMessage,
   clearTextBox,
@@ -27,9 +27,9 @@ describe('handleClearTextBox - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add parent layout
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     // Add text box without any text
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ClearTextBoxMessage = {
       type: 'ClearTextBox',
@@ -48,14 +48,14 @@ describe('handleClearTextBox - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add parent layout
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     // Add text box with multiple texts
     model.ui = addWidget(
       model.ui,
-      textBox({ id: 'textbox1' })([
-        text({ id: 'text1', content: 'First text' }),
-        text({ id: 'text2', content: 'Second text' }),
-        text({ id: 'text3', content: 'Third text' }),
+      w.textBox({ id: 'textbox1' })([
+        w.text({ id: 'text1', content: 'First text' }),
+        w.text({ id: 'text2', content: 'Second text' }),
+        w.text({ id: 'text3', content: 'Third text' }),
       ]),
       'parent',
     );
@@ -101,7 +101,7 @@ describe('handleClearTextBox - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add layout (not a text box)
-    const layoutWidget = layout({ id: 'not-a-textbox' })([]);
+    const layoutWidget = w.layout({ id: 'not-a-textbox' })([]);
     model.ui = addWidget(model.ui, layoutWidget);
 
     const msg: ClearTextBoxMessage = {

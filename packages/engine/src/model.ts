@@ -1,5 +1,5 @@
 import type { Mixer } from './mixer';
-import type { NovelWidget } from './ui';
+import type { w } from './ui';
 import type { NovelMessage, NovelMessageType } from './update';
 
 export interface NovelConfig {
@@ -59,9 +59,7 @@ export type NovelStatus =
       error: Error;
     };
 
-export interface NovelModel<
-  CustomState = unknown,
-> {
+export interface NovelModel<CustomState = unknown> {
   status: NovelStatus;
   currentScenario: string;
   index: number;
@@ -69,7 +67,7 @@ export interface NovelModel<
     value: Mixer;
     isApplying: boolean;
   };
-  ui: NovelWidget[];
+  ui: w.NovelWidget[];
   animationTickets: AnimationTicket[];
   history: {
     [K in NovelMessageType]: Extract<NovelMessage, { type: K }>[];
@@ -120,9 +118,7 @@ export const defaultConfig: NovelConfig = {
   textAnimationSpeed: 50,
 };
 
-export const generateInitModel = <
-  CustomState = unknown,
->(
+export const generateInitModel = <CustomState = unknown>(
   customState?: CustomState,
   initConfig?: InitModelConfig,
 ): NovelModel<CustomState> => {

@@ -4,4 +4,4 @@ export * from './clear-text-box';
 export * from './find-by-id';
 export * from './has-id';
 export * from './remove-by-id';
-export * from './widgets';
+export * as w from './widgets';

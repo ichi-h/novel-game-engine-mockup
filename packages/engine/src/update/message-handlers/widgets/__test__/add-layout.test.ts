@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { addWidget, hasId, img, layout } from '@/ui';
+import { addWidget, hasId, w } from '@/ui';
 import {
   type AddLayoutMessage,
   addLayout,
@@ -74,7 +74,7 @@ describe('handleAddLayout - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
@@ -99,7 +99,7 @@ describe('handleAddLayout - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add existing layout
-    model.ui = addWidget(model.ui, layout({ id: 'duplicate-id' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'duplicate-id' })([]));
 
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
@@ -137,7 +137,7 @@ describe('handleAddLayout - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add Image widget
-    model.ui = addWidget(model.ui, img({ id: 'image1', src: 'test.png' }));
+    model.ui = addWidget(model.ui, w.img({ id: 'image1', src: 'test.png' }));
 
     const msg: AddLayoutMessage = {
       type: 'AddLayout',

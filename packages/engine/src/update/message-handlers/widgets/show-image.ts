@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
-import { addWidget, img } from '@/ui';
+import { addWidget, w } from '@/ui';
 
 export interface ShowImageMessage extends BaseMessage {
   type: 'ShowImage';
@@ -29,7 +29,7 @@ export const handleShowImage = (
   model: NovelModel,
   msg: ShowImageMessage,
 ): NovelModel => {
-  const newImg = img({
+  const newImg = w.img({
     src: msg.src,
     ...(msg.id !== undefined && { id: msg.id }),
     ...(msg.style !== undefined && { style: msg.style }),

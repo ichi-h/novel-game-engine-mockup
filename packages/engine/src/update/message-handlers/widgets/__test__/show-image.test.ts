@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { addWidget, hasId, layout } from '@/ui';
+import { addWidget, hasId, w } from '@/ui';
 import {
   handleShowImage,
   type ShowImageMessage,
@@ -41,7 +41,7 @@ describe('handleShowImage - normal cases', () => {
   test('adds image with only required fields', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg: ShowImageMessage = {
       type: 'ShowImage',
@@ -60,7 +60,7 @@ describe('handleShowImage - normal cases', () => {
   test('adds image with all optional fields', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg: ShowImageMessage = {
       type: 'ShowImage',
@@ -81,7 +81,7 @@ describe('handleShowImage - normal cases', () => {
   test('adds multiple images to same layout', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg1: ShowImageMessage = {
       type: 'ShowImage',
@@ -112,7 +112,7 @@ describe('handleShowImage - error cases', () => {
   test('throws error for duplicate image ID', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg1: ShowImageMessage = {
       type: 'ShowImage',
@@ -162,9 +162,9 @@ describe('handleShowImage - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add existing widget with id 'existing-widget'
-    model.ui = addWidget(model.ui, layout({ id: 'existing-widget' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'existing-widget' })([]));
     // Add a layout to host images
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg: ShowImageMessage = {
       type: 'ShowImage',

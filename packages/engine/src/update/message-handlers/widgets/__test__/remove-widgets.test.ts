@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { addWidget, hasId, layout, textBox } from '@/ui';
+import { addWidget, hasId, w } from '@/ui';
 import {
   handleRemoveWidgets,
   type RemoveWidgetsMessage,
@@ -26,8 +26,8 @@ describe('handleRemoveWidgets - normal cases', () => {
   test('removes single widget', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
@@ -45,9 +45,9 @@ describe('handleRemoveWidgets - normal cases', () => {
   test('removes multiple widgets', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox2' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox2' })([]), 'parent');
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
@@ -66,8 +66,8 @@ describe('handleRemoveWidgets - normal cases', () => {
   test('removes parent and its children when removing parent', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'childA' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'childA' })([]), 'parent');
 
     const msg: RemoveWidgetsMessage = {
       type: 'RemoveWidgets',
@@ -85,8 +85,8 @@ describe('handleRemoveWidgets - normal cases', () => {
   test('no-op when ids is empty array', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'childA' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'childA' })([]), 'parent');
 
     const beforeCount = model.ui.length;
 

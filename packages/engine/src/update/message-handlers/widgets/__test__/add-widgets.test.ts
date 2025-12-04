@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { addWidget, hasId, img, layout } from '@/ui';
+import { addWidget, hasId, w } from '@/ui';
 import {
   type AddWidgetsMessage,
   addWidgets,
@@ -12,8 +12,8 @@ describe('addWidgets', () => {
     test('creates message without layoutId', () => {
       // Arrange
       const widgets = [
-        img({ id: 'img1', src: 'test1.png' }),
-        img({ id: 'img2', src: 'test2.png' }),
+        w.img({ id: 'img1', src: 'test1.png' }),
+        w.img({ id: 'img2', src: 'test2.png' }),
       ];
 
       // Act
@@ -29,8 +29,8 @@ describe('addWidgets', () => {
     test('creates message with layoutId', () => {
       // Arrange
       const widgets = [
-        img({ id: 'img1', src: 'test1.png' }),
-        img({ id: 'img2', src: 'test2.png' }),
+        w.img({ id: 'img1', src: 'test1.png' }),
+        w.img({ id: 'img2', src: 'test2.png' }),
       ];
       const layoutId = 'parent-layout';
 
@@ -52,8 +52,8 @@ describe('handleAddWidgets - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     const widgets = [
-      img({ id: 'img1', src: 'test1.png' }),
-      img({ id: 'img2', src: 'test2.png' }),
+      w.img({ id: 'img1', src: 'test1.png' }),
+      w.img({ id: 'img2', src: 'test2.png' }),
     ];
     const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
@@ -73,11 +73,11 @@ describe('handleAddWidgets - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const widgets = [
-      img({ id: 'img1', src: 'test1.png' }),
-      img({ id: 'img2', src: 'test2.png' }),
+      w.img({ id: 'img1', src: 'test1.png' }),
+      w.img({ id: 'img2', src: 'test2.png' }),
     ];
     const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
@@ -117,10 +117,10 @@ describe('handleAddWidgets - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add existing widget
-    const existingWidget = img({ id: 'duplicate-id', src: 'existing.png' });
+    const existingWidget = w.img({ id: 'duplicate-id', src: 'existing.png' });
     model.ui = addWidget(model.ui, existingWidget);
 
-    const widgets = [img({ id: 'duplicate-id', src: 'new.png' })];
+    const widgets = [w.img({ id: 'duplicate-id', src: 'new.png' })];
     const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,
@@ -138,7 +138,7 @@ describe('handleAddWidgets - error cases', () => {
   test('throws error for non-existent parent layout ID', () => {
     // Arrange
     const model = generateInitModel();
-    const widgets = [img({ id: 'img1', src: 'test.png' })];
+    const widgets = [w.img({ id: 'img1', src: 'test.png' })];
     const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,
@@ -158,9 +158,9 @@ describe('handleAddWidgets - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add Image widget
-    model.ui = addWidget(model.ui, img({ id: 'image1', src: 'test.png' }));
+    model.ui = addWidget(model.ui, w.img({ id: 'image1', src: 'test.png' }));
 
-    const widgets = [img({ id: 'img1', src: 'new.png' })];
+    const widgets = [w.img({ id: 'img1', src: 'new.png' })];
     const msg: AddWidgetsMessage = {
       type: 'AddWidgets',
       widgets,

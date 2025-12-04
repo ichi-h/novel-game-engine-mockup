@@ -1,6 +1,6 @@
 import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
-import { addWidget, button } from '@/ui';
+import { addWidget, w } from '@/ui';
 import type { NovelMessage } from '@/update/message';
 
 export interface AddButtonMessage extends BaseMessage {
@@ -33,7 +33,7 @@ export const handleAddButton = (
   model: NovelModel,
   msg: AddButtonMessage,
 ): NovelModel => {
-  const newButton = button({
+  const newButton = w.button({
     label: msg.label,
     onClick: msg.onClick,
     ...(msg.id !== undefined && { id: msg.id }),

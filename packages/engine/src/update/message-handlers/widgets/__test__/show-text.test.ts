@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
-import { addWidget, hasId, layout, textBox } from '@/ui';
+import { addWidget, hasId, w } from '@/ui';
 import {
   calcAnimationTTL,
   handleShowText,
@@ -134,8 +134,8 @@ describe('handleShowText - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     // First, add parent layout and text box
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -155,8 +155,8 @@ describe('handleShowText - normal cases', () => {
   test('adds text to text box with id', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -177,8 +177,8 @@ describe('handleShowText - normal cases', () => {
   test('adds text to text box with all optional fields', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -201,8 +201,8 @@ describe('handleShowText - normal cases', () => {
   test('adds multiple texts to same text box', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg1: ShowTextMessage = {
       type: 'ShowText',
@@ -233,8 +233,8 @@ describe('handleShowText - normal cases', () => {
   test('returns only model when speed is 100 or greater (no animation)', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -258,8 +258,8 @@ describe('handleShowText - normal cases', () => {
   test('returns tuple with command when speed is less than 100 (with animation)', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -288,8 +288,8 @@ describe('handleShowText - normal cases', () => {
     // Arrange
     const model = generateInitModel();
     model.config.textAnimationSpeed = 30;
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -315,8 +315,8 @@ describe('handleShowText - normal cases', () => {
   test('sets nextMessageCaught to "merge" when specified', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -342,8 +342,8 @@ describe('handleShowText - normal cases', () => {
   test('animation command returns TextAnimationCompletedMessage', async () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowTextMessage = {
       type: 'ShowText',
@@ -375,8 +375,8 @@ describe('handleShowText - error cases', () => {
   test('throws error for duplicate text ID', () => {
     // Arrange
     const model = generateInitModel();
-    model.ui = addWidget(model.ui, layout({ id: 'parent' })([]));
-    model.ui = addWidget(model.ui, textBox({ id: 'textbox1' })([]), 'parent');
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
+    model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     // Add first text
     const msg1: ShowTextMessage = {
@@ -428,11 +428,11 @@ describe('handleShowText - error cases', () => {
     // Arrange
     const model = generateInitModel();
     // Add layout
-    model.ui = addWidget(model.ui, layout({ id: 'existing-widget' })([]));
+    model.ui = addWidget(model.ui, w.layout({ id: 'existing-widget' })([]));
     // Add text box
     model.ui = addWidget(
       model.ui,
-      textBox({ id: 'textbox1' })([]),
+      w.textBox({ id: 'textbox1' })([]),
       'existing-widget',
     );
 

@@ -1,6 +1,6 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
 import type { AnimationTicket, NovelModel } from '@/model';
-import { addText, text } from '@/ui';
+import { addText, w } from '@/ui';
 
 export interface ShowTextMessage extends BaseMessage {
   type: 'ShowText';
@@ -54,7 +54,7 @@ export const handleShowText = (
   model: NovelModel,
   msg: ShowTextMessage,
 ): ReturnModel<NovelModel, TextAnimationCompletedMessage> => {
-  const newText = text({
+  const newText = w.text({
     content: msg.content,
     speed: msg.speed ?? model.config.textAnimationSpeed,
     ...(msg.id !== undefined && { id: msg.id }),
