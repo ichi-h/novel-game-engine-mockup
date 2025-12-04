@@ -5,16 +5,18 @@ import type { NovelMessage } from './message';
 import {
   handleAddBusTrack,
   handleAddButton,
+  handleAddImage,
   handleAddLayout,
+  handleAddText,
   handleAddTextBox,
   handleAddTrack,
   handleAddWidgets,
   handleApplyMixer,
   handleApplyMixerCompleted,
+  handleAwaitAction,
   handleChangeChannelVolume,
   handleChangeMasterVolume,
   handleClearTextBox,
-  handleAwaitAction,
   handleDelay,
   handleDelayCompleted,
   handleError,
@@ -24,8 +26,6 @@ import {
   handleRemoveChannel,
   handleRemoveWidgets,
   handleSequence,
-  handleShowImage,
-  handleShowText,
   handleStopChannel,
   handleSwitchScenario,
   handleTextAnimationCompleted,
@@ -80,13 +80,13 @@ export const update =
         case 'AddLayout':
           return handleAddLayout(model, msg);
         case 'ShowImage':
-          return handleShowImage(model, msg);
+          return handleAddImage(model, msg);
         case 'AddButton':
           return handleAddButton(model, msg);
         case 'AddTextBox':
           return handleAddTextBox(model, msg);
         case 'ShowText':
-          return handleShowText(model, msg);
+          return handleAddText(model, msg);
         case 'TextAnimationCompleted':
           return handleTextAnimationCompleted(model, msg);
         case 'AddWidgets':

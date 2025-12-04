@@ -1,5 +1,5 @@
 import type { NovelMessage } from 'engine';
-import { clearTextBox as clearTextBoxMsg, showImage, showText } from 'engine';
+import { addImage, addText, clearTextBox as clearTextBoxMsg } from 'engine';
 
 // Widget IDs
 export const TEXTBOX_ID = 'main-textbox';
@@ -29,7 +29,7 @@ export const clearTextBox = (): NovelMessage => clearTextBoxMsg(TEXTBOX_ID);
  * Show character name
  */
 export const showCharacterName = (name: string, color: string): NovelMessage =>
-  showText(
+  addText(
     TEXTBOX_ID,
     name,
     undefined,
@@ -41,7 +41,7 @@ export const showCharacterName = (name: string, color: string): NovelMessage =>
  * Show dialog text
  */
 export const showDialog = (text: string): NovelMessage =>
-  showText(TEXTBOX_ID, text, undefined, COMMON_STYLES.dialogText);
+  addText(TEXTBOX_ID, text, undefined, COMMON_STYLES.dialogText);
 
 /**
  * Show narration (without character name)
@@ -68,7 +68,7 @@ export const showCharacterDialog = (
  * Show character image
  */
 export const showCharacter = (id: string, src: string): NovelMessage =>
-  showImage(CHARACTER_LAYOUT_ID, src, id, COMMON_STYLES.characterImage);
+  addImage(CHARACTER_LAYOUT_ID, src, id, COMMON_STYLES.characterImage);
 
 /**
  * Show character intro scene (image + name + text)
@@ -90,7 +90,7 @@ export const introduceCharacter = (
  * Change background image
  */
 export const changeBackground = (id: string, src: string): NovelMessage =>
-  showImage(
+  addImage(
     BG_LAYER_ID,
     src,
     id,

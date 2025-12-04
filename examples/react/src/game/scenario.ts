@@ -1,6 +1,8 @@
 import {
   addButton,
+  addImage,
   addLayout,
+  addText,
   addTextBox,
   addTrack,
   awaitAction,
@@ -9,8 +11,6 @@ import {
   playChannel,
   removeWidgets,
   sequence,
-  showImage,
-  showText,
   stopChannel,
   switchScenario,
 } from 'engine';
@@ -85,7 +85,7 @@ const createMainScenario = (): NovelMessage[] => {
         'background-layer',
         'relative w-full h-full',
       ),
-      showImage(
+      addImage(
         'background-content-layer',
         homeBg,
         'home-bg',
@@ -387,7 +387,7 @@ const createEndingScenario = (): NovelMessage[] => {
         'title-area',
         'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
       ),
-      showText('end-title', 'おしまい', undefined, 'drop-shadow-2xl', 100),
+      addText('end-title', 'おしまい', undefined, 'drop-shadow-2xl', 100),
     ]),
   ];
 };

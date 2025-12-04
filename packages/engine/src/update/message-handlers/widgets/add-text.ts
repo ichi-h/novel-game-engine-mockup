@@ -1,8 +1,8 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
 import type { AnimationTicket, NovelModel } from '@/model';
-import { addText, w } from '@/ui';
+import { addText as addTextWidget, w } from '@/ui';
 
-export interface ShowTextMessage extends BaseMessage {
+export interface ShowAddMessage extends BaseMessage {
   type: 'ShowText';
   id?: string;
   textBoxId: string;
@@ -17,14 +17,14 @@ export interface TextAnimationCompletedMessage extends BaseMessage {
   id: string;
 }
 
-export const showText = (
+export const addText = (
   textBoxId: string,
   content: string,
   id?: string,
   style?: string,
   speed?: number,
   nextMessageCaught?: AnimationTicket['nextMessageCaught'],
-): ShowTextMessage => {
+): ShowAddMessage => {
   return {
     type: 'ShowText',
     textBoxId,
@@ -50,9 +50,9 @@ export const calcAnimationTTL = (
   return maxDisplayTimePerChar * ((100 - speed) / 100) * charPosition;
 };
 
-export const handleShowText = (
+export const handleAddText = (
   model: NovelModel,
-  msg: ShowTextMessage,
+  msg: ShowAddMessage,
 ): ReturnModel<NovelModel, TextAnimationCompletedMessage> => {
   const newText = w.text({
     content: msg.content,
@@ -72,7 +72,7 @@ export const handleShowText = (
 
   const result = {
     ...model,
-    ui: addText(model.ui, newText, msg.textBoxId),
+    ui: addTextWidget(model.ui, newText, msg.textBoxId),
   };
 
   if (animationTicket === null) return result;

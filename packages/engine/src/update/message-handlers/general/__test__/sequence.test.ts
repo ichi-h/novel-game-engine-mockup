@@ -212,8 +212,8 @@ describe('handleSequence', () => {
         expect(cmdResult.messages).toHaveLength(1);
         expect(cmdResult.messages[0]?.type).toBe('ShowText');
         if (cmdResult.messages[0]?.type === 'ShowText') {
-          const showTextMsg = cmdResult.messages[0];
-          expect(showTextMsg.content).toBe('From command');
+          const addTextMsg = cmdResult.messages[0];
+          expect(addTextMsg.content).toBe('From command');
         }
       }
     });

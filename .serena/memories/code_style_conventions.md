@@ -21,7 +21,7 @@
 - **Types/Interfaces**: PascalCase (e.g., `NovelModel`, `SequenceMessage`)
 - **Functions/Variables**: camelCase (e.g., `handleSequence`, `generateInitModel`)
 - **Constants**: camelCase (no SCREAMING_SNAKE_CASE)
-- **Files**: kebab-case for handlers (e.g., `add-channel.ts`, `show-text.ts`)
+- **Files**: kebab-case for handlers (e.g., `add-channel.ts`, `add-text.ts`)
 - **Test files**: `*.test.ts` in `__test__` directories
 
 ## Code Organization

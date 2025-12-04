@@ -2,19 +2,19 @@ import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { addWidget, hasId, w } from '@/ui';
 import {
+  addText,
   calcAnimationTTL,
-  handleShowText,
+  handleAddText,
   handleTextAnimationCompleted,
-  type ShowTextMessage,
-  showText,
+  type ShowAddMessage,
   type TextAnimationCompletedMessage,
-} from '../show-text';
+} from '../add-text';
 
-describe('showText', () => {
+describe('addText', () => {
   describe('normal cases', () => {
     test('creates message with only required fields', () => {
       // Arrange & Act
-      const result = showText('textbox1', 'Hello, World!');
+      const result = addText('textbox1', 'Hello, World!');
 
       // Assert
       expect(result).toEqual({
@@ -26,7 +26,7 @@ describe('showText', () => {
 
     test('creates message with all optional fields', () => {
       // Arrange & Act
-      const result = showText(
+      const result = addText(
         'textbox1',
         'Hello, World!',
         'text1',
@@ -47,7 +47,7 @@ describe('showText', () => {
 
     test('creates message with nextMessageCaught parameter', () => {
       // Arrange & Act
-      const result = showText(
+      const result = addText(
         'textbox1',
         'Hello, World!',
         'text1',
@@ -129,7 +129,7 @@ describe('calcAnimationTTL', () => {
   });
 });
 
-describe('handleShowText - normal cases', () => {
+describe('handleAddText - normal cases', () => {
   test('adds text to text box with only required fields', () => {
     // Arrange
     const model = generateInitModel();
@@ -137,14 +137,14 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       textBoxId: 'textbox1',
       content: 'Hello, World!',
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     // Verify text box still exists
@@ -158,7 +158,7 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'text1',
       textBoxId: 'textbox1',
@@ -166,7 +166,7 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     const resultModel = Array.isArray(result) ? result[0] : result;
@@ -180,7 +180,7 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'text-all',
       textBoxId: 'textbox1',
@@ -190,7 +190,7 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     const resultModel = Array.isArray(result) ? result[0] : result;
@@ -204,14 +204,14 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg1: ShowTextMessage = {
+    const msg1: ShowAddMessage = {
       type: 'ShowText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'First text',
     };
 
-    const msg2: ShowTextMessage = {
+    const msg2: ShowAddMessage = {
       type: 'ShowText',
       id: 'text2',
       textBoxId: 'textbox1',
@@ -219,9 +219,9 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    let result = handleShowText(model, msg1);
+    let result = handleAddText(model, msg1);
     const model1 = Array.isArray(result) ? result[0] : result;
-    result = handleShowText(model1, msg2);
+    result = handleAddText(model1, msg2);
 
     // Assert
     const resultModel = Array.isArray(result) ? result[0] : result;
@@ -236,7 +236,7 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'text1',
       textBoxId: 'textbox1',
@@ -245,7 +245,7 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     expect(Array.isArray(result)).toBe(false);
@@ -261,7 +261,7 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'text1',
       textBoxId: 'textbox1',
@@ -270,7 +270,7 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     expect(Array.isArray(result)).toBe(true);
@@ -291,7 +291,7 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'text1',
       textBoxId: 'textbox1',
@@ -299,7 +299,7 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     expect(Array.isArray(result)).toBe(true);
@@ -318,7 +318,7 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'text1',
       textBoxId: 'textbox1',
@@ -328,7 +328,7 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     expect(Array.isArray(result)).toBe(true);
@@ -345,7 +345,7 @@ describe('handleShowText - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'text1',
       textBoxId: 'textbox1',
@@ -354,7 +354,7 @@ describe('handleShowText - normal cases', () => {
     };
 
     // Act
-    const result = handleShowText(model, msg);
+    const result = handleAddText(model, msg);
 
     // Assert
     expect(Array.isArray(result)).toBe(true);
@@ -371,7 +371,7 @@ describe('handleShowText - normal cases', () => {
   });
 });
 
-describe('handleShowText - error cases', () => {
+describe('handleAddText - error cases', () => {
   test('throws error for duplicate text ID', () => {
     // Arrange
     const model = generateInitModel();
@@ -379,17 +379,17 @@ describe('handleShowText - error cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     // Add first text
-    const msg1: ShowTextMessage = {
+    const msg1: ShowAddMessage = {
       type: 'ShowText',
       id: 'duplicate-text',
       textBoxId: 'textbox1',
       content: 'First text',
     };
-    const result = handleShowText(model, msg1);
+    const result = handleAddText(model, msg1);
     const newModel = Array.isArray(result) ? result[0] : result;
 
     // Try to add text with duplicate ID
-    const msg2: ShowTextMessage = {
+    const msg2: ShowAddMessage = {
       type: 'ShowText',
       id: 'duplicate-text',
       textBoxId: 'textbox1',
@@ -397,7 +397,7 @@ describe('handleShowText - error cases', () => {
     };
 
     // Act & Assert
-    expect(() => handleShowText(newModel, msg2)).toThrow(
+    expect(() => handleAddText(newModel, msg2)).toThrow(
       'Widget with id "duplicate-text" already exists',
     );
 
@@ -409,14 +409,14 @@ describe('handleShowText - error cases', () => {
     // Arrange
     const model = generateInitModel();
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       textBoxId: 'non-existent-textbox',
       content: 'Hello',
     };
 
     // Act & Assert
-    expect(() => handleShowText(model, msg)).toThrow(
+    expect(() => handleAddText(model, msg)).toThrow(
       'TextBox with id "non-existent-textbox" not found',
     );
 
@@ -436,7 +436,7 @@ describe('handleShowText - error cases', () => {
       'existing-widget',
     );
 
-    const msg: ShowTextMessage = {
+    const msg: ShowAddMessage = {
       type: 'ShowText',
       id: 'existing-widget', // Conflicts with layout ID
       textBoxId: 'textbox1',
@@ -444,7 +444,7 @@ describe('handleShowText - error cases', () => {
     };
 
     // Act & Assert
-    expect(() => handleShowText(model, msg)).toThrow(
+    expect(() => handleAddText(model, msg)).toThrow(
       'Widget with id "existing-widget" already exists',
     );
   });

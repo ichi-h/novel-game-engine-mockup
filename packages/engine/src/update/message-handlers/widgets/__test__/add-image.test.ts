@@ -1,17 +1,13 @@
 import { describe, expect, test } from 'bun:test';
 import { generateInitModel } from '@/model';
 import { addWidget, hasId, w } from '@/ui';
-import {
-  handleShowImage,
-  type ShowImageMessage,
-  showImage,
-} from '../show-image';
+import { type AddImageMessage, addImage, handleAddImage } from '../add-image';
 
-describe('showImage', () => {
+describe('addImage', () => {
   describe('normal cases', () => {
     test('creates message with only required fields', () => {
       // Arrange & Act
-      const result = showImage('parent', 'test.png');
+      const result = addImage('parent', 'test.png');
 
       // Assert
       expect(result).toEqual({
@@ -23,7 +19,7 @@ describe('showImage', () => {
 
     test('creates message with all optional fields', () => {
       // Arrange & Act
-      const result = showImage('parent', 'test.png', 'img1', 'width: 100px;');
+      const result = addImage('parent', 'test.png', 'img1', 'width: 100px;');
 
       // Assert
       expect(result).toEqual({
@@ -37,20 +33,20 @@ describe('showImage', () => {
   });
 });
 
-describe('handleShowImage - normal cases', () => {
+describe('handleAddImage - normal cases', () => {
   test('adds image with only required fields', () => {
     // Arrange
     const model = generateInitModel();
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
-    const msg: ShowImageMessage = {
+    const msg: AddImageMessage = {
       type: 'ShowImage',
       layoutId: 'parent',
       src: 'test.png',
     };
 
     // Act
-    const result = handleShowImage(model, msg);
+    const result = handleAddImage(model, msg);
 
     // Assert
     // Verify parent layout still exists
@@ -62,7 +58,7 @@ describe('handleShowImage - normal cases', () => {
     const model = generateInitModel();
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
-    const msg: ShowImageMessage = {
+    const msg: AddImageMessage = {
       type: 'ShowImage',
       id: 'img-all',
       layoutId: 'parent',
@@ -71,7 +67,7 @@ describe('handleShowImage - normal cases', () => {
     };
 
     // Act
-    const result = handleShowImage(model, msg);
+    const result = handleAddImage(model, msg);
 
     // Assert
     expect(hasId(result.ui, 'img-all')).toBe(true);
@@ -83,14 +79,14 @@ describe('handleShowImage - normal cases', () => {
     const model = generateInitModel();
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
-    const msg1: ShowImageMessage = {
+    const msg1: AddImageMessage = {
       type: 'ShowImage',
       id: 'img1',
       layoutId: 'parent',
       src: 'sprite1.png',
     };
 
-    const msg2: ShowImageMessage = {
+    const msg2: AddImageMessage = {
       type: 'ShowImage',
       id: 'img2',
       layoutId: 'parent',
@@ -98,8 +94,8 @@ describe('handleShowImage - normal cases', () => {
     };
 
     // Act
-    let result = handleShowImage(model, msg1);
-    result = handleShowImage(result, msg2);
+    let result = handleAddImage(model, msg1);
+    result = handleAddImage(result, msg2);
 
     // Assert
     expect(hasId(result.ui, 'img1')).toBe(true);
@@ -108,22 +104,22 @@ describe('handleShowImage - normal cases', () => {
   });
 });
 
-describe('handleShowImage - error cases', () => {
+describe('handleAddImage - error cases', () => {
   test('throws error for duplicate image ID', () => {
     // Arrange
     const model = generateInitModel();
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
-    const msg1: ShowImageMessage = {
+    const msg1: AddImageMessage = {
       type: 'ShowImage',
       id: 'duplicate-img',
       layoutId: 'parent',
       src: 'sprite1.png',
     };
 
-    const newModel = handleShowImage(model, msg1);
+    const newModel = handleAddImage(model, msg1);
 
-    const msg2: ShowImageMessage = {
+    const msg2: AddImageMessage = {
       type: 'ShowImage',
       id: 'duplicate-img',
       layoutId: 'parent',
@@ -131,7 +127,7 @@ describe('handleShowImage - error cases', () => {
     };
 
     // Act & Assert
-    expect(() => handleShowImage(newModel, msg2)).toThrow(
+    expect(() => handleAddImage(newModel, msg2)).toThrow(
       'Widget with id "duplicate-img" already exists',
     );
 
@@ -143,14 +139,14 @@ describe('handleShowImage - error cases', () => {
     // Arrange
     const model = generateInitModel();
 
-    const msg: ShowImageMessage = {
+    const msg: AddImageMessage = {
       type: 'ShowImage',
       layoutId: 'no-layout',
       src: 'test.png',
     };
 
     // Act & Assert
-    expect(() => handleShowImage(model, msg)).toThrow(
+    expect(() => handleAddImage(model, msg)).toThrow(
       'Layout with id "no-layout" not found',
     );
 
@@ -166,7 +162,7 @@ describe('handleShowImage - error cases', () => {
     // Add a layout to host images
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
-    const msg: ShowImageMessage = {
+    const msg: AddImageMessage = {
       type: 'ShowImage',
       id: 'existing-widget', // Conflicts with existing layout ID
       layoutId: 'parent',
@@ -174,7 +170,7 @@ describe('handleShowImage - error cases', () => {
     };
 
     // Act & Assert
-    expect(() => handleShowImage(model, msg)).toThrow(
+    expect(() => handleAddImage(model, msg)).toThrow(
       'Widget with id "existing-widget" already exists',
     );
   });

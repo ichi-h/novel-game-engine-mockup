@@ -2,7 +2,7 @@ import type { BaseMessage } from 'elmish';
 import type { NovelModel } from '@/model';
 import { addWidget, w } from '@/ui';
 
-export interface ShowImageMessage extends BaseMessage {
+export interface AddImageMessage extends BaseMessage {
   type: 'ShowImage';
   id?: string;
   layoutId: string;
@@ -10,12 +10,12 @@ export interface ShowImageMessage extends BaseMessage {
   style?: string;
 }
 
-export const showImage = (
+export const addImage = (
   layoutId: string,
   src: string,
   id?: string,
   style?: string,
-): ShowImageMessage => {
+): AddImageMessage => {
   return {
     type: 'ShowImage',
     layoutId,
@@ -25,9 +25,9 @@ export const showImage = (
   };
 };
 
-export const handleShowImage = (
+export const handleAddImage = (
   model: NovelModel,
-  msg: ShowImageMessage,
+  msg: AddImageMessage,
 ): NovelModel => {
   const newImg = w.img({
     src: msg.src,

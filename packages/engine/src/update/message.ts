@@ -1,6 +1,7 @@
 import type {
   AddBusTrackMessage,
   AddButtonMessage,
+  AddImageMessage,
   AddLayoutMessage,
   AddTextBoxMessage,
   AddTrackMessage,
@@ -20,8 +21,7 @@ import type {
   RemoveChannelMessage,
   RemoveWidgetsMessage,
   SequenceMessage,
-  ShowImageMessage,
-  ShowTextMessage,
+  ShowAddMessage,
   StopChannelMessage,
   SwitchScenarioMessage,
   TextAnimationCompletedMessage,
@@ -29,9 +29,7 @@ import type {
   UpdateCustomStateMessage,
 } from './message-handlers';
 
-export type NovelMessage<
-  CustomState = unknown,
-> =
+export type NovelMessage<CustomState = unknown> =
   // General
   | NextMessage<CustomState>
   | SwitchScenarioMessage
@@ -45,11 +43,11 @@ export type NovelMessage<
   | RecoverErrorMessage
   // Widgets
   | AddLayoutMessage
-  | ShowImageMessage
+  | AddImageMessage
   | AddWidgetsMessage
   | AddButtonMessage
   | AddTextBoxMessage
-  | ShowTextMessage
+  | ShowAddMessage
   | TextAnimationCompletedMessage
   | ClearTextBoxMessage
   | RemoveWidgetsMessage
