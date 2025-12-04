@@ -7,7 +7,7 @@ import {
 } from '../message-handlers';
 import type { MiddlewareNext } from '../update';
 
-export const textAnimationMiddleware = (
+export const messageInterceptorMiddleware = (
   model: NovelModel,
   msg: NovelMessage,
   next: MiddlewareNext,

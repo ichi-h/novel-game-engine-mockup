@@ -4,7 +4,7 @@ import {
   historyMiddleware,
   type NovelMessage,
   type NovelModel,
-  textAnimationMiddleware,
+  messageInterceptorMiddleware,
   update,
 } from 'engine';
 import { getApplyMixer } from 'libs/mixer-driver';
@@ -57,7 +57,7 @@ export const GamePage = ({
         initMessage && (async () => ({ type: 'Next', message: initMessage })),
       ];
     },
-    update(applyMixer, [historyMiddleware, textAnimationMiddleware]),
+    update(applyMixer, [historyMiddleware, messageInterceptorMiddleware]),
     setModel,
   );
 

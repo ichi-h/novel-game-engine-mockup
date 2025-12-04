@@ -1,2 +1,2 @@
 export * from './history';
-export * from './text-animation';
+export * from './message-interceptor';
