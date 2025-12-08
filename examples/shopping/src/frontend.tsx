@@ -13,9 +13,9 @@ import { App } from './App';
 function start() {
   initMixerDriver();
 
-  const container = document.getElementById('root');
+  const container = document.getElementById('app');
   if (!container) {
-    throw new Error("Root element with id 'root' not found");
+    throw new Error("Root element with id 'app' not found");
   }
   const root = createRoot(container);
   root.render(<App />);
