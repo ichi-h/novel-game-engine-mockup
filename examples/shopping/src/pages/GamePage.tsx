@@ -1,12 +1,6 @@
 import { cleanupMixer, NovelWidgetDriver } from 'driver';
 import { ElmishState, elmish } from 'elmish';
-import {
-  historyMiddleware,
-  type NovelMessage,
-  type NovelModel,
-  messageInterceptorMiddleware,
-  update,
-} from 'engine';
+import { type NovelMessage, type NovelModel, update } from 'engine';
 import { getApplyMixer } from 'libs/mixer-driver';
 import { useEffect, useMemo, useState } from 'react';
 import { scenarios } from '../game/scenario';
@@ -57,7 +51,7 @@ export const GamePage = ({
         initMessage && (async () => ({ type: 'Next', message: initMessage })),
       ];
     },
-    update(applyMixer, [historyMiddleware, messageInterceptorMiddleware]),
+    update(applyMixer),
     setModel,
   );
 

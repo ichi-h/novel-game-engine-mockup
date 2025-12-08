@@ -32,6 +32,7 @@ import {
   handleUpdateConfig,
   handleUpdateCustomState,
 } from './message-handlers';
+import { builtInMiddlewares } from './middleware';
 
 export type MiddlewareNext = (
   model: NovelModel,
@@ -125,11 +126,9 @@ export const update =
       }
     };
 
-    if (middlewares.length === 0) {
-      return reducer(model, msg);
-    }
+    const allMiddlewares = [...builtInMiddlewares, ...middlewares];
 
-    const composeMiddlewares = middlewares.reduceRight<MiddlewareNext>(
+    const composeMiddlewares = allMiddlewares.reduceRight<MiddlewareNext>(
       (next, cur) => {
         return (model, msg) => cur(model, msg, next);
       },
