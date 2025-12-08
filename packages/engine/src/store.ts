@@ -31,7 +31,11 @@ export const tsuzuri = <CustomState = unknown>(
     store,
   );
 
-  const createSend = (view: View<NovelModel<CustomState>>) => {
+  const [model] = Array.isArray(init) ? [init[0], init[1]] : [init, undefined];
+
+  const getModel = () => store.get() ?? model;
+
+  const createSender = (view: View<NovelModel<CustomState>>) => {
     return useElement(init, update(applyMixer, [...(middlewares ?? [])]), view);
   };
 
@@ -44,8 +48,8 @@ export const tsuzuri = <CustomState = unknown>(
   };
 
   return {
-    getModel: () => store.get(),
-    createSend,
+    getModel,
+    createSender,
     addListener,
     deleteListener,
   };
