@@ -34,7 +34,7 @@ export const GamePage = ({
   const [model, setModel] = useState(initialModel);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Intentional
-  const { createSend } = useMemo(
+  const { createSender } = useMemo(
     () =>
       tsuzuri(() => {
         if (model.index !== 0) {
@@ -49,7 +49,7 @@ export const GamePage = ({
     [],
   );
 
-  const send = createSend(setModel);
+  const send = createSender(setModel);
 
   const next = () => {
     // Don't proceed if delaying, applying mixer, or awaiting user action
