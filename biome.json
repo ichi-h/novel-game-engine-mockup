@@ -15,7 +15,9 @@
       "!**/dist",
       "!**/.mcp.json",
       "!**/build.ts",
-      "!examples/react/src/index.css"
+      "!examples/react/src/index.css",
+      "!examples/shopping/src/index.css",
+      "!examples/tutorial/src/index.css"
     ]
   },
   "formatter": {
