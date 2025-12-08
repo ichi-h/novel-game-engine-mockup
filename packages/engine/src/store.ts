@@ -1,4 +1,4 @@
-import { elmish, type Init, type State, type View } from 'elmish';
+import { elmish, type Init, type State, type View } from '@ichi-h/elmish';
 import type { ApplyMixer } from './mixer';
 import type { NovelModel } from './model';
 import type { Middleware, NovelMessage } from './update';

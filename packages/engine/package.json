@@ -2,9 +2,6 @@
   "name": "engine",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "dependencies": {
-    "elmish": "workspace:*"
-  },
   "exports": {
     "types": "./dist/index.d.ts",
     "import": "./dist/index.js",

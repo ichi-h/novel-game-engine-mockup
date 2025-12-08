@@ -1,4 +1,4 @@
-import type { ReturnModel, Update } from 'elmish';
+import type { ReturnModel, Update } from '@ichi-h/elmish';
 import type { NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import type { Cmd, Update } from 'elmish';
+import type { Cmd, Update } from '@ichi-h/elmish';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
 import { handleNext, type NextMessage } from '../next';

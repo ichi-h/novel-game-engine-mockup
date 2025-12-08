@@ -1,4 +1,4 @@
-import type { BaseMessage } from 'elmish';
+import type { BaseMessage } from '@ichi-h/elmish';
 import type { NovelConfig, NovelModel } from '@/model';
 
 export interface UpdateConfigMessage extends BaseMessage {

@@ -11,6 +11,9 @@
     "format": "biome format --write",
     "lint": "biome lint --write"
   },
+  "dependencies": {
+    "@ichi-h/elmish": "^4.0.0"
+  },
   "devDependencies": {
     "@anthropic-ai/claude-code": "^2.0.19",
     "@tsconfig/bun": "^1.0.9",

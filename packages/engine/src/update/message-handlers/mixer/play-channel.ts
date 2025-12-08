@@ -1,4 +1,4 @@
-import type { BaseMessage, ReturnModel, Update } from 'elmish';
+import type { BaseMessage, ReturnModel, Update } from '@ichi-h/elmish';
 import {
   type DelayMs,
   type FadeInMs,

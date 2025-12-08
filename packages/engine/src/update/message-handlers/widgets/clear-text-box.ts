@@ -1,4 +1,4 @@
-import type { BaseMessage } from 'elmish';
+import type { BaseMessage } from '@ichi-h/elmish';
 import type { NovelModel } from '@/model';
 import { clearTextBox as clearTextBoxFn } from '@/ui';
 

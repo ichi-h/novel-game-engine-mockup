@@ -1,4 +1,4 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
+import type { BaseMessage, ReturnModel } from '@ichi-h/elmish';
 import type { AnimationTicket, NovelModel } from '@/model';
 import { addText as addTextWidget, w } from '@/ui';
 import { calcTextAnimationDuration } from '@/update/animation';

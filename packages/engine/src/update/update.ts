@@ -1,18 +1,7 @@
-import type { ReturnModel } from 'elmish';
+import type { ReturnModel } from '@ichi-h/elmish';
 import type { ApplyMixer } from '@/mixer';
 import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
-import { handleAddBusTrack } from './message-handlers/mixer/add-bus-track';
-import { handleAddTrack } from './message-handlers/mixer/add-track';
-import {
-  handleApplyMixer,
-  handleApplyMixerCompleted,
-} from './message-handlers/mixer/apply-mixer';
-import { handleChangeChannelVolume } from './message-handlers/mixer/change-channel-volume';
-import { handleChangeMasterVolume } from './message-handlers/mixer/change-master-volume';
-import { handlePlayChannel } from './message-handlers/mixer/play-channel';
-import { handleRemoveChannel } from './message-handlers/mixer/remove-channel';
-import { handleStopChannel } from './message-handlers/mixer/stop-channel';
 import { handleAwaitAction } from './message-handlers/general/await-action';
 import {
   handleDelay,
@@ -27,6 +16,17 @@ import { handleSequence } from './message-handlers/general/sequence';
 import { handleSwitchScenario } from './message-handlers/general/switch-scenario';
 import { handleUpdateConfig } from './message-handlers/general/update-config';
 import { handleUpdateCustomState } from './message-handlers/general/update-custom-state';
+import { handleAddBusTrack } from './message-handlers/mixer/add-bus-track';
+import { handleAddTrack } from './message-handlers/mixer/add-track';
+import {
+  handleApplyMixer,
+  handleApplyMixerCompleted,
+} from './message-handlers/mixer/apply-mixer';
+import { handleChangeChannelVolume } from './message-handlers/mixer/change-channel-volume';
+import { handleChangeMasterVolume } from './message-handlers/mixer/change-master-volume';
+import { handlePlayChannel } from './message-handlers/mixer/play-channel';
+import { handleRemoveChannel } from './message-handlers/mixer/remove-channel';
+import { handleStopChannel } from './message-handlers/mixer/stop-channel';
 import { handleAddButton } from './message-handlers/widgets/add-button';
 import { handleAddImage } from './message-handlers/widgets/add-image';
 import { handleAddLayout } from './message-handlers/widgets/add-layout';

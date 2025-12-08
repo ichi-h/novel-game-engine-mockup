@@ -1,4 +1,4 @@
-import type { BaseMessage, ReturnModel } from 'elmish';
+import type { BaseMessage, ReturnModel } from '@ichi-h/elmish';
 import type { NovelModel } from '@/model';
 
 export interface DelayMessage extends BaseMessage {
