@@ -71,7 +71,9 @@ describe('handleAddLayout - normal cases', () => {
     // Assert
     expect(result.ui).toHaveLength(1);
     expect(hasId(result.ui, 'layout2')).toBe(true);
-    expect(result.ui[0] !== undefined && 'style' in result.ui[0]).toBe(true);
+    expect(result.ui[0] !== undefined && 'className' in result.ui[0]).toBe(
+      true,
+    );
   });
 
   test('adds layout to parent layout', () => {
