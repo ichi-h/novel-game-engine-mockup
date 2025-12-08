@@ -32,11 +32,11 @@ export const addTrack = ({
   };
 };
 
-export const handleAddTrack = (
-  model: NovelModel,
+export const handleAddTrack = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: AddTrackMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   const track: Track = {
     id: msg.id,
     type: 'Track',

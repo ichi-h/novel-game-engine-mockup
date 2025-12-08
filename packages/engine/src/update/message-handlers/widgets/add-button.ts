@@ -29,10 +29,10 @@ export const addButton = ({
   };
 };
 
-export const handleAddButton = (
-  model: NovelModel,
+export const handleAddButton = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: AddButtonMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   const newButton = w.button({
     label: msg.label,
     onClick: msg.onClick,

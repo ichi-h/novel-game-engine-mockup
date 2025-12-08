@@ -22,10 +22,10 @@ export const addTextBox = ({
   };
 };
 
-export const handleAddTextBox = (
-  model: NovelModel,
+export const handleAddTextBox = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: AddTextBoxMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   const newTextBox = w.textBox({
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),

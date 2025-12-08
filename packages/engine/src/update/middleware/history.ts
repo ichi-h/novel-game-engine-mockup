@@ -1,13 +1,13 @@
 import type { ReturnModel } from 'elmish';
 import type { NovelModel } from '../../model';
 import type { NovelMessage } from '../message';
-import type { MiddlewareNext } from '../update';
+import type { MiddlewareNext } from './types';
 
-export const historyMiddleware = (
-  model: NovelModel,
-  msg: NovelMessage,
-  next: MiddlewareNext,
-): ReturnModel<NovelModel, NovelMessage> => {
+export const historyMiddleware = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
+  msg: NovelMessage<CustomState>,
+  next: MiddlewareNext<CustomState>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   const result = next(model, msg);
 
   const [newModel, cmd] = Array.isArray(result)

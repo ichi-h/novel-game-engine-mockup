@@ -1,4 +1,8 @@
-import { calcAnimationTTL, type NovelModel, type TextWidget } from 'engine';
+import {
+  calcTextAnimationDuration,
+  type NovelModel,
+  type TextWidget,
+} from 'engine';
 import { type CSSProperties, useEffect, useState } from 'react';
 
 const generateCharStyle = (
@@ -68,7 +72,7 @@ export const Text = ({ widget, isAnimating, model }: Props) => {
           char={char}
           isAnimating={isAnimating}
           isRendered={isRendered}
-          delay={calcAnimationTTL(
+          delay={calcTextAnimationDuration(
             widget.speed ?? model.config.textAnimationSpeed,
             index,
           )}

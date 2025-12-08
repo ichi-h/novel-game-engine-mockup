@@ -18,11 +18,11 @@ export const applyMixer = (): ApplyMixerMessage => {
   };
 };
 
-export const handleApplyMixer = (
-  model: NovelModel,
+export const handleApplyMixer = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   _msg: ApplyMixerMessage,
   applyMixer: ApplyMixer,
-): ReturnModel<NovelModel, NovelMessage> => {
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   return [
     {
       ...model,
@@ -46,11 +46,11 @@ export const handleApplyMixer = (
   ];
 };
 
-export const handleApplyMixerCompleted = (
-  model: NovelModel,
+export const handleApplyMixerCompleted = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: ApplyMixerCompletedMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   const updatedModel = {
     ...model,
     mixer: {

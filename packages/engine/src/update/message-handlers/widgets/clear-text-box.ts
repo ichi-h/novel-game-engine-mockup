@@ -14,10 +14,10 @@ export const clearTextBox = (textBoxId: string): ClearTextBoxMessage => {
   };
 };
 
-export const handleClearTextBox = (
-  model: NovelModel,
+export const handleClearTextBox = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: ClearTextBoxMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   return {
     ...model,
     ui: clearTextBoxFn(model.ui, msg.textBoxId),

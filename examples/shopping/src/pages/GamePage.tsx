@@ -1,6 +1,5 @@
 import { cleanupMixer, NovelWidgetDriver } from 'driver';
-import { ElmishState, elmish } from 'elmish';
-import { type NovelMessage, type NovelModel, update } from 'engine';
+import { type NovelMessage, type NovelModel, tsuzuri } from 'engine';
 import { getApplyMixer } from 'libs/mixer-driver';
 import { useEffect, useMemo, useState } from 'react';
 import { scenarios } from '../game/scenario';
@@ -34,26 +33,23 @@ export const GamePage = ({
 }: GamePageProps) => {
   const [model, setModel] = useState(initialModel);
 
-  // Create a new elmish state for each GamePage instance
-  const useElement = useMemo(
-    () => elmish<NovelModel, NovelMessage>(new ElmishState()),
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Intentional
+  const { createSend } = useMemo(
+    () =>
+      tsuzuri(() => {
+        if (model.index !== 0) {
+          return [model, async () => ({ type: 'ApplyMixer' })];
+        }
+        const initMessage = getCurrentMessage(model);
+        return [
+          model,
+          initMessage && (async () => ({ type: 'Next', message: initMessage })),
+        ];
+      }, applyMixer),
     [],
   );
 
-  const send = useElement(
-    () => {
-      if (model.index !== 0) {
-        return [model, async () => ({ type: 'ApplyMixer' })];
-      }
-      const initMessage = getCurrentMessage(model);
-      return [
-        model,
-        initMessage && (async () => ({ type: 'Next', message: initMessage })),
-      ];
-    },
-    update(applyMixer),
-    setModel,
-  );
+  const send = createSend(setModel);
 
   const next = () => {
     // Don't proceed if delaying, applying mixer, or awaiting user action

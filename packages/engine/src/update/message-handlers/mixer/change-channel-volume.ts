@@ -20,11 +20,11 @@ export const changeChannelVolume = ({
   };
 };
 
-export const handleChangeChannelVolume = (
-  model: NovelModel,
+export const handleChangeChannelVolume = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: ChangeChannelVolumeMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   if (!hasId(model.mixer.value, msg.channelId)) {
     return update(model, {
       type: 'Error',

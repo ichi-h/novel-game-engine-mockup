@@ -19,13 +19,13 @@ export const switchScenario = ({
   ...(resetState !== undefined ? { resetState } : {}),
 });
 
-export const handleSwitchScenario = (
-  model: NovelModel,
+export const handleSwitchScenario = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: SwitchScenarioMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   const newIndex = msg.index ?? 0;
 
-  let newModel: NovelModel = {
+  let newModel: NovelModel<CustomState> = {
     ...model,
     status: { value: 'RequestingNext' },
     currentScenario: msg.scenario,

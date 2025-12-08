@@ -15,11 +15,11 @@ export const removeChannel = (channelId: string): RemoveChannelMessage => {
   };
 };
 
-export const handleRemoveChannel = (
-  model: NovelModel,
+export const handleRemoveChannel = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: RemoveChannelMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   if (!hasId(model.mixer.value, msg.channelId)) {
     return update(model, {
       type: 'Error',

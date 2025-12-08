@@ -36,11 +36,11 @@ export const playChannel = ({
   };
 };
 
-export const handlePlayChannel = (
-  model: NovelModel,
+export const handlePlayChannel = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: PlayChannelMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   if (!hasId(model.mixer.value, msg.channelId)) {
     return update(model, {
       type: 'Error',

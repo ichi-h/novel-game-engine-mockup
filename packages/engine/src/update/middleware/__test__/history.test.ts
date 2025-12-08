@@ -4,8 +4,8 @@ import {
   type NovelModel,
 } from '../../../model';
 import type { NovelMessage } from '../../message';
-import type { MiddlewareNext } from '../../update';
 import { historyMiddleware } from '../history';
+import type { MiddlewareNext } from '../types';
 
 const generateInitModel = (): NovelModel => _generateInitModel();
 

@@ -17,11 +17,11 @@ export const changeMasterVolume = (
   };
 };
 
-export const handleChangeMasterVolume = (
-  model: NovelModel,
+export const handleChangeMasterVolume = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: ChangeMasterVolumeMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   return update(
     {
       ...model,

@@ -1,8 +1,19 @@
-export * from './await-action';
-export * from './delay';
-export * from './error';
-export * from './next';
-export * from './sequence';
-export * from './switch-scenario';
-export * from './update-config';
-export * from './update-custom-state';
+export { type AwaitActionMessage, awaitAction } from './await-action';
+export {
+  type DelayCompletedMessage,
+  type DelayMessage,
+  delay,
+} from './delay';
+export {
+  type ErrorMessage,
+  error,
+  type RecoverErrorMessage,
+} from './error';
+export type { NextMessage } from './next';
+export { type SequenceMessage, sequence } from './sequence';
+export { type SwitchScenarioMessage, switchScenario } from './switch-scenario';
+export { type UpdateConfigMessage, updateConfig } from './update-config';
+export {
+  type UpdateCustomStateMessage,
+  updateCustomState,
+} from './update-custom-state';

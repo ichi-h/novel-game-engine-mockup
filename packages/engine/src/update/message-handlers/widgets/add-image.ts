@@ -25,10 +25,10 @@ export const addImage = ({
   };
 };
 
-export const handleAddImage = (
-  model: NovelModel,
+export const handleAddImage = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: AddImageMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   const newImg = w.img({
     src: msg.src,
     ...(msg.id !== undefined && { id: msg.id }),

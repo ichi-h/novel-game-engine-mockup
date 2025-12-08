@@ -24,11 +24,11 @@ export const addBusTrack = ({
   };
 };
 
-export const handleAddBusTrack = (
-  model: NovelModel,
+export const handleAddBusTrack = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: AddBusTrackMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   const newBusTrack: BusTrack = {
     id: msg.id,
     type: 'BusTrack',

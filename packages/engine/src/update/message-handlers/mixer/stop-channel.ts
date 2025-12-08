@@ -20,11 +20,11 @@ export const stopChannel = ({
   };
 };
 
-export const handleStopChannel = (
-  model: NovelModel,
+export const handleStopChannel = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: StopChannelMessage,
-  update: Update<NovelModel, NovelMessage>,
-): ReturnModel<NovelModel, NovelMessage> => {
+  update: Update<NovelModel<CustomState>, NovelMessage<CustomState>>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   if (!hasId(model.mixer.value, msg.channelId)) {
     return update(model, {
       type: 'Error',

@@ -13,10 +13,10 @@ export const updateConfig = (config: NovelConfig): UpdateConfigMessage => {
   };
 };
 
-export const handleUpdateConfig = (
-  model: NovelModel,
+export const handleUpdateConfig = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: UpdateConfigMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   return {
     ...model,
     config: msg.config,

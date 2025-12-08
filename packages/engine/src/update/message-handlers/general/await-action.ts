@@ -11,10 +11,10 @@ export const awaitAction = (): AwaitActionMessage => {
   };
 };
 
-export const handleAwaitAction = (
-  model: NovelModel,
+export const handleAwaitAction = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   _msg: AwaitActionMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   return {
     ...model,
     status: { value: 'AwaitingAction' },

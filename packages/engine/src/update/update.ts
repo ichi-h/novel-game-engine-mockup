@@ -2,57 +2,62 @@ import type { ReturnModel } from 'elmish';
 import type { ApplyMixer } from '@/mixer';
 import type { NovelModel } from '../model';
 import type { NovelMessage } from './message';
+import { handleAddBusTrack } from './message-handlers/mixer/add-bus-track';
+import { handleAddTrack } from './message-handlers/mixer/add-track';
 import {
-  handleAddBusTrack,
-  handleAddButton,
-  handleAddImage,
-  handleAddLayout,
-  handleAddText,
-  handleAddTextBox,
-  handleAddTrack,
-  handleAddWidgets,
   handleApplyMixer,
   handleApplyMixerCompleted,
-  handleAwaitAction,
-  handleChangeChannelVolume,
-  handleChangeMasterVolume,
-  handleClearTextBox,
+} from './message-handlers/mixer/apply-mixer';
+import { handleChangeChannelVolume } from './message-handlers/mixer/change-channel-volume';
+import { handleChangeMasterVolume } from './message-handlers/mixer/change-master-volume';
+import { handlePlayChannel } from './message-handlers/mixer/play-channel';
+import { handleRemoveChannel } from './message-handlers/mixer/remove-channel';
+import { handleStopChannel } from './message-handlers/mixer/stop-channel';
+import { handleAwaitAction } from './message-handlers/general/await-action';
+import {
   handleDelay,
   handleDelayCompleted,
+} from './message-handlers/general/delay';
+import {
   handleError,
-  handleNext,
-  handlePlayChannel,
   handleRecoverError,
-  handleRemoveChannel,
-  handleRemoveWidgets,
-  handleSequence,
-  handleStopChannel,
-  handleSwitchScenario,
+} from './message-handlers/general/error';
+import { handleNext } from './message-handlers/general/next';
+import { handleSequence } from './message-handlers/general/sequence';
+import { handleSwitchScenario } from './message-handlers/general/switch-scenario';
+import { handleUpdateConfig } from './message-handlers/general/update-config';
+import { handleUpdateCustomState } from './message-handlers/general/update-custom-state';
+import { handleAddButton } from './message-handlers/widgets/add-button';
+import { handleAddImage } from './message-handlers/widgets/add-image';
+import { handleAddLayout } from './message-handlers/widgets/add-layout';
+import {
+  handleAddText,
   handleTextAnimationCompleted,
-  handleUpdateConfig,
-  handleUpdateCustomState,
-} from './message-handlers';
-import { builtInMiddlewares } from './middleware';
-
-export type MiddlewareNext = (
-  model: NovelModel,
-  msg: NovelMessage,
-) => ReturnModel<NovelModel, NovelMessage>;
-
-export type Middleware = (
-  model: NovelModel,
-  msg: NovelMessage,
-  next: MiddlewareNext,
-) => ReturnModel<NovelModel, NovelMessage>;
+} from './message-handlers/widgets/add-text';
+import { handleAddTextBox } from './message-handlers/widgets/add-text-box';
+import { handleAddWidgets } from './message-handlers/widgets/add-widgets';
+import { handleClearTextBox } from './message-handlers/widgets/clear-text-box';
+import { handleRemoveWidgets } from './message-handlers/widgets/remove-widgets';
+import {
+  builtInMiddlewares,
+  type Middleware,
+  type MiddlewareNext,
+} from './middleware';
 
 export const update =
-  (applyMixer: ApplyMixer, middlewares: Middleware[] = []) =>
+  <CustomState = unknown>(
+    applyMixer: ApplyMixer,
+    middlewares: Middleware<CustomState>[] = [],
+  ) =>
   (
-    model: NovelModel,
-    msg: NovelMessage,
-  ): ReturnModel<NovelModel, NovelMessage> => {
-    const reducer: MiddlewareNext = (model: NovelModel, msg: NovelMessage) => {
-      const updateWrapped = update(applyMixer, []);
+    model: NovelModel<CustomState>,
+    msg: NovelMessage<CustomState>,
+  ): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
+    const reducer: MiddlewareNext<CustomState> = (
+      model: NovelModel<CustomState>,
+      msg: NovelMessage<CustomState>,
+    ) => {
+      const updateWrapped = update<CustomState>(applyMixer, []);
 
       switch (msg.type) {
         // General
@@ -128,12 +133,11 @@ export const update =
 
     const allMiddlewares = [...builtInMiddlewares, ...middlewares];
 
-    const composeMiddlewares = allMiddlewares.reduceRight<MiddlewareNext>(
-      (next, cur) => {
-        return (model, msg) => cur(model, msg, next);
-      },
-      reducer,
-    );
+    const composeMiddlewares = allMiddlewares.reduceRight<
+      MiddlewareNext<CustomState>
+    >((next, cur) => {
+      return (model, msg) => cur(model, msg, next);
+    }, reducer);
 
     return composeMiddlewares(model, msg);
   };

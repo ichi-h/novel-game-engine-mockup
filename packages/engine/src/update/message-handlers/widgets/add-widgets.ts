@@ -19,10 +19,10 @@ export const addWidgets = (
   };
 };
 
-export const handleAddWidgets = (
-  model: NovelModel,
+export const handleAddWidgets = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: AddWidgetsMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   return {
     ...model,
     ui: msg.widgets.reduce(

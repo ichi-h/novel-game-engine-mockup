@@ -5,13 +5,13 @@ import {
   sequence,
   type TextAnimationCompletedMessage,
 } from '../message-handlers';
-import type { MiddlewareNext } from '../update';
+import type { MiddlewareNext } from './types';
 
-export const messageInterceptorMiddleware = (
-  model: NovelModel,
-  msg: NovelMessage,
-  next: MiddlewareNext,
-): ReturnModel<NovelModel, NovelMessage> => {
+export const messageInterceptorMiddleware = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
+  msg: NovelMessage<CustomState>,
+  next: MiddlewareNext<CustomState>,
+): ReturnModel<NovelModel<CustomState>, NovelMessage<CustomState>> => {
   if (msg.type !== 'Next') {
     return next(model, msg);
   }

@@ -1,6 +1,7 @@
 import type { BaseMessage, ReturnModel } from 'elmish';
 import type { AnimationTicket, NovelModel } from '@/model';
 import { addText as addTextWidget, w } from '@/ui';
+import { calcTextAnimationDuration } from '@/update/animation';
 
 export interface ShowAddMessage extends BaseMessage {
   type: 'ShowText';
@@ -36,24 +37,10 @@ export const addText = ({
   };
 };
 
-export const calcAnimationTTL = (
-  speed: number,
-  charPosition: number,
-): number => {
-  const minDisplayTimePerChar = 200;
-  const maxDisplayTimePerChar = 100;
-
-  if (speed >= 100) return 0;
-
-  if (speed <= 0) return minDisplayTimePerChar * charPosition;
-
-  return maxDisplayTimePerChar * ((100 - speed) / 100) * charPosition;
-};
-
-export const handleAddText = (
-  model: NovelModel,
+export const handleAddText = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: ShowAddMessage,
-): ReturnModel<NovelModel, TextAnimationCompletedMessage> => {
+): ReturnModel<NovelModel<CustomState>, TextAnimationCompletedMessage> => {
   const newText = w.text({
     content: msg.content,
     speed: msg.speed ?? model.config.textAnimationSpeed,
@@ -65,7 +52,7 @@ export const handleAddText = (
     newText.speed && newText.speed < 100
       ? {
           id: newText.id,
-          ttl: calcAnimationTTL(newText.speed, msg.content.length),
+          ttl: calcTextAnimationDuration(newText.speed, msg.content.length),
           nextMessageCaught: msg.nextMessageCaught ?? 'insert',
         }
       : null;
@@ -94,10 +81,10 @@ export const handleAddText = (
   ];
 };
 
-export const handleTextAnimationCompleted = (
-  model: NovelModel,
+export const handleTextAnimationCompleted = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: TextAnimationCompletedMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   return {
     ...model,
     animationTickets: model.animationTickets.filter(

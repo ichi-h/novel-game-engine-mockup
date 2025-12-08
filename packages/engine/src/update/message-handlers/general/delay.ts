@@ -17,10 +17,10 @@ export const delay = (durationMs: number): DelayMessage => {
   };
 };
 
-export const handleDelay = (
-  model: NovelModel,
+export const handleDelay = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: DelayMessage,
-): ReturnModel<NovelModel, DelayCompletedMessage> => {
+): ReturnModel<NovelModel<CustomState>, DelayCompletedMessage> => {
   return [
     {
       ...model,
@@ -35,10 +35,10 @@ export const handleDelay = (
   ];
 };
 
-export const handleDelayCompleted = (
-  model: NovelModel,
+export const handleDelayCompleted = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   _msg: DelayCompletedMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   return {
     ...model,
     status: { value: 'Processed' },

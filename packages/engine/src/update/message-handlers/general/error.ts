@@ -17,19 +17,19 @@ export const error = (value: Error): ErrorMessage => {
   };
 };
 
-export const handleError = (
-  model: NovelModel,
+export const handleError = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: ErrorMessage,
-): ReturnModel<NovelModel, never> => {
+): ReturnModel<NovelModel<CustomState>, never> => {
   return {
     ...model,
     status: { value: 'Error', error: msg.value },
   };
 };
 
-export const handleRecoverError = (
-  model: NovelModel,
-): ReturnModel<NovelModel, never> => {
+export const handleRecoverError = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
+): ReturnModel<NovelModel<CustomState>, never> => {
   return {
     ...model,
     status: { value: 'Processed' },

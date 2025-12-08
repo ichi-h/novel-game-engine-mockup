@@ -14,10 +14,10 @@ export const removeWidgets = (ids: string[]): RemoveWidgetsMessage => {
   };
 };
 
-export const handleRemoveWidgets = (
-  model: NovelModel,
+export const handleRemoveWidgets = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: RemoveWidgetsMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   return {
     ...model,
     ui: msg.ids.reduce((ui, id) => removeById(ui, id), model.ui),

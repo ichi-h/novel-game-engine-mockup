@@ -22,10 +22,10 @@ export const addLayout = ({
   };
 };
 
-export const handleAddLayout = (
-  model: NovelModel,
+export const handleAddLayout = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
   msg: AddLayoutMessage,
-): NovelModel => {
+): NovelModel<CustomState> => {
   const newLayout = w.layout({
     id: msg.id,
     ...(msg.style !== undefined && { style: msg.style }),
