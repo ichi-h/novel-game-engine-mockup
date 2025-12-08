@@ -1,5 +1,5 @@
 {
-  "name": "novel-game-engine-mockup",
+  "name": "@ichi-h/tsuzuri",
   "module": "index.ts",
   "type": "module",
   "private": true,

@@ -16,7 +16,7 @@ await Promise.all([
     naming: '[dir]/[name].js',
     minify: shouldMinify,
     sourcemap: true,
-    external: ["react", "react-dom", "engine"],
+    external: ["react", "react-dom", "@ichi-h/tsuzuri-core"],
   }),
   Bun.build({
     ...defaultBuildConfig,
@@ -24,6 +24,6 @@ await Promise.all([
     naming: '[dir]/[name].cjs',
     minify: shouldMinify,
     sourcemap: true,
-    external: ["react", "react-dom", "engine"],
+    external: ["react", "react-dom", "@ichi-h/tsuzuri-core"],
   }),
 ]);

@@ -1,4 +1,4 @@
-import type { NovelModel } from 'engine';
+import type { NovelModel } from '@ichi-h/tsuzuri-core';
 import {
   deserializeModel,
   type SerializedNovelModel,

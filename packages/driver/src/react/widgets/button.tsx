@@ -1,4 +1,4 @@
-import type { ButtonWidget, NovelMessage } from 'engine';
+import type { ButtonWidget, NovelMessage } from '@ichi-h/tsuzuri-core';
 
 interface Props {
   widget: ButtonWidget;

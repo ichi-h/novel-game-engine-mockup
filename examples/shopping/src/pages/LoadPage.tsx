@@ -1,4 +1,4 @@
-import type { NovelModel } from 'engine';
+import type { NovelModel } from '@ichi-h/tsuzuri-core';
 
 import { SaveSlot } from '../components/SaveSlot';
 import { useSaveSlots } from '../hooks/useSaveSlots';

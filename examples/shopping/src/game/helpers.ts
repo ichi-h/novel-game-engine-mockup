@@ -1,5 +1,9 @@
-import type { NovelMessage } from 'engine';
-import { addImage, addText, clearTextBox as clearTextBoxMsg } from 'engine';
+import type { NovelMessage } from '@ichi-h/tsuzuri-core';
+import {
+  addImage,
+  addText,
+  clearTextBox as clearTextBoxMsg,
+} from '@ichi-h/tsuzuri-core';
 
 // Widget IDs
 export const TEXTBOX_ID = 'main-textbox';

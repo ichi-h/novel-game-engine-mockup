@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { generateInitModel, type NovelModel } from 'engine';
+import { generateInitModel, type NovelModel } from '@ichi-h/tsuzuri-core';
 import {
   deserializeModel,
   type SerializedError,

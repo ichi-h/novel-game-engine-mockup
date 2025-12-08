@@ -1,5 +1,5 @@
 {
-  "name": "engine",
+  "name": "@ichi-h/tsuzuri-core",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "exports": {

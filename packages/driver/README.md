@@ -1,4 +1,4 @@
-# bun-react-template
+# @ichi-h/tsuzuri-driver
 
 To install dependencies:
 

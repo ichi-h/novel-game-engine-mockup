@@ -12,7 +12,7 @@ import {
   stopChannel,
   switchScenario,
   w,
-} from 'engine';
+} from '@ichi-h/tsuzuri-core';
 
 import bgm from '../bgm.mp3';
 import homeBg from '../home.jpg';

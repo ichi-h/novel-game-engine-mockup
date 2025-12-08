@@ -1,4 +1,4 @@
-import { generateInitModel, type NovelModel } from 'engine';
+import { generateInitModel, type NovelModel } from '@ichi-h/tsuzuri-core';
 import { useCallback, useState } from 'react';
 
 import './index.css';

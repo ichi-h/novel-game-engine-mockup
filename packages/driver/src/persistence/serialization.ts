@@ -1,4 +1,4 @@
-import type { NovelModel } from 'engine';
+import type { NovelModel } from '@ichi-h/tsuzuri-core';
 
 /**
  * Serialized error representation for IndexedDB storage

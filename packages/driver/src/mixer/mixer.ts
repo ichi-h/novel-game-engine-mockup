@@ -1,4 +1,10 @@
-import type { ApplyMixer, BusTrack, Channel, Mixer, Track } from 'engine';
+import type {
+  ApplyMixer,
+  BusTrack,
+  Channel,
+  Mixer,
+  Track,
+} from '@ichi-h/tsuzuri-core';
 
 /**
  * Interface for managing audio channel state

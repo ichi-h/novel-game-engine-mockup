@@ -5,7 +5,7 @@
  * It is included in `src/index.html`.
  */
 
-import { resumeAudioContext } from 'driver';
+import { resumeAudioContext } from '@ichi-h/tsuzuri-driver';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { initMixerDriver } from './libs/mixer-driver';

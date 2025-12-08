@@ -26,6 +26,6 @@ Using the mcp server's serena, propose and create test code that achieve 100% co
 - When communicating with developers, use the language they speak.
   - For example, if the developer speaks Japanese, respond in Japanese.
 - When writing comments, documentation, or similar items in the code, write them all in English.
-- For test items and writing style, refer to packages/engine/src/ui/**test**/manager.test.ts.
+- For test items and writing style, refer to packages/core/src/ui/**test**/manager.test.ts.
 - Write tests separately for each method, creating test items for normal cases and, if applicable, abnormal cases within each.
 - When creating test cases, assume that modules dependent on the target code are functioning correctly.

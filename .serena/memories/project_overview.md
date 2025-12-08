@@ -5,8 +5,8 @@
 This is a novel game engine mockup project that implements a visual novel/interactive story engine using the Elmish architecture pattern. The project consists of:
 
 - **elmish**: A TypeScript implementation of the Elm architecture
-- **engine**: The core novel game engine that uses elmish for state management
-- **driver**: Driver layer providing React components, audio mixer, and model persistence
+- **@ichi-h/tsuzuri-core**: The core novel game engine that uses elmish for state management
+- **@ichi-h/tsuzuri-driver**: Driver layer providing React components, audio mixer, and model persistence
 - **examples/react**: A React example application demonstrating the engine
 
 ## Tech Stack
@@ -41,7 +41,7 @@ TypeScript implementation of the Elm architecture providing:
 - Command system for side effects
 - Type-safe message dispatching
 
-### packages/engine
+### packages/core
 
 Core novel game engine with:
 

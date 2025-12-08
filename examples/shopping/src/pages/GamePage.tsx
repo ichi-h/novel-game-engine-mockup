@@ -1,5 +1,9 @@
-import { cleanupMixer, NovelWidgetDriver } from 'driver';
-import { type NovelMessage, type NovelModel, tsuzuri } from 'engine';
+import {
+  type NovelMessage,
+  type NovelModel,
+  tsuzuri,
+} from '@ichi-h/tsuzuri-core';
+import { cleanupMixer, NovelWidgetDriver } from '@ichi-h/tsuzuri-driver';
 import { getApplyMixer } from 'libs/mixer-driver';
 import { useEffect, useMemo, useState } from 'react';
 import { scenarios } from '../game/scenario';

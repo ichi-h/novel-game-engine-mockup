@@ -1,4 +1,4 @@
-# novel-game-engine-mockup
+# tsuzuri
 
 To install dependencies:
 

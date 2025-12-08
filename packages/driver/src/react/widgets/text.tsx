@@ -2,7 +2,7 @@ import {
   calcTextAnimationDuration,
   type NovelModel,
   type TextWidget,
-} from 'engine';
+} from '@ichi-h/tsuzuri-core';
 import { type CSSProperties, useEffect, useState } from 'react';
 
 const generateCharStyle = (

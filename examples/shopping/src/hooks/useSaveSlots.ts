@@ -1,5 +1,8 @@
-import { createModelPersistence, type ModelPersistence } from 'driver';
-import type { NovelModel } from 'engine';
+import type { NovelModel } from '@ichi-h/tsuzuri-core';
+import {
+  createModelPersistence,
+  type ModelPersistence,
+} from '@ichi-h/tsuzuri-driver';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { createSlotKey, TOTAL_SLOTS } from '../constants/save';

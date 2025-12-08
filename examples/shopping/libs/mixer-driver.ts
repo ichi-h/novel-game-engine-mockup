@@ -1,4 +1,4 @@
-import { createApplyMixer } from 'driver';
+import { createApplyMixer } from '@ichi-h/tsuzuri-driver';
 
 export const initMixerDriver = () => {
   createApplyMixer();

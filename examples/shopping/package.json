@@ -15,8 +15,8 @@
     "react": "^19",
     "react-dom": "^19",
     "tailwindcss": "^4.1.11",
-    "driver": "workspace:*",
-    "engine": "workspace:*"
+    "@ichi-h/tsuzuri-driver": "workspace:*",
+    "@ichi-h/tsuzuri-core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19",

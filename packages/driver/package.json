@@ -1,5 +1,5 @@
 {
-  "name": "driver",
+  "name": "@ichi-h/tsuzuri-driver",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -22,7 +22,7 @@
   "dependencies": {
     "react": "^19",
     "react-dom": "^19",
-    "engine": "workspace:*"
+    "@ichi-h/tsuzuri-core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19",

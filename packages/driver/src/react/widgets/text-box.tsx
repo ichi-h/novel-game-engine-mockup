@@ -1,4 +1,8 @@
-import type { NovelMessage, NovelModel, TextBoxWidget } from 'engine';
+import type {
+  NovelMessage,
+  NovelModel,
+  TextBoxWidget,
+} from '@ichi-h/tsuzuri-core';
 import { NovelWidgetDriver } from '../novel-widget-driver';
 
 interface Props {

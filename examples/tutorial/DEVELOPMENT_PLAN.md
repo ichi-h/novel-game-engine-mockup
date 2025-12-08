@@ -7,7 +7,7 @@
 ### 参考実装
 
 - `examples/shopping`: 既存のサンプルゲーム（実装パターンの参考）
-- `packages/engine`: ゲームエンジン本体
+- `packages/core`: ゲームエンジン本体
 - `packages/driver`: Reactコンポーネントと永続化機能
 
 ## シナリオ構成
@@ -176,7 +176,7 @@ Tailwind CSSを使用（`examples/shopping`で既に設定済み）
 
 ### アニメーション
 
-CSS animationクラスまたはengineの`AnimationTicket`を使用
+CSS animationクラスまたはcoreの`AnimationTicket`を使用
 
 ## 開発時間見積もり
 
@@ -201,5 +201,5 @@ CSS animationクラスまたはengineの`AnimationTicket`を使用
 ## 参考資料
 
 - `examples/shopping/`: 完全な実装例
-- `packages/engine/README.md`: エンジンAPI
+- `packages/core/README.md`: エンジンAPI
 - `scenario.md`: シナリオ仕様
