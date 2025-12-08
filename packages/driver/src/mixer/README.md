@@ -16,44 +16,13 @@ A driver that realizes the declarative definition of Mixer using Web Audio API.
 ### Basic Usage Example
 
 ```typescript
-import { createApplyMixer, resumeAudioContext, cleanupMixer, AudioFetcher } from '@novel-game-engine-mockup/driver';
+import { createApplyMixer, resumeAudioContext, cleanupMixer } from '@novel-game-engine-mockup/driver';
 import type { Mixer } from '@novel-game-engine-mockup/engine';
 
-// Create AudioFetcher
-const fetcher = new AudioFetcher();
+// Create ApplyMixer function
+const applyMixer = createApplyMixer();
 
-// Add middleware for authentication (optional)
-fetcher.addMiddleware({
-  beforeFetch: async (url, init) => {
-    const headers = new Headers(init?.headers);
-    headers.set('Authorization', 'Bearer your-token');
-    
-    return {
-      url,
-      init: {
-        ...init,
-        headers,
-      },
-    };
-  },
-});
-
-// Add logging middleware (optional)
-fetcher.addMiddleware({
-  beforeFetch: async (url, init) => {
-    console.log('Fetching audio:', url);
-    return { url, init };
-  },
-  afterFetch: async (url, data) => {
-    console.log('Fetched audio:', url, 'size:', data.byteLength);
-    return data;
-  },
-});
-
-// Create ApplyMixer function with fetcher
-const applyMixer = createApplyMixer(fetcher);
-
-// Define Mixer with URL instead of ArrayBuffer
+// Define Mixer with URL
 const mixer: Mixer = {
   volume: 0.8,
   channels: [
@@ -62,7 +31,7 @@ const mixer: Mixer = {
       type: 'Track',
       playStatus: 'Playing',
       volume: 1.0,
-      src: '/audio/bgm.mp3', // URL instead of ArrayBuffer
+      src: '/audio/bgm.mp3', // URL to audio file
       isLoop: {
         start: 0,
         end: 30,
@@ -160,29 +129,11 @@ graph TD
 
 ## API
 
-### `createApplyMixer(fetcher: IAudioFetcher): ApplyMixer`
+### `createApplyMixer(): ApplyMixer`
 
-Creates an instance of the ApplyMixer function with injected IAudioFetcher. Uses singleton pattern internally, so multiple calls will use the same MixerDriver instance.
-
-**Parameters**:
-- `fetcher: IAudioFetcher` - Audio fetcher instance for loading audio resources
+Creates an instance of the ApplyMixer function. Uses singleton pattern internally, so multiple calls will use the same MixerDriver instance.
 
 **Returns**: `ApplyMixer` - Function to apply Mixer
-
-### `AudioFetcher`
-
-Default implementation of `IAudioFetcher` interface that fetches audio resources from URLs.
-
-**Methods**:
-- `addMiddleware(middleware: AudioFetchMiddleware): void` - Add middleware to intercept fetch requests
-
-### `AudioFetchMiddleware`
-
-Interface for middleware that can intercept and transform fetch requests/responses.
-
-**Properties**:
-- `beforeFetch?: (url: string, init?: RequestInit) => Promise<{ url: string; init?: RequestInit } | null>` - Called before fetch, can modify request or cancel it
-- `afterFetch?: (url: string, data: ArrayBuffer) => Promise<ArrayBuffer>` - Called after fetch, can transform response data
 
 ### `resumeAudioContext(): Promise<void>`
 
@@ -226,6 +177,5 @@ By specifying start and end positions with the `isLoop` parameter, sets Web Audi
 
 - Due to browser autoplay policy, audio may not play before user interaction. Be sure to call `resumeAudioContext()` at the appropriate timing.
 - Be careful of browser resource limitations when playing many audio files simultaneously.
-- Audio resources are fetched on-demand when tracks are added. Use middleware for caching if needed.
+- Audio resources are fetched on-demand when tracks are added using standard Fetch API.
 - AudioBuffer is kept in memory once decoded. Be mindful of memory usage when using many long-duration audio files.
-- The `IAudioFetcher` interface allows custom implementations for different resource loading strategies (e.g., from IndexedDB, Service Worker cache, etc.).

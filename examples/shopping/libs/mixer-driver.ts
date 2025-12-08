@@ -1,9 +1,7 @@
-import { AudioFetcher, createApplyMixer } from 'driver';
-
-const fetcher = new AudioFetcher();
+import { createApplyMixer } from 'driver';
 
 export const initMixerDriver = () => {
-  createApplyMixer(fetcher);
+  createApplyMixer();
 };
 
-export const getApplyMixer = () => createApplyMixer(fetcher);
+export const getApplyMixer = () => createApplyMixer();

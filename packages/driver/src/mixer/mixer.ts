@@ -1,5 +1,4 @@
 import type { ApplyMixer, BusTrack, Channel, Mixer, Track } from 'engine';
-import type { IAudioFetcher } from './fetcher.js';
 
 /**
  * Interface for managing audio channel state
@@ -45,13 +44,11 @@ class MixerDriver {
   private audioContext: AudioContext;
   private masterGainNode: GainNode;
   private channelStates: Map<string, AudioChannelState> = new Map();
-  private fetcher: IAudioFetcher;
 
-  constructor(fetcher: IAudioFetcher) {
+  constructor() {
     this.audioContext = new AudioContext();
     this.masterGainNode = this.audioContext.createGain();
     this.masterGainNode.connect(this.audioContext.destination);
-    this.fetcher = fetcher;
   }
 
   /**
@@ -128,7 +125,11 @@ class MixerDriver {
     gainNode.gain.setValueAtTime(track.volume, this.audioContext.currentTime);
     gainNode.connect(parentGainNode);
 
-    const arrayBuffer = await this.fetcher.fetch(track.src);
+    const response = await fetch(track.src);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
 
     const state: AudioChannelState = {
@@ -388,9 +389,9 @@ let mixerInstance: MixerDriver | null = null;
  * Implementation of ApplyMixer function
  * Realizes state using Web Audio API based on declarative Mixer definition
  */
-export const createApplyMixer = (fetcher: IAudioFetcher): ApplyMixer => {
+export const createApplyMixer = (): ApplyMixer => {
   if (!mixerInstance) {
-    mixerInstance = new MixerDriver(fetcher);
+    mixerInstance = new MixerDriver();
   }
 
   return async (mixer: Mixer) => {
