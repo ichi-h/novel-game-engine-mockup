@@ -3,7 +3,7 @@ import type { NovelWidgetBase } from './core';
 
 export interface ButtonWidget extends NovelWidgetBase {
   type: 'Button';
-  style?: string;
+  className?: string;
   label: string;
   // Using unknown to avoid circular dependency with NovelMessage
   // The actual type safety is ensured at the message handler level

@@ -23,7 +23,7 @@ describe('addImage', () => {
         layoutId: 'parent',
         src: 'test.png',
         id: 'img1',
-        style: 'width: 100px;',
+        className: 'width: 100px;',
       });
 
       // Assert
@@ -32,7 +32,7 @@ describe('addImage', () => {
         layoutId: 'parent',
         src: 'test.png',
         id: 'img1',
-        style: 'width: 100px;',
+        className: 'width: 100px;',
       });
     });
   });
@@ -68,7 +68,7 @@ describe('handleAddImage - normal cases', () => {
       id: 'img-all',
       layoutId: 'parent',
       src: 'test.png',
-      style: 'width:100px; height:50px;',
+      className: 'width:100px; height:50px;',
     };
 
     // Act

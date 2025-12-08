@@ -3,7 +3,7 @@ import type { NovelWidgetBase } from './core';
 
 export interface ImageWidget extends NovelWidgetBase {
   type: 'Image';
-  style?: string;
+  className?: string;
   src: string;
 }
 

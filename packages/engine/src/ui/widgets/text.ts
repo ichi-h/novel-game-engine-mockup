@@ -3,7 +3,7 @@ import type { NovelWidgetBase } from './core';
 
 export interface TextWidget extends NovelWidgetBase {
   type: 'Text';
-  style?: string;
+  className?: string;
   content: string;
   speed?: number;
 }

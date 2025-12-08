@@ -77,44 +77,44 @@ const createMainScenario = (): NovelMessage[] => {
       addWidgets([
         w.layout({
           id: 'root',
-          style:
+          className:
             'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
         })([
           w.layout({
             id: 'background-layer',
-            style: 'absolute inset-0 flex items-center justify-center',
+            className: 'absolute inset-0 flex items-center justify-center',
           })([
             w.layout({
               id: 'background-content-layer',
-              style: 'relative w-full h-full',
+              className: 'relative w-full h-full',
             })([
               w.img({
                 id: 'home-bg',
                 src: homeBg,
-                style: 'absolute inset-0 w-full h-full object-cover',
+                className: 'absolute inset-0 w-full h-full object-cover',
               }),
             ]),
           ]),
           w.layout({
             id: 'content-layer',
-            style:
+            className:
               'absolute inset-0 flex flex-col items-center justify-between p-4 z-10',
           })([
             w.layout({
               id: 'title-area',
-              style: 'flex-1 flex items-center justify-center',
+              className: 'flex-1 flex items-center justify-center',
             })([]),
             w.layout({
               id: 'game-container',
-              style: 'w-full h-full flex flex-col',
+              className: 'w-full h-full flex flex-col',
             })([
               w.layout({
                 id: CHARACTER_LAYOUT_ID,
-                style: 'flex-1 flex items-center justify-around px-8',
+                className: 'flex-1 flex items-center justify-around px-8',
               })([]),
               w.layout({
                 id: 'textbox-area',
-                style: 'w-full flex justify-center px-4 pb-4',
+                className: 'w-full flex justify-center px-4 pb-4',
               })([]),
             ]),
           ]),
@@ -125,7 +125,7 @@ const createMainScenario = (): NovelMessage[] => {
       addTextBox({
         id: TEXTBOX_ID,
         layoutId: 'textbox-area',
-        style:
+        className:
           'w-full h-56 max-w-4xl bg-white/95 backdrop-blur-md border-4 border-pink-300 rounded-3xl p-8 shadow-2xl',
       }),
       showDialog(
@@ -196,20 +196,20 @@ const createMainScenario = (): NovelMessage[] => {
         [
           w.layout({
             id: 'choice-buttons',
-            style: 'flex gap-4 mt-4 justify-center',
+            className: 'flex gap-4 mt-4 justify-center',
           })([
             w.button({
               label: 'Bunちゃんと服を見に行く 👗',
               onClick: switchScenario({ scenario: SCENARIOS.helpBun }),
               id: 'btn-bun',
-              style:
+              className:
                 'px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
             }),
             w.button({
               label: 'Reactくんとゲームショップへ 🎮',
               onClick: switchScenario({ scenario: SCENARIOS.helpReact }),
               id: 'btn-react',
-              style:
+              className:
                 'px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl text-xl font-bold transition-colors shadow-lg',
             }),
           ]),
@@ -395,13 +395,13 @@ const createEndingScenario = (): NovelMessage[] => {
       addTextBox({
         id: 'end-title',
         layoutId: 'title-area',
-        style:
+        className:
           'text-6xl font-bold bg-[#000000bb] backdrop-blur-md rounded-3xl p-12 shadow-2xl z-50 relative',
       }),
       addText({
         textBoxId: 'end-title',
         content: 'おしまい',
-        style: 'drop-shadow-2xl',
+        className: 'drop-shadow-2xl',
         speed: 100,
       }),
     ]),

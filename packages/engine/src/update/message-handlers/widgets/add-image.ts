@@ -7,21 +7,21 @@ export interface AddImageMessage extends BaseMessage {
   id?: string;
   layoutId: string;
   src: string;
-  style?: string;
+  className?: string;
 }
 
 export const addImage = ({
   layoutId,
   src,
   id,
-  style,
+  className,
 }: Omit<AddImageMessage, 'type'>): AddImageMessage => {
   return {
     type: 'ShowImage',
     layoutId,
     src,
     ...(id !== undefined ? { id } : {}),
-    ...(style !== undefined ? { style } : {}),
+    ...(className !== undefined ? { className } : {}),
   };
 };
 
@@ -29,13 +29,13 @@ export const handleAddImage = <CustomState = unknown>(
   model: NovelModel<CustomState>,
   msg: AddImageMessage,
 ): NovelModel<CustomState> => {
-  const newImg = w.img({
+  const newImage = w.img({
     src: msg.src,
     ...(msg.id !== undefined && { id: msg.id }),
-    ...(msg.style !== undefined && { style: msg.style }),
+    ...(msg.className !== undefined && { className: msg.className }),
   });
   return {
     ...model,
-    ui: addWidget(model.ui, newImg, msg.layoutId),
+    ui: addWidget(model.ui, newImage, msg.layoutId),
   };
 };

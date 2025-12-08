@@ -3,7 +3,7 @@ import type { NovelWidget, NovelWidgetBase } from './core';
 export interface LayoutWidget extends NovelWidgetBase {
   id: string;
   type: 'Layout';
-  style?: string;
+  className?: string;
   children: NovelWidget[];
 }
 

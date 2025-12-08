@@ -25,7 +25,7 @@ describe('addLayout', () => {
       const result = addLayout({
         id: 'layout1',
         parentLayoutId: 'parent',
-        style: 'display: flex;',
+        className: 'display: flex;',
       });
 
       // Assert
@@ -33,7 +33,7 @@ describe('addLayout', () => {
         type: 'AddLayout',
         id: 'layout1',
         parentLayoutId: 'parent',
-        style: 'display: flex;',
+        className: 'display: flex;',
       });
     });
   });
@@ -62,7 +62,7 @@ describe('handleAddLayout - normal cases', () => {
     const msg: AddLayoutMessage = {
       type: 'AddLayout',
       id: 'layout2',
-      style: 'display: flex; justify-content: center;',
+      className: 'display: flex; justify-content: center;',
     };
 
     // Act
@@ -84,7 +84,7 @@ describe('handleAddLayout - normal cases', () => {
       type: 'AddLayout',
       id: 'child',
       parentLayoutId: 'parent',
-      style: 'padding: 10px;',
+      className: 'padding: 10px;',
     };
 
     // Act

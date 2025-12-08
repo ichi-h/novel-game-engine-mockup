@@ -26,7 +26,7 @@ describe('addTextBox', () => {
       const result = addTextBox({
         id: 'textbox1',
         layoutId: 'parent',
-        style: 'padding: 10px;',
+        className: 'padding: 10px;',
       });
 
       // Assert
@@ -34,7 +34,7 @@ describe('addTextBox', () => {
         type: 'AddTextBox',
         id: 'textbox1',
         layoutId: 'parent',
-        style: 'padding: 10px;',
+        className: 'padding: 10px;',
       });
     });
   });
@@ -74,7 +74,7 @@ describe('handleAddTextBox - normal cases', () => {
       type: 'AddTextBox',
       id: 'child',
       layoutId: 'parent',
-      style: 'padding: 10px;',
+      className: 'padding: 10px;',
     };
 
     // Act

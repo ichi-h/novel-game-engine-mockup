@@ -7,6 +7,7 @@ import type { TextBoxWidget } from './text-box';
 export interface NovelWidgetBase {
   id: string;
   type: string;
+  className?: string;
 }
 
 export type NovelWidget =

@@ -56,7 +56,7 @@ export const Text = ({ widget, isAnimating, model }: Props) => {
 
   if (!isAnimating) {
     return (
-      <p id={widget.id} className={widget.style}>
+      <p id={widget.id} className={widget.className}>
         {widget.content}
       </p>
     );
@@ -65,7 +65,7 @@ export const Text = ({ widget, isAnimating, model }: Props) => {
   const chars = widget.content.split('');
 
   return (
-    <p id={widget.id} className={widget.style}>
+    <p id={widget.id} className={widget.className}>
       {chars.map((char, index) => (
         <Char
           key={`${widget.id}_char_${index}`}

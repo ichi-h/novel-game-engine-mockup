@@ -14,7 +14,7 @@ export const Button = ({ widget, send }: Props) => {
   return (
     <button
       id={widget.id}
-      className={widget.style}
+      className={widget.className}
       onClick={handleClick}
       type="button"
     >

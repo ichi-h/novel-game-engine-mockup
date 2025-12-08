@@ -6,19 +6,19 @@ export interface AddLayoutMessage extends BaseMessage {
   type: 'AddLayout';
   id: string;
   parentLayoutId?: string;
-  style?: string;
+  className?: string;
 }
 
 export const addLayout = ({
   id,
   parentLayoutId,
-  style,
+  className,
 }: Omit<AddLayoutMessage, 'type'>): AddLayoutMessage => {
   return {
     type: 'AddLayout',
     id,
     ...(parentLayoutId !== undefined ? { parentLayoutId } : {}),
-    ...(style !== undefined ? { style } : {}),
+    ...(className !== undefined ? { className } : {}),
   };
 };
 
@@ -28,7 +28,7 @@ export const handleAddLayout = <CustomState = unknown>(
 ): NovelModel<CustomState> => {
   const newLayout = w.layout({
     id: msg.id,
-    ...(msg.style !== undefined && { style: msg.style }),
+    ...(msg.className !== undefined && { className: msg.className }),
   })([]);
   return {
     ...model,

@@ -8,7 +8,7 @@ export interface ShowAddMessage extends BaseMessage {
   id?: string;
   textBoxId: string;
   content: string;
-  style?: string;
+  className?: string;
   speed?: number;
   nextMessageCaught?: AnimationTicket['nextMessageCaught'];
 }
@@ -22,7 +22,7 @@ export const addText = ({
   textBoxId,
   content,
   id,
-  style,
+  className,
   speed,
   nextMessageCaught,
 }: Omit<ShowAddMessage, 'type'>): ShowAddMessage => {
@@ -31,7 +31,7 @@ export const addText = ({
     textBoxId,
     content,
     ...(id !== undefined ? { id } : {}),
-    ...(style !== undefined ? { style } : {}),
+    ...(className !== undefined ? { className } : {}),
     ...(speed !== undefined ? { speed } : {}),
     ...(nextMessageCaught !== undefined ? { nextMessageCaught } : {}),
   };
@@ -45,7 +45,7 @@ export const handleAddText = <CustomState = unknown>(
     content: msg.content,
     speed: msg.speed ?? model.config.textAnimationSpeed,
     ...(msg.id !== undefined && { id: msg.id }),
-    ...(msg.style !== undefined && { style: msg.style }),
+    ...(msg.className !== undefined && { className: msg.className }),
   });
 
   const animationTicket: AnimationTicket | null =

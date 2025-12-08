@@ -32,7 +32,7 @@ export const showCharacterName = (name: string, color: string): NovelMessage =>
   addText({
     textBoxId: TEXTBOX_ID,
     content: name,
-    style: `${color} ${COMMON_STYLES.nameText}`,
+    className: `${color} ${COMMON_STYLES.nameText}`,
     speed: 100,
   });
 
@@ -43,7 +43,7 @@ export const showDialog = (text: string): NovelMessage =>
   addText({
     textBoxId: TEXTBOX_ID,
     content: text,
-    style: COMMON_STYLES.dialogText,
+    className: COMMON_STYLES.dialogText,
   });
 
 /**
@@ -75,7 +75,7 @@ export const showCharacter = (id: string, src: string): NovelMessage =>
     layoutId: CHARACTER_LAYOUT_ID,
     src,
     id,
-    style: COMMON_STYLES.characterImage,
+    className: COMMON_STYLES.characterImage,
   });
 
 /**
@@ -102,5 +102,5 @@ export const changeBackground = (id: string, src: string): NovelMessage =>
     layoutId: BG_LAYER_ID,
     src,
     id,
-    style: 'absolute inset-0 w-full h-full object-cover animate-fade-in',
+    className: 'absolute inset-0 w-full h-full object-cover animate-fade-in',
   });

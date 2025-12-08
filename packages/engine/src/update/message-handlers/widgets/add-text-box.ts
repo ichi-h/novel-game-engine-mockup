@@ -6,19 +6,19 @@ export interface AddTextBoxMessage extends BaseMessage {
   type: 'AddTextBox';
   id: string;
   layoutId: string;
-  style?: string;
+  className?: string;
 }
 
 export const addTextBox = ({
   id,
   layoutId,
-  style,
+  className,
 }: Omit<AddTextBoxMessage, 'type'>): AddTextBoxMessage => {
   return {
     type: 'AddTextBox',
     id,
     layoutId,
-    ...(style !== undefined ? { style } : {}),
+    ...(className !== undefined ? { className } : {}),
   };
 };
 
@@ -28,7 +28,7 @@ export const handleAddTextBox = <CustomState = unknown>(
 ): NovelModel<CustomState> => {
   const newTextBox = w.textBox({
     id: msg.id,
-    ...(msg.style !== undefined && { style: msg.style }),
+    ...(msg.className !== undefined && { className: msg.className }),
   })([]);
   return {
     ...model,

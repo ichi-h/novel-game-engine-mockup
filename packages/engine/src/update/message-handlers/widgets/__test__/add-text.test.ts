@@ -33,7 +33,7 @@ describe('addText', () => {
         textBoxId: 'textbox1',
         content: 'Hello, World!',
         id: 'text1',
-        style: 'font-weight: bold;',
+        className: 'font-weight: bold;',
         speed: 50,
       });
 
@@ -43,7 +43,7 @@ describe('addText', () => {
         textBoxId: 'textbox1',
         content: 'Hello, World!',
         id: 'text1',
-        style: 'font-weight: bold;',
+        className: 'font-weight: bold;',
         speed: 50,
       });
     });
@@ -54,7 +54,7 @@ describe('addText', () => {
         textBoxId: 'textbox1',
         content: 'Hello, World!',
         id: 'text1',
-        style: 'font-weight: bold;',
+        className: 'font-weight: bold;',
         speed: 50,
         nextMessageCaught: 'merge',
       });
@@ -65,7 +65,7 @@ describe('addText', () => {
         textBoxId: 'textbox1',
         content: 'Hello, World!',
         id: 'text1',
-        style: 'font-weight: bold;',
+        className: 'font-weight: bold;',
         speed: 50,
         nextMessageCaught: 'merge',
       });
@@ -129,7 +129,7 @@ describe('handleAddText - normal cases', () => {
       id: 'text-all',
       textBoxId: 'textbox1',
       content: 'Complete text',
-      style: 'font-weight: bold;',
+      className: 'font-weight: bold;',
       speed: 50,
     };
 

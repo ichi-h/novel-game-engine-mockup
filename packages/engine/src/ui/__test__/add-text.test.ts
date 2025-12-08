@@ -32,7 +32,7 @@ describe('addText', () => {
       const textWidget = text({
         id: 'text1',
         content: 'Styled text',
-        style: 'font-weight: bold;',
+        className: 'font-weight: bold;',
         speed: 50,
       });
 

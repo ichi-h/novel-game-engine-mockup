@@ -9,7 +9,7 @@ export interface AddButtonMessage extends BaseMessage {
   layoutId?: string;
   label: string;
   onClick: NovelMessage;
-  style?: string;
+  className?: string;
 }
 
 export const addButton = ({
@@ -17,7 +17,7 @@ export const addButton = ({
   layoutId,
   label,
   onClick,
-  style,
+  className,
 }: Omit<AddButtonMessage, 'type'>): AddButtonMessage => {
   return {
     type: 'AddButton',
@@ -25,7 +25,7 @@ export const addButton = ({
     onClick,
     ...(layoutId !== undefined ? { layoutId } : {}),
     ...(id !== undefined ? { id } : {}),
-    ...(style !== undefined ? { style } : {}),
+    ...(className !== undefined ? { className } : {}),
   };
 };
 
@@ -37,7 +37,7 @@ export const handleAddButton = <CustomState = unknown>(
     label: msg.label,
     onClick: msg.onClick,
     ...(msg.id !== undefined && { id: msg.id }),
-    ...(msg.style !== undefined && { style: msg.style }),
+    ...(msg.className !== undefined && { className: msg.className }),
   });
   return {
     ...model,

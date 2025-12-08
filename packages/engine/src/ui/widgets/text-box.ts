@@ -4,7 +4,7 @@ import type { TextWidget } from './text';
 export interface TextBoxWidget extends NovelWidgetBase {
   id: string;
   type: 'TextBox';
-  style?: string;
+  className?: string;
   children: TextWidget[];
 }
 

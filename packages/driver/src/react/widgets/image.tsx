@@ -7,7 +7,7 @@ export const Image = ({ widget }: Props) => {
   return (
     <img
       id={widget.id}
-      className={widget.style}
+      className={widget.className}
       src={widget.src}
       alt={widget.id}
     />
