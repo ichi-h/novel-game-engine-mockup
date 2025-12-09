@@ -21,7 +21,9 @@ type SerializeErrors<T> = T extends Error
 /**
  * Serialized model type where Error objects are recursively converted to plain objects
  */
-export type SerializedNovelModel = SerializeErrors<NovelModel>;
+export type SerializedNovelModel<CustomState = unknown> = SerializeErrors<
+  NovelModel<CustomState>
+>;
 
 /**
  * Serialize an Error object to a plain object
@@ -103,15 +105,17 @@ const deserializeValue = (value: unknown): unknown => {
 /**
  * Serialize NovelModel for IndexedDB storage
  */
-export const serializeModel = (model: NovelModel): SerializedNovelModel => {
-  return serializeValue(model) as SerializedNovelModel;
+export const serializeModel = <CustomState = unknown>(
+  model: NovelModel<CustomState>,
+): SerializedNovelModel<CustomState> => {
+  return serializeValue(model) as SerializedNovelModel<CustomState>;
 };
 
 /**
  * Deserialize NovelModel from IndexedDB storage
  */
-export const deserializeModel = (
-  serialized: SerializedNovelModel,
-): NovelModel => {
-  return deserializeValue(serialized) as NovelModel;
+export const deserializeModel = <CustomState = unknown>(
+  serialized: SerializedNovelModel<CustomState>,
+): NovelModel<CustomState> => {
+  return deserializeValue(serialized) as NovelModel<CustomState>;
 };

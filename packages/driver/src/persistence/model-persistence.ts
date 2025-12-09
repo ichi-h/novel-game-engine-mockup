@@ -12,26 +12,25 @@ const DB_VERSION = 1;
 /**
  * Stored model record in IndexedDB
  */
-interface StoredModelRecord {
+interface StoredModelRecord<CustomState = unknown> {
   key: string;
-  model: SerializedNovelModel;
+  model: SerializedNovelModel<CustomState>;
   savedAt: number;
 }
 
 /**
  * Interface for model persistence operations
  */
-export interface ModelPersistence {
+export interface ModelPersistence<CustomState = unknown> {
   /**
    * Save a model to IndexedDB with the specified key
    */
-  save(key: string, model: NovelModel): Promise<void>;
-
+  save(key: string, model: NovelModel<CustomState>): Promise<void>;
   /**
    * Load a model from IndexedDB by key
    * Returns undefined if not found
    */
-  load(key: string): Promise<NovelModel | undefined>;
+  load(key: string): Promise<NovelModel<CustomState> | undefined>;
 
   /**
    * Delete a model from IndexedDB by key
@@ -71,10 +70,13 @@ const openDatabase = (dbName: string): Promise<IDBDatabase> => {
 /**
  * Create a model persistence instance
  */
-export const createModelPersistence = (
+export const createModelPersistence = <CustomState = unknown>(
   dbName: string = DEFAULT_DB_NAME,
-): ModelPersistence => {
-  const save = async (key: string, model: NovelModel): Promise<void> => {
+): ModelPersistence<CustomState> => {
+  const save = async (
+    key: string,
+    model: NovelModel<CustomState>,
+  ): Promise<void> => {
     const db = await openDatabase(dbName);
     try {
       return await new Promise((resolve, reject) => {
@@ -102,7 +104,9 @@ export const createModelPersistence = (
     }
   };
 
-  const load = async (key: string): Promise<NovelModel | undefined> => {
+  const load = async <CustomState = unknown>(
+    key: string,
+  ): Promise<NovelModel<CustomState> | undefined> => {
     const db = await openDatabase(dbName);
     try {
       return await new Promise((resolve, reject) => {
@@ -115,7 +119,9 @@ export const createModelPersistence = (
         };
 
         request.onsuccess = () => {
-          const record = request.result as StoredModelRecord | undefined;
+          const record = request.result as
+            | StoredModelRecord<CustomState>
+            | undefined;
           if (record) {
             resolve(deserializeModel(record.model));
           } else {

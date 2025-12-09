@@ -9,11 +9,11 @@ import { createSlotKey, type SaveSlotInfo, TOTAL_SLOTS } from './types';
 /**
  * Hook for managing save slots
  */
-export const useSaveSlots = () => {
+export const useSaveSlots = <CustomState = unknown>() => {
   const [slots, setSlots] = useState<SaveSlotInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const persistence = useMemo<ModelPersistence>(
+  const persistence = useMemo<ModelPersistence<CustomState>>(
     () => createModelPersistence('tsuzuri-tutorial-saves'),
     [],
   );
@@ -56,7 +56,7 @@ export const useSaveSlots = () => {
    * Save model to a specific slot
    */
   const saveToSlot = useCallback(
-    async (slotId: number, model: NovelModel): Promise<void> => {
+    async (slotId: number, model: NovelModel<CustomState>): Promise<void> => {
       const key = createSlotKey(slotId);
       await persistence.save(key, model);
 
@@ -75,7 +75,7 @@ export const useSaveSlots = () => {
    * Load model from a specific slot
    */
   const loadFromSlot = useCallback(
-    async (slotId: number): Promise<NovelModel | undefined> => {
+    async (slotId: number): Promise<NovelModel<CustomState> | undefined> => {
       const key = createSlotKey(slotId);
       return await persistence.load(key);
     },
