@@ -106,11 +106,7 @@ mkdir -p src/{pages,components,game,hooks,types}
 mkdir -p src/assets/images/{backgrounds,placeholders}
 ```
 
-### 2. プレースホルダー画像作成
-
-不足している画像をシンプルなプレースホルダー（テキストと色付き背景）で作成
-
-### 3. ルーティング実装
+### 2. ルーティング実装
 
 `src/App.tsx`にて状態ベースのルーティングを実装（`examples/shopping`を参考）
 
@@ -122,9 +118,8 @@ mkdir -p src/assets/images/{backgrounds,placeholders}
 - SavePage・LoadPage（セーブ・ロード）
 - LogPage（会話ログ）※新規作成
 - ConfigPage（設定）※新規作成
-- CreditsPage（クレジット）※新規作成
 
-### 4. 設定の永続化
+### 3. 設定の永続化
 
 `src/hooks/useConfig.ts`を作成し、localStorageと同期する設定管理フックを実装
 
@@ -136,7 +131,7 @@ interface GameConfig {
 }
 ```
 
-### 5. シナリオ実装
+### 4. シナリオ実装
 
 `src/game/scenario.ts`にて、`scenario.md`の内容をNovelMessageの配列として実装
 
@@ -147,7 +142,7 @@ interface GameConfig {
 - `showCharacter()`: キャラクター立ち絵表示
 - `changeBackground()`: 背景変更
 
-### 6. UIコンポーネント作成
+### 5. UIコンポーネント作成
 
 必要に応じて以下を作成:
 
@@ -155,7 +150,7 @@ interface GameConfig {
 - `ControlPanel.tsx`: ボタンパネル
 - `CharacterSprite.tsx`: キャラクター表示
 
-### 7. 統合とテスト
+### 6. 統合とテスト
 
 - 全ページの動作確認
 - セーブ・ロードの検証
