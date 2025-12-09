@@ -3,14 +3,7 @@ import { changeChannelVolume, updateConfig } from '@ichi-h/tsuzuri-core';
 import { AUDIO_BUS_IDS } from '../../constants/audio';
 import { getModel } from '../game/engine';
 import type { GameConfig } from './constants';
-
-/**
- * Convert text speed (0.0-1.0) to text animation speed in milliseconds
- * Higher textSpeed = faster animation = lower ms value
- */
-const convertTextSpeed = (textSpeed: number): number => {
-  return 200 - textSpeed * 190;
-};
+import { convertTextSpeed } from './utils';
 
 export const updateBGMVolumeMessage = (volume: number): NovelMessage => {
   return changeChannelVolume({

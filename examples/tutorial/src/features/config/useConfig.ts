@@ -15,18 +15,9 @@ import {
 } from './constants';
 import { loadConfig } from './loadConfig';
 
-const saveConfig = (config: GameConfig): void => {
-  try {
-    localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
-    // Notify all subscribers about the change
-    notifyListeners();
-  } catch (error) {
-    console.error('Failed to save config to localStorage:', error);
-  }
-};
-
 // External store implementation for config
 let listeners: Array<() => void> = [];
+let cachedConfig: GameConfig = loadConfig();
 
 const subscribe = (listener: () => void) => {
   listeners.push(listener);
@@ -36,12 +27,19 @@ const subscribe = (listener: () => void) => {
 };
 
 const getSnapshot = () => {
-  return loadConfig();
+  return cachedConfig;
 };
 
-const notifyListeners = () => {
-  for (const listener of listeners) {
-    listener();
+const saveConfig = (config: GameConfig): void => {
+  try {
+    localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+    // Update cache and notify all subscribers about the change
+    cachedConfig = config;
+    for (const listener of listeners) {
+      listener();
+    }
+  } catch (error) {
+    console.error('Failed to save config to localStorage:', error);
   }
 };
 

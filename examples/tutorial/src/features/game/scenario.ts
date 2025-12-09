@@ -8,17 +8,17 @@ import {
   w,
 } from '@ichi-h/tsuzuri-core';
 import { AUDIO_BUS_IDS } from '../../constants/audio';
-import { buildConfigMessages } from '../config/applyConfig';
 import { loadConfig } from '../config/loadConfig';
+
+const config = loadConfig();
 
 // Initial message to setup the game
 export const initMessage: NovelMessage = sequence([
   // Create audio bus tracks for BGM, SE, and Voice
-  addBusTrack({ id: AUDIO_BUS_IDS.BGM }),
-  addBusTrack({ id: AUDIO_BUS_IDS.SE }),
-  addBusTrack({ id: AUDIO_BUS_IDS.VOICE }),
-  // Apply config from localStorage
-  ...buildConfigMessages(loadConfig()),
+  addBusTrack({ id: AUDIO_BUS_IDS.BGM, volume: config.bgmVolume }),
+  addBusTrack({ id: AUDIO_BUS_IDS.SE, volume: config.seVolume }),
+  addBusTrack({ id: AUDIO_BUS_IDS.VOICE, volume: config.voiceVolume }),
+
   // Setup UI
   addWidgets([
     w.layout({

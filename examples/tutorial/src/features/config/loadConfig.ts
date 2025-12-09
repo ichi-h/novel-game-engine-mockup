@@ -19,5 +19,5 @@ export const loadConfig = (): GameConfig => {
   } catch (error) {
     console.error('Failed to load config from localStorage:', error);
   }
-  return structuredClone(DEFAULT_CONFIG);
+  return DEFAULT_CONFIG;
 };
