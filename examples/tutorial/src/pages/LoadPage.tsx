@@ -1,3 +1,6 @@
+import { putModel, sequence } from '@ichi-h/tsuzuri-core';
+import { buildConfigMessages } from '../features/config/applyConfig';
+import { useConfig } from '../features/config/useConfig';
 import { send } from '../features/game/engine';
 import { SaveSlot } from '../features/save/SaveSlot';
 import { useSaveSlots } from '../features/save/useSaveSlots';
@@ -12,12 +15,13 @@ interface LoadPageProps {
  */
 export const LoadPage = ({ onLoad, onBack }: LoadPageProps) => {
   const { slots, isLoading, loadFromSlot, deleteSlot } = useSaveSlots();
+  const { config } = useConfig();
 
   const handleLoad = async (slotId: number) => {
     try {
       const model = await loadFromSlot(slotId);
       if (model) {
-        send({ type: 'PutModel', model });
+        send(sequence([putModel(model), ...buildConfigMessages(config)]));
         onLoad();
       } else {
         alert('データの読み込みに失敗しました。');

@@ -1,4 +1,8 @@
+import { sequence } from '@ichi-h/tsuzuri-core';
 import { useState } from 'react';
+import { buildConfigMessages } from '../features/config/applyConfig';
+import { useConfig } from '../features/config/useConfig';
+import { send } from '../features/game/engine';
 import { AudioConfirmPage } from '../pages/AudioConfirmPage';
 import { ConfigPage } from '../pages/ConfigPage';
 import { GamePage } from '../pages/GamePage';
@@ -15,6 +19,7 @@ export type RouterState =
   | { page: 'config' };
 
 export const Router = () => {
+  const { config } = useConfig();
   const [routerState, setRouterState] = useState<RouterState>({
     page: 'audio-confirm',
   });
@@ -25,6 +30,7 @@ export const Router = () => {
   };
 
   const handleStartNewGame = () => {
+    send(sequence(buildConfigMessages(config)));
     setRouterState({ page: 'game' });
   };
 

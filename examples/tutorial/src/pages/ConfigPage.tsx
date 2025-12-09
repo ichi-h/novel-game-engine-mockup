@@ -13,11 +13,13 @@ export const ConfigPage = ({ onBack }: ConfigPageProps) => {
     config,
     updateBgmVolume,
     updateSeVolume,
+    updateVoiceVolume,
     updateTextSpeed,
     resetConfig,
   } = useConfig();
   const bgmVolumeId = useId();
   const seVolumeId = useId();
+  const voiceVolumeId = useId();
   const textSpeedId = useId();
 
   const handleReset = () => {
@@ -88,6 +90,32 @@ export const ConfigPage = ({ onBack }: ConfigPageProps) => {
               />
               <span className="text-gray-700 font-medium w-12 text-right">
                 {Math.round(config.seVolume * 100)}%
+              </span>
+            </div>
+          </div>
+
+          {/* Voice Volume */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6">
+            <label
+              htmlFor={voiceVolumeId}
+              className="block text-lg font-semibold text-gray-800 mb-3"
+            >
+              音声音量
+            </label>
+            <div className="flex items-center gap-4">
+              <input
+                id={voiceVolumeId}
+                type="range"
+                min="0"
+                max="100"
+                value={config.voiceVolume * 100}
+                onChange={(e) =>
+                  updateVoiceVolume(Number(e.target.value) / 100)
+                }
+                className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
+              />
+              <span className="text-gray-700 font-medium w-12 text-right">
+                {Math.round(config.voiceVolume * 100)}%
               </span>
             </div>
           </div>

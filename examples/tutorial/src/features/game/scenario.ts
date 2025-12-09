@@ -1,14 +1,25 @@
 import type { NovelMessage } from '@ichi-h/tsuzuri-core';
 import {
+  addBusTrack,
   addText,
   addTextBox,
   addWidgets,
   sequence,
   w,
 } from '@ichi-h/tsuzuri-core';
+import { AUDIO_BUS_IDS } from '../../constants/audio';
+import { buildConfigMessages } from '../config/applyConfig';
+import { loadConfig } from '../config/loadConfig';
 
 // Initial message to setup the game
 export const initMessage: NovelMessage = sequence([
+  // Create audio bus tracks for BGM, SE, and Voice
+  addBusTrack({ id: AUDIO_BUS_IDS.BGM }),
+  addBusTrack({ id: AUDIO_BUS_IDS.SE }),
+  addBusTrack({ id: AUDIO_BUS_IDS.VOICE }),
+  // Apply config from localStorage
+  ...buildConfigMessages(loadConfig()),
+  // Setup UI
   addWidgets([
     w.layout({
       id: 'root',
