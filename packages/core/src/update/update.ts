@@ -14,6 +14,7 @@ import {
 import { handleNext } from './message-handlers/general/next';
 import { handlePutModel } from './message-handlers/general/put-model';
 import { handleResetProperties } from './message-handlers/general/reset-properties';
+import { handleScheduleMessage } from './message-handlers/general/schedule';
 import { handleSequence } from './message-handlers/general/sequence';
 import { handleSwitchScenario } from './message-handlers/general/switch-scenario';
 import { handleUpdateConfig } from './message-handlers/general/update-config';
@@ -73,6 +74,8 @@ export const update =
           return handleDelay(model, msg);
         case 'DelayCompleted':
           return handleDelayCompleted(model, msg);
+        case 'ScheduleMessage':
+          return handleScheduleMessage(model, msg);
         case 'Sequence':
           return handleSequence(model, msg, updateWrapped);
         case 'UpdateConfig':

@@ -22,6 +22,7 @@ import type {
   RemoveChannelMessage,
   RemoveWidgetsMessage,
   ResetPropertiesMessage,
+  ScheduleMessage,
   SequenceMessage,
   ShowAddMessage,
   StopChannelMessage,
@@ -38,6 +39,7 @@ export type NovelMessage<CustomState = unknown> =
   | AwaitActionMessage
   | DelayMessage
   | DelayCompletedMessage
+  | ScheduleMessage<CustomState>
   | SequenceMessage<NovelMessage<CustomState>>
   | UpdateConfigMessage
   | UpdateCustomStateMessage<CustomState>
