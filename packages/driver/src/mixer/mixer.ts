@@ -1,10 +1,13 @@
-import type {
-  ApplyMixer,
-  BusTrack,
-  Channel,
-  Mixer,
-  Track,
+import {
+  type ApplyMixer,
+  type BusTrack,
+  type Channel,
+  type Mixer,
+  murmurhash3,
+  type Track,
 } from '@ichi-h/tsuzuri-core';
+
+// import { murmurhash3 } from '@ichi-h/tsuzuri-core';
 
 /**
  * Interface for managing audio channel state
@@ -50,6 +53,7 @@ class MixerDriver {
   private audioContext: AudioContext;
   private masterGainNode: GainNode;
   private channelStates: Map<string, AudioChannelState> = new Map();
+  private taskQueue: Map<string, Mixer> = new Map();
 
   constructor() {
     this.audioContext = new AudioContext();
@@ -61,11 +65,28 @@ class MixerDriver {
    * Compare current Mixer with new Mixer and apply differences
    */
   async apply(newMixer: Mixer): Promise<void> {
-    // Update master volume
-    this.updateMasterVolume(newMixer.volume);
+    const newMixerKey = murmurhash3(newMixer);
 
-    // Calculate and apply channel differences
-    await this.updateChannels(newMixer.channels);
+    if (this.taskQueue.size > 0) {
+      // Push tasks onto the queue to prevent duplicate applies, then return.
+      this.taskQueue.set(newMixerKey, newMixer);
+      return;
+    } else {
+      this.taskQueue.set(newMixerKey, newMixer);
+    }
+
+    while (this.taskQueue.size > 0) {
+      const values = this.taskQueue.entries().next().value;
+      const [key, mixer] = values !== undefined ? values : [null, null];
+
+      if (key === null || mixer === null) break;
+
+      this.updateMasterVolume(mixer.volume);
+
+      await this.updateChannels(mixer.channels);
+
+      this.taskQueue.delete(key);
+    }
   }
 
   /**

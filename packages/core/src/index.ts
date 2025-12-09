@@ -3,3 +3,4 @@ export * from './model';
 export * from './store';
 export { w } from './ui';
 export * from './update';
+export { murmurhash3 } from './utils';
