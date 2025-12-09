@@ -9,7 +9,7 @@ describe('sequence', () => {
     test('creates message with required fields', () => {
       // Arrange
       const messages: NovelMessage[] = [
-        { type: 'ShowText', textBoxId: 'box1', content: 'Hello' },
+        { type: 'AddText', textBoxId: 'box1', content: 'Hello' },
         { type: 'Delay', durationMs: 100 },
       ];
 
@@ -52,12 +52,12 @@ describe('handleSequence', () => {
         type: 'Sequence',
         messages: [
           {
-            type: 'ShowText',
+            type: 'AddText',
             textBoxId: 'box1',
             content: 'Hello',
           },
           {
-            type: 'ShowImage',
+            type: 'AddImage',
             layoutId: 'layout1',
             src: 'test.png',
           },
@@ -86,13 +86,13 @@ describe('handleSequence', () => {
         type: 'Sequence',
         messages: [
           {
-            type: 'ShowText',
+            type: 'AddText',
             textBoxId: 'box1',
             content: 'Before delay',
           },
           { type: 'Delay', durationMs: 10 },
           {
-            type: 'ShowText',
+            type: 'AddText',
             textBoxId: 'box1',
             content: 'After delay',
           },
@@ -112,14 +112,14 @@ describe('handleSequence', () => {
       if (!Array.isArray(result)) return;
 
       const [_, cmd] = result;
-      expect(processedMessages).toEqual(['ShowText', 'Delay']);
+      expect(processedMessages).toEqual(['AddText', 'Delay']);
 
       if (!cmd) throw new Error('Expected cmd to be defined');
       const cmdResult = await cmd();
       expect(cmdResult.type).toBe('Sequence');
       if (cmdResult.type === 'Sequence') {
         expect(cmdResult.messages).toHaveLength(1);
-        expect(cmdResult.messages[0]?.type).toBe('ShowText');
+        expect(cmdResult.messages[0]?.type).toBe('AddText');
       }
     });
 
@@ -132,19 +132,19 @@ describe('handleSequence', () => {
         type: 'Sequence',
         messages: [
           {
-            type: 'ShowText',
+            type: 'AddText',
             textBoxId: 'box1',
             content: 'First',
           },
           { type: 'Delay', durationMs: 10 },
           {
-            type: 'ShowText',
+            type: 'AddText',
             textBoxId: 'box1',
             content: 'Second',
           },
           { type: 'Delay', durationMs: 10 },
           {
-            type: 'ShowText',
+            type: 'AddText',
             textBoxId: 'box1',
             content: 'Third',
           },
@@ -164,16 +164,16 @@ describe('handleSequence', () => {
       if (!Array.isArray(result)) return;
 
       const [_, cmd] = result;
-      expect(processedMessages).toEqual(['ShowText', 'Delay']);
+      expect(processedMessages).toEqual(['AddText', 'Delay']);
 
       if (!cmd) throw new Error('Expected cmd to be defined');
       const cmdResult = await cmd();
       expect(cmdResult.type).toBe('Sequence');
       if (cmdResult.type === 'Sequence') {
         expect(cmdResult.messages).toHaveLength(3);
-        expect(cmdResult.messages[0]?.type).toBe('ShowText');
+        expect(cmdResult.messages[0]?.type).toBe('AddText');
         expect(cmdResult.messages[1]?.type).toBe('Delay');
-        expect(cmdResult.messages[2]?.type).toBe('ShowText');
+        expect(cmdResult.messages[2]?.type).toBe('AddText');
       }
     });
 
@@ -187,7 +187,7 @@ describe('handleSequence', () => {
       };
 
       const mockCmd: Cmd<NovelMessage> = async () => ({
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'box1',
         content: 'From command',
       });
@@ -210,8 +210,8 @@ describe('handleSequence', () => {
       expect(cmdResult.type).toBe('Sequence');
       if (cmdResult.type === 'Sequence') {
         expect(cmdResult.messages).toHaveLength(1);
-        expect(cmdResult.messages[0]?.type).toBe('ShowText');
-        if (cmdResult.messages[0]?.type === 'ShowText') {
+        expect(cmdResult.messages[0]?.type).toBe('AddText');
+        if (cmdResult.messages[0]?.type === 'AddText') {
           const addTextMsg = cmdResult.messages[0];
           expect(addTextMsg.content).toBe('From command');
         }

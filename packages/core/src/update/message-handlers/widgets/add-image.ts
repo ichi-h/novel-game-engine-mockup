@@ -3,7 +3,7 @@ import type { NovelModel } from '@/model';
 import { addWidget, w } from '@/ui';
 
 export interface AddImageMessage extends BaseMessage {
-  type: 'ShowImage';
+  type: 'AddImage';
   id?: string;
   layoutId: string;
   src: string;
@@ -17,7 +17,7 @@ export const addImage = ({
   className,
 }: Omit<AddImageMessage, 'type'>): AddImageMessage => {
   return {
-    type: 'ShowImage',
+    type: 'AddImage',
     layoutId,
     src,
     ...(id !== undefined ? { id } : {}),

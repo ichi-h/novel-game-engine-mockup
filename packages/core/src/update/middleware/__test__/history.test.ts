@@ -36,7 +36,7 @@ describe('historyMiddleware', () => {
       // Arrange
       const initialModel = generateInitModel();
       const message: NovelMessage = {
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'textbox1',
         content: 'Hello',
       };
@@ -51,7 +51,7 @@ describe('historyMiddleware', () => {
         : [result, undefined];
 
       // Assert
-      expect(resultModel.history.ShowText).toHaveLength(1);
+      expect(resultModel.history.AddText).toHaveLength(1);
       expect(resultCmd).toBe(mockCmd);
     });
 
@@ -119,26 +119,26 @@ describe('historyMiddleware', () => {
     test('keeps all history when not exceeding historyLength', () => {
       // Arrange
       const existingMessages = [
-        { type: 'ShowImage' as const, layoutId: 'layout1', src: 'image1.png' },
-        { type: 'ShowImage' as const, layoutId: 'layout1', src: 'image2.png' },
+        { type: 'AddImage' as const, layoutId: 'layout1', src: 'image1.png' },
+        { type: 'AddImage' as const, layoutId: 'layout1', src: 'image2.png' },
       ];
       const initialModel = generateInitModel();
       const model: NovelModel = {
         ...initialModel,
         history: {
           ...initialModel.history,
-          ShowImage: existingMessages,
+          AddImage: existingMessages,
         },
         config: {
           ...initialModel.config,
           historyLength: {
             ...initialModel.config.historyLength,
-            ShowImage: 5,
+            AddImage: 5,
           },
         },
       };
       const newMessage: NovelMessage = {
-        type: 'ShowImage',
+        type: 'AddImage',
         layoutId: 'layout1',
         src: 'image3.png',
       };
@@ -151,10 +151,10 @@ describe('historyMiddleware', () => {
         : [result, undefined];
 
       // Assert
-      expect(resultModel.history.ShowImage).toHaveLength(3);
-      expect(resultModel.history.ShowImage[0]).toBe(existingMessages[0]);
-      expect(resultModel.history.ShowImage[1]).toBe(existingMessages[1]);
-      expect(resultModel.history.ShowImage[2]).toBe(newMessage);
+      expect(resultModel.history.AddImage).toHaveLength(3);
+      expect(resultModel.history.AddImage[0]).toBe(existingMessages[0]);
+      expect(resultModel.history.AddImage[1]).toBe(existingMessages[1]);
+      expect(resultModel.history.AddImage[2]).toBe(newMessage);
     });
 
     test('removes oldest message when history length equals historyLength', () => {

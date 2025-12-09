@@ -11,7 +11,7 @@ describe('addImage', () => {
 
       // Assert
       expect(result).toEqual({
-        type: 'ShowImage',
+        type: 'AddImage',
         layoutId: 'parent',
         src: 'test.png',
       });
@@ -28,7 +28,7 @@ describe('addImage', () => {
 
       // Assert
       expect(result).toEqual({
-        type: 'ShowImage',
+        type: 'AddImage',
         layoutId: 'parent',
         src: 'test.png',
         id: 'img1',
@@ -45,7 +45,7 @@ describe('handleAddImage - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       layoutId: 'parent',
       src: 'test.png',
     };
@@ -64,7 +64,7 @@ describe('handleAddImage - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       id: 'img-all',
       layoutId: 'parent',
       src: 'test.png',
@@ -85,14 +85,14 @@ describe('handleAddImage - normal cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg1: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       id: 'img1',
       layoutId: 'parent',
       src: 'sprite1.png',
     };
 
     const msg2: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       id: 'img2',
       layoutId: 'parent',
       src: 'sprite2.png',
@@ -116,7 +116,7 @@ describe('handleAddImage - error cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg1: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       id: 'duplicate-img',
       layoutId: 'parent',
       src: 'sprite1.png',
@@ -125,7 +125,7 @@ describe('handleAddImage - error cases', () => {
     const newModel = handleAddImage(model, msg1);
 
     const msg2: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       id: 'duplicate-img',
       layoutId: 'parent',
       src: 'sprite2.png',
@@ -145,7 +145,7 @@ describe('handleAddImage - error cases', () => {
     const model = generateInitModel();
 
     const msg: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       layoutId: 'no-layout',
       src: 'test.png',
     };
@@ -168,7 +168,7 @@ describe('handleAddImage - error cases', () => {
     model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([]));
 
     const msg: AddImageMessage = {
-      type: 'ShowImage',
+      type: 'AddImage',
       id: 'existing-widget', // Conflicts with existing layout ID
       layoutId: 'parent',
       src: 'test.png',

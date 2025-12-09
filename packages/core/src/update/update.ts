@@ -85,13 +85,13 @@ export const update =
         // Widgets
         case 'AddLayout':
           return handleAddLayout(model, msg);
-        case 'ShowImage':
+        case 'AddImage':
           return handleAddImage(model, msg);
         case 'AddButton':
           return handleAddButton(model, msg);
         case 'AddTextBox':
           return handleAddTextBox(model, msg);
-        case 'ShowText':
+        case 'AddText':
           return handleAddText(model, msg);
         case 'TextAnimationCompleted':
           return handleTextAnimationCompleted(model, msg);

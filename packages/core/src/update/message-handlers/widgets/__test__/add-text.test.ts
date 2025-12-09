@@ -21,7 +21,7 @@ describe('addText', () => {
 
       // Assert
       expect(result).toEqual({
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'textbox1',
         content: 'Hello, World!',
       });
@@ -39,7 +39,7 @@ describe('addText', () => {
 
       // Assert
       expect(result).toEqual({
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'textbox1',
         content: 'Hello, World!',
         id: 'text1',
@@ -61,7 +61,7 @@ describe('addText', () => {
 
       // Assert
       expect(result).toEqual({
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'textbox1',
         content: 'Hello, World!',
         id: 'text1',
@@ -82,7 +82,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       textBoxId: 'textbox1',
       content: 'Hello, World!',
     };
@@ -103,7 +103,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'Hello with ID',
@@ -125,7 +125,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text-all',
       textBoxId: 'textbox1',
       content: 'Complete text',
@@ -149,14 +149,14 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg1: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'First text',
     };
 
     const msg2: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text2',
       textBoxId: 'textbox1',
       content: 'Second text',
@@ -181,7 +181,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'Fast text',
@@ -206,7 +206,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'Animated text',
@@ -236,7 +236,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'Default speed text',
@@ -263,7 +263,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'Complete text',
@@ -290,7 +290,7 @@ describe('handleAddText - normal cases', () => {
     model.ui = addWidget(model.ui, w.textBox({ id: 'textbox1' })([]), 'parent');
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'text1',
       textBoxId: 'textbox1',
       content: 'x',
@@ -324,7 +324,7 @@ describe('handleAddText - error cases', () => {
 
     // Add first text
     const msg1: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'duplicate-text',
       textBoxId: 'textbox1',
       content: 'First text',
@@ -334,7 +334,7 @@ describe('handleAddText - error cases', () => {
 
     // Try to add text with duplicate ID
     const msg2: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'duplicate-text',
       textBoxId: 'textbox1',
       content: 'Second text',
@@ -354,7 +354,7 @@ describe('handleAddText - error cases', () => {
     const model = generateInitModel();
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       textBoxId: 'non-existent-textbox',
       content: 'Hello',
     };
@@ -381,7 +381,7 @@ describe('handleAddText - error cases', () => {
     );
 
     const msg: ShowAddMessage = {
-      type: 'ShowText',
+      type: 'AddText',
       id: 'existing-widget', // Conflicts with layout ID
       textBoxId: 'textbox1',
       content: 'Text',

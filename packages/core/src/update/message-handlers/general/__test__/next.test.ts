@@ -12,7 +12,7 @@ describe('handleNext', () => {
       const initialIndex = model.index;
 
       const innerMessage: NovelMessage = {
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'box1',
         content: 'Hello',
       };
@@ -23,7 +23,7 @@ describe('handleNext', () => {
       };
 
       const mockMessage: NovelMessage = {
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'box1',
         content: 'Test',
       };
@@ -57,7 +57,7 @@ describe('handleNext', () => {
       const initialIndex = model.index;
 
       const innerMessage: NovelMessage = {
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'box1',
         content: 'Hello',
       };
@@ -147,7 +147,7 @@ describe('handleNext', () => {
       };
 
       const innerMessage: NovelMessage = {
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'box1',
         content: 'Test',
       };
@@ -178,7 +178,7 @@ describe('handleNext', () => {
       };
 
       const innerMessage: NovelMessage = {
-        type: 'ShowText',
+        type: 'AddText',
         textBoxId: 'box1',
         content: 'Test',
       };

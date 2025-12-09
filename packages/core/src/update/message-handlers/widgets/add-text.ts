@@ -4,7 +4,7 @@ import { addText as addTextWidget, w } from '@/ui';
 import { calcTextAnimationDuration } from '@/update/animation';
 
 export interface ShowAddMessage extends BaseMessage {
-  type: 'ShowText';
+  type: 'AddText';
   id?: string;
   textBoxId: string;
   content: string;
@@ -27,7 +27,7 @@ export const addText = ({
   nextMessageCaught,
 }: Omit<ShowAddMessage, 'type'>): ShowAddMessage => {
   return {
-    type: 'ShowText',
+    type: 'AddText',
     textBoxId,
     content,
     ...(id !== undefined ? { id } : {}),
