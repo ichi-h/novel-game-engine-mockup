@@ -17,8 +17,6 @@ export const LoadPage = ({ onLoad, onBack }: LoadPageProps) => {
     try {
       const model = await loadFromSlot(slotId);
       if (model) {
-        // TODO: Implement PutModel message type in core to restore saved model
-        // @ts-expect-error - PutModel will be implemented later
         send({ type: 'PutModel', model });
         onLoad();
       } else {
