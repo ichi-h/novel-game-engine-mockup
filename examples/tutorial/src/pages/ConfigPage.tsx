@@ -64,8 +64,8 @@ export const ConfigPage = ({ onBack }: ConfigPageProps) => {
                 min="0"
                 max="100"
                 value={config.bgmVolume * 100}
+                onMouseUp={() => send(playSE(SE.DECISION_BUTTON))}
                 onChange={(e) => {
-                  send(playSE(SE.DECISION_BUTTON));
                   updateBgmVolume(Number(e.target.value) / 100);
                 }}
                 className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
@@ -91,8 +91,8 @@ export const ConfigPage = ({ onBack }: ConfigPageProps) => {
                 min="0"
                 max="100"
                 value={config.seVolume * 100}
+                onMouseUp={() => send(playSE(SE.DECISION_BUTTON))}
                 onChange={(e) => {
-                  send(playSE(SE.DECISION_BUTTON));
                   updateSeVolume(Number(e.target.value) / 100);
                 }}
                 className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
@@ -118,8 +118,8 @@ export const ConfigPage = ({ onBack }: ConfigPageProps) => {
                 min="0"
                 max="100"
                 value={config.voiceVolume * 100}
+                onMouseUp={() => send(playSE(SE.DECISION_BUTTON))}
                 onChange={(e) => {
-                  send(playSE(SE.DECISION_BUTTON));
                   updateVoiceVolume(Number(e.target.value) / 100);
                 }}
                 className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
@@ -145,8 +145,8 @@ export const ConfigPage = ({ onBack }: ConfigPageProps) => {
                 min="0"
                 max="100"
                 value={config.textSpeed * 100}
+                onMouseUp={() => send(playSE(SE.DECISION_BUTTON))}
                 onChange={(e) => {
-                  send(playSE(SE.DECISION_BUTTON));
                   updateTextSpeed(Number(e.target.value) / 100);
                 }}
                 className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
