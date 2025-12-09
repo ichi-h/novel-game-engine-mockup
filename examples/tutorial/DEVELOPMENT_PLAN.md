@@ -142,15 +142,7 @@ interface GameConfig {
 - `showCharacter()`: キャラクター立ち絵表示
 - `changeBackground()`: 背景変更
 
-### 5. UIコンポーネント作成
-
-必要に応じて以下を作成:
-
-- `SpeechBubble.tsx`: 吹き出しコンポーネント
-- `ControlPanel.tsx`: ボタンパネル
-- `CharacterSprite.tsx`: キャラクター表示
-
-### 6. 統合とテスト
+### 5. 統合とテスト
 
 - 全ページの動作確認
 - セーブ・ロードの検証
