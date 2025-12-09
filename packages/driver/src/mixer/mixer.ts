@@ -82,12 +82,20 @@ class MixerDriver {
    * Apply channel list differences
    */
   private async updateChannels(newChannels: Channel[]): Promise<void> {
-    const newChannelIds = new Set(newChannels.map((ch) => ch.id));
+    const toId = (ids: string[], channel: Channel) => {
+      if (channel.type === 'BusTrack') {
+        const childIds = channel.channels.reduce<string[]>(toId, []);
+        return [...ids, channel.id, ...childIds];
+      }
+      return [...ids, channel.id];
+    };
+
+    const newChannelIds = newChannels.reduce(toId, []);
     const existingChannelIds = new Set(this.channelStates.keys());
 
     // Stop and remove deleted channels
     for (const id of existingChannelIds) {
-      if (!newChannelIds.has(id)) {
+      if (!newChannelIds.includes(id)) {
         await this.removeChannel(id);
       }
     }
