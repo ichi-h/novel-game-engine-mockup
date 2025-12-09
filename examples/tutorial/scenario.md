@@ -150,14 +150,12 @@
 - BGM: 解説曲
 - ア: ゲーム画面フェードイン
 - ず: このノベルゲームエンジンを、僕は "tsuzuri" と呼んでいるのだ。
-- 画: elm
-- 画: elm_architecture
-- ア: Elm関連の画像フェードイン
-- ず: tsuzuriは関数型プログラミング、特にElm Architectureという、Elm言語が提唱するソフトウェアアーキテクチャを強く意識して開発しているのだ。
+- 画: elm_architecture表示
+- ず: tsuzuriは関数型プログラミング、特にElm Architectureというソフトウェアアーキテクチャを強く意識して開発しているのだ。
 - ず: tsuzuriではノベルゲームを実現するうえで必要なModelと呼ばれる状態と、Messageと呼ばれるゲームのイベントのようなもの。
-- ず: あと、Message発火時にModelの更新を担うUpdate関数をtsuzuriから提供しているのだ。
-- ず: 実装者は組み合わせたMessageをtsuzuriに投げることで、自由にノベルゲームを制作することができるのだ。
-- 画: Elm関連の画像削除
+- ず: またtsuzuriの内部では、Message発火時にModelの更新を担うUpdate関数というものも存在しているのだ。
+- ず: 実装者は、作りたいシナリオに合わせてMessageを組み合わせることで、自由にノベルゲームを制作することができるのだ！
+- 画: elm_architecture削除
 - め: ちょっと待ってずんだもん。
 - ず: どうしたのだ？
 - め: さっぱりわからないわ。
@@ -177,10 +175,10 @@
 - ず: このMessageが発行されると、ゲームの裏側にあるModelのうち、UIの表示に関する情報をUpdate関数が更新して、そのModelの変更に基づいてUIも更新されるのだ。
 - ず: ほかの要素についても同じなのだ。キャラの立ち絵を変更するのもUI変化だし、BGMやSEを流すのは、音声操作のMessageによる状態変化と捉えられるのだ。
 - ず: こう考えることで、いま目の前にあるゲームの状態は、過去に発行された大量のMessageの積み重ねによってできた結果と捉えることができるのだ！
-- め: ……つまり、ノベルゲームを動かすのに必要なパラメータとしてのModelと、ノベルゲームで起こりうるイベントとしてのMessageさえわかってしまえば、ゲームエンジンは作れてしまうと。
+- め: ……逆に言えば、ノベルゲームを動かすのに必要なパラメータとしてのModelと、ノベルゲームで起こりうるイベントとしてのMessageさえわかってしまえば、ゲームエンジンは作れてしまうと。
 - め: そしてtsuzuriの利用者は、Messageを組み合わせてtsuzuriに与えてあげれば、その通りに動くゲームが作れる、ということかしら？
 - ず: ほぼその理解であっているのだ！
-- ず: とにかくMessageを投げてModelを更新、この連続でゲームを構築できるというのが、tsuzuriのコンセプトになっているのだ！
+- ず: とにかくMessageを投げてModelを更新、このメッセージ駆動でゲームを構築できるというのが、tsuzuriのコンセプトになっているのだ！
 - 画: elm_architecture削除
 - め: でもどうしてこんな作りにしたの？　ゲーム開発は詳しくないけど、少なくともこうした設計がメジャーだとは思えないわ。
 - ず: メリットがいくつかあるのだ。
@@ -196,10 +194,10 @@
 - ず: つまり、このModelをどこかに保存するだけで、セーブのロジックはほぼ完成するのだ！
 - ず: 「本当にそんなことできるの？」と思ったそこのキミ！　いい着眼点なのだ！
 - め: まだ何も言ってないです。
-- ず: 実は、ここにはElm Architectureの考えが大きく反映されているのだ。
+- ず: 実は、ここには関数型プログラミングの考えが大きく反映されているのだ。
 - 画: elm_architecture再表示
-- ず: これまでModel、Message、Update関数は紹介したけど、Elm Architectureでは、ModelをUIに変換するView関数というのも存在するのだ。
-- ず: Elm言語におけるView関数は、Modelを受け取ってUIっぽいものを返却するのだけど、この関数は参照透過性が保証されているのだ。
+- ず: 例えば、さっきModel、Message、Update関数は紹介したけど、Elm Architectureには、ModelをUIに変換するView関数というのも存在するのだ。
+- ず: このView関数は、Modelを受け取ってUIっぽいものを返却するのだけど、この関数は参照透過性が保証されているのだ。
 - め: さん……何？
 - ず: 参照透過性なのだ！
 - 画: elm_architecture削除
@@ -216,10 +214,10 @@
 - ず: そう、結果は変わらないのだ。
 - ず: 同じ引数を渡したときに、常に同じ計算結果が得られる。これが参照透過性なのだ。
 - ず: そしてこの性質を、ゲームエンジン自体が持っているとしたらどうなるのだ？
-- め: あっ……同じ状態を引数として与えれば、同じ進行状況を再現できる……？
+- め: あっ……同じModelを引数として与えれば、同じ進行状況を再現できる……？
 - SE: クイズ正解5
 - ず: ザッツコレクトなのだ！
-- ず: Elm言語では、基本的にUIの再現のみしかサポートしていないのだ。
+- ず: 一般的なElm Architectureでは、基本的にUIの再現のみしか考慮されていないのだ。
 - ず: でもtsuzuriでは、Modelから実際の音声への変換もサポートしているから、BGMの再現も一発なのだ！
 - ず: だからセーブではModelを保存するだけを考えればよいのだ！
 - ず: まぁtsuzuriではセーブやロードの機能を提供しているから、利用者がセーブについて考える必要はほぼないのだけどね……。
@@ -292,19 +290,19 @@
 ## クレジット
 
 - 音声
-  - ずんだもん: VOICEVOX | https://voicevox.hiroshiba.jp/product/zundamon
-  - 四国めたん: VOICEVOX | https://voicevox.hiroshiba.jp/product/shikoku_metan
+  - ずんだもん: VOICEVOX | <https://voicevox.hiroshiba.jp/product/zundamon>
+  - 四国めたん: VOICEVOX | <https://voicevox.hiroshiba.jp/product/shikoku_metan>
 - 立ち絵
-  - ずんだもん: 坂本アヒル 様 | https://seiga.nicovideo.jp/seiga/im10788496
-  - 四国めたん: 坂本アヒル 様 | https://seiga.nicovideo.jp/seiga/im10791276
+  - ずんだもん: 坂本アヒル 様 | <https://seiga.nicovideo.jp/seiga/im10788496>
+  - 四国めたん: 坂本アヒル 様 | <https://seiga.nicovideo.jp/seiga/im10791276>
 - BGM
-  - 暴竜ニードルード - MAKOOTO 様 | https://dova-s.jp/bgm/play20645.html
-  - 平氏 - 伊藤ケイスケ 様 | https://dova-s.jp/bgm/play22894.html
-  - 進軍 - 田中芳典 様 | https://dova-s.jp/bgm/play11346.html
+  - 暴竜ニードルード - MAKOOTO 様 | <https://dova-s.jp/bgm/play20645.html>
+  - 平氏 - 伊藤ケイスケ 様 | <https://dova-s.jp/bgm/play22894.html>
+  - 進軍 - 田中芳典 様 | <https://dova-s.jp/bgm/play11346.html>
   - 解説しましょ - ichi-h
 - SE
-  - 効果音ラボ 様 | https://soundeffect-lab.info
+  - 効果音ラボ 様 | <https://soundeffect-lab.info>
 - 画像
-  - 背景: みんちりえ 様 | https://min-chi.material.jp
-  - elm.png | http://github.com/elm/elm-lang.org/blob/master/static/assets/logos/elm.png
-  - The Elm Architecture | https://guide.elm-lang.org/architecture/
+  - 背景: みんちりえ 様 | <https://min-chi.material.jp>
+  - elm.png | <http://github.com/elm/elm-lang.org/blob/master/static/assets/logos/elm.png>
+  - The Elm Architecture | <https://guide.elm-lang.org/architecture/>
