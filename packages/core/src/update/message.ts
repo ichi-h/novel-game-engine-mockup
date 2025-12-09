@@ -20,6 +20,7 @@ import type {
   RecoverErrorMessage,
   RemoveChannelMessage,
   RemoveWidgetsMessage,
+  ResetPropertiesMessage,
   SequenceMessage,
   ShowAddMessage,
   StopChannelMessage,
@@ -39,6 +40,7 @@ export type NovelMessage<CustomState = unknown> =
   | SequenceMessage<NovelMessage<CustomState>>
   | UpdateConfigMessage
   | UpdateCustomStateMessage<CustomState>
+  | ResetPropertiesMessage<CustomState>
   | ErrorMessage
   | RecoverErrorMessage
   // Widgets

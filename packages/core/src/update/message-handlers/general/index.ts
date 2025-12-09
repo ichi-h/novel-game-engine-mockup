@@ -10,6 +10,10 @@ export {
   type RecoverErrorMessage,
 } from './error';
 export type { NextMessage } from './next';
+export {
+  type ResetPropertiesMessage,
+  resetProperties,
+} from './reset-properties';
 export { type SequenceMessage, sequence } from './sequence';
 export { type SwitchScenarioMessage, switchScenario } from './switch-scenario';
 export { type UpdateConfigMessage, updateConfig } from './update-config';
