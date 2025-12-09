@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.tsx",
-    "start": "NODE_ENV=production bun src/index.tsx",
+    "dev": "bun --hot src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
     "build": "bun run tsc && bun run build.ts --minify",
     "build:dev": "bun run tsc && bun run build.ts",
     "tsc": "tsc --noEmit"
