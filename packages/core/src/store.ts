@@ -31,7 +31,8 @@ export const tsuzuri = <CustomState = unknown>(
     store,
   );
 
-  const [model] = Array.isArray(init) ? [init[0], init[1]] : [init, undefined];
+  const returnModel = typeof init === 'function' ? init() : init;
+  const [model] = Array.isArray(returnModel) ? returnModel : [returnModel];
 
   const getModel = () => store.get() ?? model;
 
