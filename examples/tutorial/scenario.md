@@ -296,6 +296,7 @@
   - ずんだもん: 坂本アヒル 様 | <https://seiga.nicovideo.jp/seiga/im10788496>
   - 四国めたん: 坂本アヒル 様 | <https://seiga.nicovideo.jp/seiga/im10791276>
 - BGM
+  - カラフルな積み木: こばっと 様 | <https://dova-s.jp/bgm/play22528.html>
   - 暴竜ニードルード - MAKOOTO 様 | <https://dova-s.jp/bgm/play20645.html>
   - 平氏 - 伊藤ケイスケ 様 | <https://dova-s.jp/bgm/play22894.html>
   - 進軍 - 田中芳典 様 | <https://dova-s.jp/bgm/play11346.html>
