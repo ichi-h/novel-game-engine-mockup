@@ -17,6 +17,7 @@ import type {
   ErrorMessage,
   NextMessage,
   PlayChannelMessage,
+  PutModelMessage,
   RecoverErrorMessage,
   RemoveChannelMessage,
   RemoveWidgetsMessage,
@@ -41,6 +42,7 @@ export type NovelMessage<CustomState = unknown> =
   | UpdateConfigMessage
   | UpdateCustomStateMessage<CustomState>
   | ResetPropertiesMessage<CustomState>
+  | PutModelMessage<CustomState>
   | ErrorMessage
   | RecoverErrorMessage
   // Widgets

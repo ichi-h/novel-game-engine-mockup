@@ -21,3 +21,4 @@ export {
   type UpdateCustomStateMessage,
   updateCustomState,
 } from './update-custom-state';
+export { type PutModelMessage, putModel } from './put-model';

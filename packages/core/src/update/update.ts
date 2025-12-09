@@ -12,6 +12,7 @@ import {
   handleRecoverError,
 } from './message-handlers/general/error';
 import { handleNext } from './message-handlers/general/next';
+import { handlePutModel } from './message-handlers/general/put-model';
 import { handleResetProperties } from './message-handlers/general/reset-properties';
 import { handleSequence } from './message-handlers/general/sequence';
 import { handleSwitchScenario } from './message-handlers/general/switch-scenario';
@@ -80,6 +81,8 @@ export const update =
           return handleUpdateCustomState(model, msg);
         case 'ResetProperties':
           return handleResetProperties(model, msg);
+        case 'PutModel':
+          return handlePutModel(model, msg);
         case 'Error':
           return handleError(model, msg);
         case 'RecoverError':
