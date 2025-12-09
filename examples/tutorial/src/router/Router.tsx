@@ -1,5 +1,7 @@
 import { removeChannel, sequence } from '@ichi-h/tsuzuri-core';
 import { useState } from 'react';
+import { SE } from '@/constants/audio';
+import { playSE } from '@/features/game/se';
 import { buildConfigMessages } from '../features/config/applyConfig';
 import { useConfig } from '../features/config/useConfig';
 import { send } from '../features/game/engine';
@@ -26,43 +28,52 @@ export const Router = () => {
 
   // Navigation handlers
   const handleAudioConfirm = () => {
+    send(playSE(SE.DECISION_BUTTON));
     setRouterState({ page: 'title' });
   };
 
   const handleStartNewGame = () => {
     // Stop title BGM before starting game
+    send(playSE(SE.DECISION_BUTTON));
     send(removeChannel('title-bgm'));
     send(sequence(buildConfigMessages(config)));
     setRouterState({ page: 'game' });
   };
 
   const handleContinue = () => {
+    send(playSE(SE.DECISION_BUTTON));
     setRouterState({ page: 'load' });
   };
 
   const handleOpenSave = () => {
+    send(playSE(SE.DECISION_BUTTON));
     setRouterState({ page: 'save' });
   };
 
   const handleLoadGame = () => {
     // Stop title BGM before loading game
+    send(playSE(SE.DECISION_BUTTON));
     send(removeChannel('title-bgm'));
     setRouterState({ page: 'game' });
   };
 
   const handleBackToTitle = () => {
+    send(playSE(SE.CANCEL_BUTTON));
     setRouterState({ page: 'title' });
   };
 
   const handleBackToGame = () => {
+    send(playSE(SE.CANCEL_BUTTON));
     setRouterState({ page: 'game' });
   };
 
   const handleOpenConfigFromTitle = () => {
+    send(playSE(SE.DECISION_BUTTON));
     setRouterState({ page: 'config', from: 'title' });
   };
 
   const handleOpenConfig = () => {
+    send(playSE(SE.DECISION_BUTTON));
     setRouterState({ page: 'config', from: 'game' });
   };
 
