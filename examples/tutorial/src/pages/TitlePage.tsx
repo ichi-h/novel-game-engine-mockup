@@ -1,12 +1,58 @@
+import { addTrack, m, playChannel, sequence } from '@ichi-h/tsuzuri-core';
+import { useEffect, useRef } from 'react';
+import { AUDIO_BUS_IDS, BGM } from '../constants/audio';
+import { getModel, send } from '../features/game/engine';
+
 interface TitlePageProps {
   onStartNewGame: () => void;
   onContinue: () => void;
+  onOpenConfig?: () => void;
 }
 
 /**
  * Title page component
  */
-export const TitlePage = ({ onStartNewGame, onContinue }: TitlePageProps) => {
+export const TitlePage = ({
+  onStartNewGame,
+  onContinue,
+  onOpenConfig,
+}: TitlePageProps) => {
+  const bgmInitializedRef = useRef(false);
+
+  useEffect(() => {
+    // Prevent double execution in React Strict Mode
+    if (bgmInitializedRef.current) {
+      return;
+    }
+
+    const model = getModel();
+    const titleBgmExists = m.hasId(model.mixer.value, 'title-bgm');
+
+    // Only add and play BGM if it doesn't exist yet
+    if (!titleBgmExists) {
+      bgmInitializedRef.current = true;
+
+      // Add title BGM track and play it
+      send(
+        sequence([
+          addTrack({
+            id: 'title-bgm',
+            src: BGM.COLORFUL_BLOCKS,
+            busTrackId: AUDIO_BUS_IDS.BGM,
+            volume: 1.0,
+          }),
+          playChannel({
+            channelId: 'title-bgm',
+          }),
+        ]),
+      );
+    }
+
+    // Note: We don't remove the BGM when unmounting because
+    // we want it to continue playing in the config page
+    // The BGM will be removed when starting a new game or loading
+  }, []);
+
   return (
     <div className="w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center">
       <div className="text-center mb-12">
@@ -31,6 +77,15 @@ export const TitlePage = ({ onStartNewGame, onContinue }: TitlePageProps) => {
         >
           つづきから
         </button>
+        {onOpenConfig && (
+          <button
+            type="button"
+            onClick={onOpenConfig}
+            className="px-12 py-4 bg-gradient-to-r from-blue-400 to-blue-500 text-white font-bold text-xl rounded-full hover:from-blue-500 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+          >
+            設定
+          </button>
+        )}
       </div>
     </div>
   );

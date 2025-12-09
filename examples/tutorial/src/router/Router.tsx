@@ -1,4 +1,4 @@
-import { sequence } from '@ichi-h/tsuzuri-core';
+import { removeChannel, sequence } from '@ichi-h/tsuzuri-core';
 import { useState } from 'react';
 import { buildConfigMessages } from '../features/config/applyConfig';
 import { useConfig } from '../features/config/useConfig';
@@ -16,7 +16,7 @@ export type RouterState =
   | { page: 'game' }
   | { page: 'save' }
   | { page: 'load' }
-  | { page: 'config' };
+  | { page: 'config'; from: 'title' | 'game' };
 
 export const Router = () => {
   const { config } = useConfig();
@@ -30,6 +30,8 @@ export const Router = () => {
   };
 
   const handleStartNewGame = () => {
+    // Stop title BGM before starting game
+    send(removeChannel('title-bgm'));
     send(sequence(buildConfigMessages(config)));
     setRouterState({ page: 'game' });
   };
@@ -43,6 +45,8 @@ export const Router = () => {
   };
 
   const handleLoadGame = () => {
+    // Stop title BGM before loading game
+    send(removeChannel('title-bgm'));
     setRouterState({ page: 'game' });
   };
 
@@ -54,8 +58,12 @@ export const Router = () => {
     setRouterState({ page: 'game' });
   };
 
+  const handleOpenConfigFromTitle = () => {
+    setRouterState({ page: 'config', from: 'title' });
+  };
+
   const handleOpenConfig = () => {
-    setRouterState({ page: 'config' });
+    setRouterState({ page: 'config', from: 'game' });
   };
 
   // Render page content based on router state
@@ -69,6 +77,7 @@ export const Router = () => {
           <TitlePage
             onStartNewGame={handleStartNewGame}
             onContinue={handleContinue}
+            onOpenConfig={handleOpenConfigFromTitle}
           />
         );
 
@@ -88,7 +97,15 @@ export const Router = () => {
         return <LoadPage onLoad={handleLoadGame} onBack={handleBackToTitle} />;
 
       case 'config':
-        return <ConfigPage onBack={handleBackToGame} />;
+        return (
+          <ConfigPage
+            onBack={
+              routerState.from === 'title'
+                ? handleBackToTitle
+                : handleBackToGame
+            }
+          />
+        );
 
       default:
         return <AudioConfirmPage onConfirm={handleAudioConfirm} />;
