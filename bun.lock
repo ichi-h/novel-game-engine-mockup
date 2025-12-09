@@ -60,14 +60,14 @@
     "packages/driver": {
       "name": "@ichi-h/tsuzuri-driver",
       "version": "0.1.0",
-      "dependencies": {
-        "@ichi-h/tsuzuri-core": "workspace:*",
-        "react": "^19",
-        "react-dom": "^19",
-      },
       "devDependencies": {
         "@types/react": "^19",
         "@types/react-dom": "^19",
+      },
+      "peerDependencies": {
+        "@ichi-h/tsuzuri-core": "workspace:*",
+        "react": "^19",
+        "react-dom": "^19",
       },
     },
   },
