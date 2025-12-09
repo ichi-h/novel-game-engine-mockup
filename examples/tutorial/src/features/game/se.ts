@@ -1,5 +1,10 @@
 import type { NovelMessage } from '@ichi-h/tsuzuri-core';
-import { addTrack, playChannel, sequence } from '@ichi-h/tsuzuri-core';
+import {
+  addTrack,
+  playChannel,
+  schedule,
+  sequence,
+} from '@ichi-h/tsuzuri-core';
 import { AUDIO_BUS_IDS } from '../../constants/audio';
 
 /**
@@ -20,5 +25,6 @@ export const playSE = (src: string, volume?: number): NovelMessage => {
       volume,
     }),
     playChannel({ channelId: id }),
+    schedule(5000, { type: 'RemoveChannel', channelId: id }),
   ]);
 };
