@@ -13,9 +13,9 @@ import { initMixerDriver } from './libs/mixer-driver';
 function start() {
   initMixerDriver();
 
-  const container = document.getElementById('root');
+  const container = document.getElementById('react-app-root');
   if (!container) {
-    throw new Error("Root element with id 'root' not found");
+    throw new Error("Root element with id 'react-app-root' not found");
   }
   const root = createRoot(container);
   root.render(<App />);
