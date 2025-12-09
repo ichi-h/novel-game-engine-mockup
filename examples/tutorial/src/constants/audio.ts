@@ -15,7 +15,6 @@ import levelUp from '../assets/se/レベルアップ.mp3';
 import swordSwing from '../assets/se/刀の素振り2.mp3';
 import taikoDon2 from '../assets/se/和太鼓でドドン.mp3';
 import taikoDon from '../assets/se/和太鼓でドン.mp3';
-import baoLongNeedleRood from '../assets/se/暴竜ニードルード.mp3';
 import decisionButton from '../assets/se/決定ボタン.mp3';
 import explosion from '../assets/se/爆発1.mp3';
 import manYahoo from '../assets/se/男衆.mp3';
@@ -46,7 +45,6 @@ export const BGM = {
  * Sound effect file paths
  */
 export const SE = {
-  BAO_LONG_NEEDLE_ROOD: baoLongNeedleRood,
   SPREAD_PAPER: spreadPaper,
   VIOLIN_HORROR: violinHorror,
   QUIZ_CORRECT: quizCorrect,
