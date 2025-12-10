@@ -48,7 +48,7 @@ const addToTextBox = (
  * @throws Error if textBoxId doesn't exist
  * @throws Error if textWidget.id already exists
  */
-export const addText = (
+export const addTextWidget = (
   widgets: NovelWidget[],
   textWidget: TextWidget,
   textBoxId: string,

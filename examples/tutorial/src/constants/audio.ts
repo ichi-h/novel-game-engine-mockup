@@ -13,7 +13,29 @@ import violinHorror from '../assets/se/バイオリン恐怖音1.mp3';
 import pyunEscape from '../assets/se/ピューンと逃げる.mp3';
 import levelUp from '../assets/se/レベルアップ.mp3';
 import swordSwing from '../assets/se/刀の素振り2.mp3';
-
+import taikoDon2 from '../assets/se/和太鼓でドドン.mp3';
+import taikoDon from '../assets/se/和太鼓でドン.mp3';
+import decisionButton from '../assets/se/決定ボタン.mp3';
+import explosion from '../assets/se/爆発1.mp3';
+import manYahoo from '../assets/se/男衆.mp3';
+import spreadPaper from '../assets/se/紙を広げる1.mp3';
+import solemnAtmosphere from '../assets/se/荘厳な雰囲気.mp3';
+// Import voice files - Metan
+import metan001 from '../assets/voices/metan/001_metan.mp3';
+import metan002 from '../assets/voices/metan/002_metan.mp3';
+import metan003 from '../assets/voices/metan/003_metan.mp3';
+import metan004 from '../assets/voices/metan/004_metan.mp3';
+import metan005 from '../assets/voices/metan/005_metan.mp3';
+import metan006 from '../assets/voices/metan/006_metan.mp3';
+import metan007 from '../assets/voices/metan/007_metan.mp3';
+import metan008 from '../assets/voices/metan/008_metan.mp3';
+import metan009 from '../assets/voices/metan/009_metan.mp3';
+import metan010 from '../assets/voices/metan/010_metan.mp3';
+import metan011 from '../assets/voices/metan/011_metan.mp3';
+import metan012 from '../assets/voices/metan/012_metan.mp3';
+import metan013 from '../assets/voices/metan/013_metan.mp3';
+import metan014 from '../assets/voices/metan/014_metan.mp3';
+import metan015 from '../assets/voices/metan/015_metan.mp3';
 // Import voice files - Zundamon
 import zundamon001 from '../assets/voices/zundamon/001_zundamon.mp3';
 import zundamon002 from '../assets/voices/zundamon/002_zundamon.mp3';
@@ -38,30 +60,6 @@ import zundamon020 from '../assets/voices/zundamon/020_zundamon.mp3';
 import zundamon021 from '../assets/voices/zundamon/021_zundamon.mp3';
 import zundamon022 from '../assets/voices/zundamon/022_zundamon.mp3';
 import zundamon023 from '../assets/voices/zundamon/023_zundamon.mp3';
-
-// Import voice files - Metan
-import metan001 from '../assets/voices/metan/001_metan.mp3';
-import metan002 from '../assets/voices/metan/002_metan.mp3';
-import metan003 from '../assets/voices/metan/003_metan.mp3';
-import metan004 from '../assets/voices/metan/004_metan.mp3';
-import metan005 from '../assets/voices/metan/005_metan.mp3';
-import metan006 from '../assets/voices/metan/006_metan.mp3';
-import metan007 from '../assets/voices/metan/007_metan.mp3';
-import metan008 from '../assets/voices/metan/008_metan.mp3';
-import metan009 from '../assets/voices/metan/009_metan.mp3';
-import metan010 from '../assets/voices/metan/010_metan.mp3';
-import metan011 from '../assets/voices/metan/011_metan.mp3';
-import metan012 from '../assets/voices/metan/012_metan.mp3';
-import metan013 from '../assets/voices/metan/013_metan.mp3';
-import metan014 from '../assets/voices/metan/014_metan.mp3';
-import metan015 from '../assets/voices/metan/015_metan.mp3';
-import taikoDon2 from '../assets/se/和太鼓でドドン.mp3';
-import taikoDon from '../assets/se/和太鼓でドン.mp3';
-import decisionButton from '../assets/se/決定ボタン.mp3';
-import explosion from '../assets/se/爆発1.mp3';
-import manYahoo from '../assets/se/男衆.mp3';
-import spreadPaper from '../assets/se/紙を広げる1.mp3';
-import solemnAtmosphere from '../assets/se/荘厳な雰囲気.mp3';
 
 /**
  * Audio bus track IDs for mixer channel management
@@ -100,7 +98,7 @@ export const SE = {
   CHICKEN_CRY: chickenCry,
   MAN_YAHOO: manYahoo,
   TAIKO_DON2: taikoDon2,
-  HIRAMEKU: hirameku,
+  HIRAMEKU2: hirameku,
   TAIKO_DON: taikoDon,
   CHANCHAN: chanchan,
   SWORD_SWING: swordSwing,

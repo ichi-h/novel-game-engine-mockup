@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'bun:test';
-import { clearTextBox } from '../clear-text-box';
+import { clearTextBoxWidget } from '../clear-text-box';
 import { hasId } from '../has-id';
 import { layout, type NovelWidget, text, textBox } from '../widgets';
 
-describe('clearTextBox', () => {
+describe('clearTextBoxWidget', () => {
   describe('normal cases', () => {
     test('clears TextBox with texts', () => {
       // Arrange
@@ -15,7 +15,7 @@ describe('clearTextBox', () => {
       ];
 
       // Act
-      widgets = clearTextBox(widgets, 'textbox1');
+      widgets = clearTextBoxWidget(widgets, 'textbox1');
 
       // Assert
       expect(hasId(widgets, 'textbox1')).toBe(true);
@@ -28,8 +28,8 @@ describe('clearTextBox', () => {
       let widgets: NovelWidget[] = [textBox({ id: 'textbox1' })([])];
 
       // Act & Assert
-      expect(() => clearTextBox(widgets, 'textbox1')).not.toThrow();
-      widgets = clearTextBox(widgets, 'textbox1');
+      expect(() => clearTextBoxWidget(widgets, 'textbox1')).not.toThrow();
+      widgets = clearTextBoxWidget(widgets, 'textbox1');
       expect(hasId(widgets, 'textbox1')).toBe(true);
     });
 
@@ -44,7 +44,7 @@ describe('clearTextBox', () => {
       ];
 
       // Act
-      widgets = clearTextBox(widgets, 'textbox1');
+      widgets = clearTextBoxWidget(widgets, 'textbox1');
 
       // Assert
       expect(hasId(widgets, 'textbox1')).toBe(true);
@@ -58,7 +58,7 @@ describe('clearTextBox', () => {
       const widgets: NovelWidget[] = [];
 
       // Act & Assert
-      expect(() => clearTextBox(widgets, 'non-existent')).toThrow(
+      expect(() => clearTextBoxWidget(widgets, 'non-existent')).toThrow(
         'TextBox with id "non-existent" not found',
       );
     });
@@ -68,7 +68,7 @@ describe('clearTextBox', () => {
       const widgets: NovelWidget[] = [layout({ id: 'layout1' })([])];
 
       // Act & Assert
-      expect(() => clearTextBox(widgets, 'layout1')).toThrow(
+      expect(() => clearTextBoxWidget(widgets, 'layout1')).toThrow(
         'TextBox with id "layout1" not found',
       );
     });

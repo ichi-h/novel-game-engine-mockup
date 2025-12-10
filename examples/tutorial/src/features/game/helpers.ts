@@ -97,6 +97,7 @@ export const IMAGES = {
 export const COMMON_STYLES = {
   nameText: 'font-bold text-2xl mb-2 drop-shadow-md',
   dialogText: 'text-gray-800 leading-relaxed',
+  textBoxDialogText: 'text-white leading-relaxed',
   characterImage: 'drop-shadow-2xl select-none',
   speechBubble:
     'max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl',
@@ -112,6 +113,27 @@ export const CHARACTER_COLORS = {
  * Clear the text box
  */
 export const clearTextBox = (): NovelMessage => clearTextBoxMsg(TEXTBOX_ID);
+
+/**
+ * Initialize text box layout for explanation mode
+ */
+export const initTextBoxLayout = (): NovelMessage => {
+  return addWidgets(
+    [
+      w.layout({
+        id: 'textbox-container',
+        className:
+          'absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black/80 to-black/70 backdrop-blur-md px-8 py-6 shadow-2xl',
+      })([
+        w.textBox({
+          id: TEXTBOX_ID,
+          className: 'max-w-4xl mx-auto text-xl leading-relaxed text-white',
+        })([]),
+      ]),
+    ],
+    'content-layer',
+  );
+};
 
 /**
  * Show character name in textbox
@@ -131,13 +153,24 @@ export const showDialog = (text: string): NovelMessage =>
   addText({
     textBoxId: TEXTBOX_ID,
     content: text,
-    className: COMMON_STYLES.dialogText,
+    className: COMMON_STYLES.textBoxDialogText,
   });
 
 /**
  * Show character dialog in textbox (name + text)
  */
 export const showCharacterDialog = (
+  name: string,
+  color: string,
+  text: string,
+): NovelMessage[] => [
+  clearTextBox(),
+  showCharacterName(name, color),
+  showDialog(text),
+];
+
+// Chapter 2 specific helper (with clearTextBox for proper text replacement)
+export const showCharacterDialog2 = (
   name: string,
   color: string,
   text: string,
@@ -154,16 +187,22 @@ export const showCharacter = (
   id: 'zundamon' | 'metan',
   src: string,
   position: 'left' | 'right',
+  scale: 'small' | 'medium' | 'large' = 'large',
 ): NovelMessage => {
   const character = id.includes('zundamon') ? 'zundamon' : 'metan';
   const containerId = `${character}-container`;
   const positionClass = position === 'left' ? 'left-32' : 'right-32';
+  const scaleClass = {
+    small: 'scale-50',
+    medium: 'scale-75',
+    large: 'scale-100',
+  }[scale];
 
   return addWidgets(
     [
       w.layout({
         id: containerId,
-        className: `absolute bottom-10 ${positionClass} flex flex-col-reverse items-center gap-4 animate-fade-in`,
+        className: `absolute bottom-10 ${positionClass} flex flex-col-reverse items-center gap-4 animate-fade-in ${scaleClass}`,
       })([
         w.img({
           id,

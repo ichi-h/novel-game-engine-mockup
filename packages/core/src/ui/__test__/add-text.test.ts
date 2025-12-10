@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { addText } from '../add-text';
+import { addTextWidget } from '../add-text';
 import { hasId } from '../has-id';
 import {
   layout,
@@ -9,7 +9,7 @@ import {
   textBox,
 } from '../widgets';
 
-describe('addText', () => {
+describe('addTextWidget', () => {
   describe('normal cases', () => {
     test('adds text to TextBox with only required fields', () => {
       // Arrange
@@ -17,7 +17,7 @@ describe('addText', () => {
       const textWidget = text({ content: 'Hello, World!' });
 
       // Act
-      widgets = addText(widgets, textWidget, 'textbox1');
+      widgets = addTextWidget(widgets, textWidget, 'textbox1');
 
       // Assert
       expect(hasId(widgets, 'textbox1')).toBe(true);
@@ -37,7 +37,7 @@ describe('addText', () => {
       });
 
       // Act
-      widgets = addText(widgets, textWidget, 'textbox1');
+      widgets = addTextWidget(widgets, textWidget, 'textbox1');
 
       // Assert
       expect(hasId(widgets, 'textbox1')).toBe(true);
@@ -51,8 +51,8 @@ describe('addText', () => {
       const text2 = text({ id: 'text2', content: 'Second text' });
 
       // Act
-      widgets = addText(widgets, text1, 'textbox1');
-      widgets = addText(widgets, text2, 'textbox1');
+      widgets = addTextWidget(widgets, text1, 'textbox1');
+      widgets = addTextWidget(widgets, text2, 'textbox1');
 
       // Assert
       expect(hasId(widgets, 'text1')).toBe(true);
@@ -68,7 +68,7 @@ describe('addText', () => {
       const textWidget = text({ id: 'text1', content: 'Nested text' });
 
       // Act
-      widgets = addText(widgets, textWidget, 'textbox1');
+      widgets = addTextWidget(widgets, textWidget, 'textbox1');
 
       // Assert
       expect(hasId(widgets, 'text1')).toBe(true);
@@ -87,7 +87,7 @@ describe('addText', () => {
       const text2 = text({ id: 'duplicate', content: 'Second text' });
 
       // Act & Assert
-      expect(() => addText(widgets, text2, 'textbox1')).toThrow(
+      expect(() => addTextWidget(widgets, text2, 'textbox1')).toThrow(
         'Widget with id "duplicate" already exists',
       );
     });
@@ -98,7 +98,7 @@ describe('addText', () => {
       const textWidget = text({ content: 'Hello' });
 
       // Act & Assert
-      expect(() => addText(widgets, textWidget, 'non-existent')).toThrow(
+      expect(() => addTextWidget(widgets, textWidget, 'non-existent')).toThrow(
         'TextBox with id "non-existent" not found',
       );
     });
@@ -109,7 +109,7 @@ describe('addText', () => {
       const textWidget = text({ content: 'Hello' });
 
       // Act & Assert
-      expect(() => addText(widgets, textWidget, 'layout1')).toThrow(
+      expect(() => addTextWidget(widgets, textWidget, 'layout1')).toThrow(
         'TextBox with id "layout1" not found',
       );
     });
@@ -122,7 +122,7 @@ describe('addText', () => {
       const textWidget = text({ id: 'existing-widget', content: 'Text' });
 
       // Act & Assert
-      expect(() => addText(widgets, textWidget, 'textbox1')).toThrow(
+      expect(() => addTextWidget(widgets, textWidget, 'textbox1')).toThrow(
         'Widget with id "existing-widget" already exists',
       );
     });

@@ -1,6 +1,6 @@
 import type { BaseMessage } from '@ichi-h/elmish';
 import type { NovelModel } from '@/model';
-import { clearTextBox as clearTextBoxFn } from '@/ui';
+import { clearTextBoxWidget } from '@/ui';
 
 export interface ClearTextBoxMessage extends BaseMessage {
   type: 'ClearTextBox';
@@ -20,6 +20,6 @@ export const handleClearTextBox = <CustomState = unknown>(
 ): NovelModel<CustomState> => {
   return {
     ...model,
-    ui: clearTextBoxFn(model.ui, msg.textBoxId),
+    ui: clearTextBoxWidget(model.ui, msg.textBoxId),
   };
 };

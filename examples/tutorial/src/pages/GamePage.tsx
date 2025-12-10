@@ -98,7 +98,7 @@ export const GamePage = ({
         <button
           type="button"
           onClick={handleOpenSave}
-          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
           aria-label="セーブを開く"
         >
           💾
@@ -106,7 +106,7 @@ export const GamePage = ({
         <button
           type="button"
           onClick={() => {}}
-          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
           aria-label="ロードを開く"
         >
           📂
@@ -114,7 +114,7 @@ export const GamePage = ({
         <button
           type="button"
           onClick={() => {}}
-          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
           aria-label="スキップモード切替"
         >
           ⏩
@@ -122,7 +122,7 @@ export const GamePage = ({
         <button
           type="button"
           onClick={() => {}}
-          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
           aria-label="ログを開く"
         >
           📜
@@ -130,7 +130,7 @@ export const GamePage = ({
         <button
           type="button"
           onClick={handleOpenConfig}
-          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
           aria-label="設定を開く"
         >
           ⚙️

@@ -37,7 +37,7 @@ const clearTextBoxInWidgets = (
  * @param textBoxId - The ID of the TextBox to clear
  * @throws Error if textBoxId doesn't exist
  */
-export const clearTextBox = (
+export const clearTextBoxWidget = (
   widgets: NovelWidget[],
   textBoxId: string,
 ): NovelWidget[] => {
