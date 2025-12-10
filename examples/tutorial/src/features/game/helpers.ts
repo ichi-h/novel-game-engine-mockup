@@ -49,6 +49,8 @@ export const SPEECH_BUBBLE_LAYOUT_ID = 'speech-bubble-layout';
 export const CHARACTER_LAYOUT_ID = 'character-display';
 export const BG_LAYER_ID = 'background-layer';
 export const IMAGE_DISPLAY_ID = 'image-display';
+export const NARRATION_LAYER_ID = 'narration-layer';
+export const FADE_OVERLAY_ID = 'fade-overlay';
 
 // Character images
 export const CHARACTER_IMAGES = {
@@ -378,3 +380,82 @@ export const playCharacterVoice = (
     }),
     playChannel({ channelId: VOICE_CHANNEL_IDS[character] }),
   ]);
+
+/**
+ * Stop BGM
+ */
+export const stopBGM = (channelId: string): NovelMessage => {
+  return removeChannel(channelId);
+};
+
+/**
+ * Map duration in milliseconds to Tailwind duration class
+ */
+const getDurationClass = (durationMs: number): string => {
+  if (durationMs === 0) return 'duration-0';
+  if (durationMs <= 75) return 'duration-75';
+  if (durationMs <= 100) return 'duration-100';
+  if (durationMs <= 150) return 'duration-150';
+  if (durationMs <= 200) return 'duration-200';
+  if (durationMs <= 300) return 'duration-300';
+  if (durationMs <= 500) return 'duration-500';
+  if (durationMs <= 700) return 'duration-700';
+  return 'duration-1000';
+};
+
+/**
+ * Fade out (screen goes dark)
+ * @param durationMs - Fade duration in milliseconds (default: 500ms)
+ * Will be mapped to nearest Tailwind duration: 0, 75, 100, 150, 200, 300, 500, 700, 1000
+ */
+export const fadeOut = (durationMs: number = 500): NovelMessage => {
+  const durationClass = getDurationClass(durationMs);
+  return updateWidgetStyle({
+    widgetId: FADE_OVERLAY_ID,
+    className: `absolute inset-0 z-50 bg-black pointer-events-none opacity-100 transition-opacity ${durationClass}`,
+    method: 'put',
+  });
+};
+
+/**
+ * Fade in (screen becomes visible)
+ * @param durationMs - Fade duration in milliseconds (default: 500ms)
+ * Will be mapped to nearest Tailwind duration: 0, 75, 100, 150, 200, 300, 500, 700, 1000
+ */
+export const fadeIn = (durationMs: number = 500): NovelMessage => {
+  const durationClass = getDurationClass(durationMs);
+  return updateWidgetStyle({
+    widgetId: FADE_OVERLAY_ID,
+    className: `absolute inset-0 z-50 bg-black pointer-events-none opacity-0 transition-opacity ${durationClass}`,
+    method: 'put',
+  });
+};
+
+/**
+ * Show narration text in the center of the screen
+ * @param text - Text to display
+ * @param fontSize - Font size (default: '4xl')
+ */
+export const showNarrationText = (
+  text: string,
+  fontSize: '2xl' | '3xl' | '4xl' | '5xl' | '6xl' = '4xl',
+  withAnimation = false,
+): NovelMessage => {
+  return addWidgets(
+    [
+      w.text({
+        id: 'narration-text',
+        content: text,
+        className: `text-white text-${fontSize} font-bold text-center drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] ${withAnimation ? 'animate-fade-text-in' : ''}`,
+      }),
+    ],
+    NARRATION_LAYER_ID,
+  );
+};
+
+/**
+ * Hide narration text
+ */
+export const hideNarrationText = (): NovelMessage => {
+  return removeWidgets(['narration-text']);
+};

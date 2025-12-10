@@ -63,6 +63,20 @@ export const initMessage: NovelMessage = sequence([
           className: 'w-full flex justify-center px-4 pb-4',
         })([]),
       ]),
+
+      // Fade overlay layer
+      w.layout({
+        id: FADE_OVERLAY_ID,
+        className:
+          'absolute inset-0 z-50 bg-black pointer-events-none opacity-0 transition-opacity',
+      })([]),
+
+      // Narration text layer (highest z-index, above fade overlay)
+      w.layout({
+        id: NARRATION_LAYER_ID,
+        className:
+          'absolute inset-0 z-60 flex items-center justify-center pointer-events-none',
+      })([]),
     ]),
   ]),
 ]);
@@ -77,16 +91,22 @@ import {
   CHARACTER_LAYOUT_ID,
   changeBackground,
   changeCharacterExpression,
+  FADE_OVERLAY_ID,
+  fadeIn,
+  fadeOut,
   hideCenteredImage,
+  hideNarrationText,
   hideSpeechBubble,
   IMAGE_DISPLAY_ID,
   IMAGES,
+  NARRATION_LAYER_ID,
   playBGM,
   playCharacterVoice,
   removeCharacter,
   SPEECH_BUBBLE_LAYOUT_ID,
   showCenteredImage,
   showCharacter,
+  showNarrationText,
   showSpeechBubble,
   TEXTBOX_ID,
   VOICE_CHANNEL_IDS,
@@ -346,15 +366,16 @@ const chapter1Intro: NovelMessage[] = [
     removeCharacter('metan'),
     removeCharacter('zundamon'),
     removeChannel(VOICE_CHANNEL_IDS.metan),
-    // TODO: Add fade out animation
-    playSE(SE.CHICKEN_CRY),
-    // TODO: Add text display for narration "2週間後……"
-  ]),
-
-  sequence([
+    fadeOut(1000),
+    delay(1000),
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smug, 'right'),
-    // TODO: Add fade in animation
+    playSE(SE.CHICKEN_CRY),
+    showNarrationText('2週間後……', '6xl', true),
+    delay(1000),
+    hideNarrationText(),
+    fadeIn(1000),
+    delay(1000),
     playBGM('bgm-march', BGM.MARCH),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V019),
     showSpeechBubble('zundamon', 'やぁめたん。'),
@@ -429,12 +450,15 @@ const chapter1Intro: NovelMessage[] = [
   sequence([
     hideSpeechBubble('metan'),
     removeChannel('bgm-march'),
-    // TODO: Add screen blackout animation
+    fadeOut(0),
     playSE(SE.MAN_YAHOO),
-    // TODO: Add title text "関数型ノベルゲームエンジン "tsuzuri" 解説"
+    showNarrationText('関数型ノベルゲームエンジン "tsuzuri" 解説', '5xl'),
+    delay(3000),
   ]),
 
-  // TODO: Add fade out animation and transition to next chapter
+  sequence([hideNarrationText(), fadeOut(1000), delay(1000)]),
+
+  // TODO: Transition to next chapter (tsuzuriとは)
 ];
 
 // Scenario messages array - will be populated with actual scenario
