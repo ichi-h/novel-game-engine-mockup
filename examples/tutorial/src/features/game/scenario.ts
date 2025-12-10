@@ -29,25 +29,25 @@ export const initMessage: NovelMessage = sequence([
     })([
       // Background layer
       w.layout({
-        id: 'background-layer',
+        id: BG_LAYER_ID,
         className: 'absolute inset-0 z-0',
       })([]),
 
       // Character display layer
       w.layout({
-        id: 'character-display',
+        id: CHARACTER_LAYOUT_ID,
         className: 'absolute inset-0 z-10',
       })([]),
 
       // Speech bubble layer
       w.layout({
-        id: 'speech-bubble-layout',
+        id: SPEECH_BUBBLE_LAYOUT_ID,
         className: 'absolute inset-0 z-20 pointer-events-none',
       })([]),
 
       // Image display layer (for centered images)
       w.layout({
-        id: 'image-display',
+        id: IMAGE_DISPLAY_ID,
         className:
           'absolute inset-0 z-15 flex items-center justify-center pointer-events-none',
       })([]),
@@ -59,7 +59,7 @@ export const initMessage: NovelMessage = sequence([
           'absolute inset-0 flex flex-col items-center justify-between p-4 z-30',
       })([
         w.layout({
-          id: 'textbox-area',
+          id: TEXTBOX_ID,
           className: 'w-full flex justify-center px-4 pb-4',
         })([]),
       ]),
@@ -72,18 +72,23 @@ import { BGM, SE, VOICE_METAN, VOICE_ZUNDAMON } from '../../constants/audio';
 import {
   applyAnimation,
   BACKGROUNDS,
+  BG_LAYER_ID,
   CHARACTER_IMAGES,
+  CHARACTER_LAYOUT_ID,
   changeBackground,
   changeCharacterExpression,
   hideCenteredImage,
   hideSpeechBubble,
+  IMAGE_DISPLAY_ID,
   IMAGES,
   playBGM,
   playCharacterVoice,
   removeCharacter,
+  SPEECH_BUBBLE_LAYOUT_ID,
   showCenteredImage,
   showCharacter,
   showSpeechBubble,
+  TEXTBOX_ID,
   VOICE_CHANNEL_IDS,
   // stopSE,
 } from './helpers';
