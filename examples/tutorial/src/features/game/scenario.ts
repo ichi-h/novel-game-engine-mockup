@@ -127,18 +127,21 @@ const chapter1Intro: NovelMessage[] = [
     // playSE('se-sword-swing', SE.SWORD_SWING, true), // Loop
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smile, 'right'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V001),
-    showSpeechBubble('zundamon', 'うおーーーーーー！！！', '3xl', true),
+    showSpeechBubble('zundamon', 'うおーーーーーー！！！', {
+      fontSize: '3xl',
+      bold: true,
+      textSpeed: 100,
+    }),
   ]),
 
   sequence([
     hideSpeechBubble('zundamon'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V002),
-    showSpeechBubble(
-      'zundamon',
-      'ノベルゲームが、作りたいのだ！！！',
-      '3xl',
-      true,
-    ),
+    showSpeechBubble('zundamon', 'ノベルゲームが、作りたいのだ！！！', {
+      fontSize: '3xl',
+      bold: true,
+      textSpeed: 100,
+    }),
   ]),
 
   sequence([
@@ -278,7 +281,7 @@ const chapter1Intro: NovelMessage[] = [
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     playSE(SE.TAIKO_DON),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V013),
-    showSpeechBubble('zundamon', 'ない！'),
+    showSpeechBubble('zundamon', 'ない！', { textSpeed: 100 }),
   ]),
 
   sequence([
@@ -293,7 +296,7 @@ const chapter1Intro: NovelMessage[] = [
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.joke),
     playSE(SE.TAIKO_DON),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V014),
-    showSpeechBubble('zundamon', 'ない！！'),
+    showSpeechBubble('zundamon', 'ない！！', { textSpeed: 100 }),
   ]),
 
   sequence([
@@ -307,7 +310,10 @@ const chapter1Intro: NovelMessage[] = [
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     playSE(SE.TAIKO_DON2),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V015),
-    showSpeechBubble('zundamon', 'ないのだ！！！'),
+    showSpeechBubble('zundamon', 'ないのだ！！！', {
+      textSpeed: 100,
+      bold: true,
+    }),
   ]),
 
   sequence([
@@ -322,7 +328,11 @@ const chapter1Intro: NovelMessage[] = [
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smug),
     playSE(SE.SOLEMN_ATMOSPHERE),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V016),
-    showSpeechBubble('zundamon', 'それはできるのだ！！！！！', '3xl', true),
+    showSpeechBubble('zundamon', 'それはできるのだ！！！！！', {
+      fontSize: '3xl',
+      bold: true,
+      textSpeed: 100,
+    }),
   ]),
 
   sequence([
@@ -348,7 +358,11 @@ const chapter1Intro: NovelMessage[] = [
     applyAnimation('zundamon', 'goodbye-right'),
     playSE(SE.PYUN_ESCAPE),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V018),
-    showSpeechBubble('zundamon', 'じゃあな！', '3xl', true),
+    showSpeechBubble('zundamon', 'じゃあな！', {
+      fontSize: '3xl',
+      bold: true,
+      textSpeed: 100,
+    }),
   ]),
 
   sequence([
@@ -432,12 +446,11 @@ const chapter1Intro: NovelMessage[] = [
   sequence([
     hideSpeechBubble('metan'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V022),
-    showSpeechBubble(
-      'zundamon',
-      'ゲーム『エンジン』の、ソースコードなのだ。',
-      '3xl',
-      true,
-    ),
+    showSpeechBubble('zundamon', 'ゲーム『エンジン』の、ソースコードなのだ。', {
+      fontSize: '3xl',
+      bold: true,
+      textSpeed: 50,
+    }),
   ]),
 
   sequence([

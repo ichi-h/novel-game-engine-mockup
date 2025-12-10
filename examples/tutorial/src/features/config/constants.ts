@@ -7,8 +7,8 @@ export const DEFAULT_CONFIG = {
   seVolume: 0.5,
   /** Voice volume (0.0 - 1.0) */
   voiceVolume: 0.5,
-  /** Text display speed (0.0 - 1.0, higher = faster) */
-  textSpeed: 0.5,
+  /** Text display speed (0 - 100, higher = faster) */
+  textSpeed: 50,
 };
 
 export type GameConfig = typeof DEFAULT_CONFIG;

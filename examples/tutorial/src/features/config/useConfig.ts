@@ -80,7 +80,7 @@ export function useConfig() {
   const updateTextSpeed = (speed: number) => {
     const newConfig = {
       ...config,
-      textSpeed: Math.max(0, Math.min(1, speed)),
+      textSpeed: Math.max(0, Math.min(100, speed)),
     };
     saveConfig(newConfig);
     send(updateTextSpeedMessage(newConfig.textSpeed));

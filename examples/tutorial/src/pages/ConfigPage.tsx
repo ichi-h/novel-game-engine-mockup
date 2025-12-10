@@ -144,15 +144,15 @@ export const ConfigPage = ({ onBack }: ConfigPageProps) => {
                 type="range"
                 min="0"
                 max="100"
-                value={config.textSpeed * 100}
+                value={config.textSpeed}
                 onMouseUp={() => send(playSE(SE.DECISION_BUTTON))}
                 onChange={(e) => {
-                  updateTextSpeed(Number(e.target.value) / 100);
+                  updateTextSpeed(Number(e.target.value));
                 }}
                 className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
               />
               <span className="text-gray-700 font-medium w-12 text-right">
-                {Math.round(config.textSpeed * 100)}%
+                {Math.round(config.textSpeed)}%
               </span>
             </div>
             <p className="text-sm text-gray-600 mt-2">

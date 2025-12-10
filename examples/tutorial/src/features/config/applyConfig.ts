@@ -3,7 +3,6 @@ import { changeChannelVolume, updateConfig } from '@ichi-h/tsuzuri-core';
 import { AUDIO_BUS_IDS } from '../../constants/audio';
 import { getModel } from '../game/engine';
 import type { GameConfig } from './constants';
-import { convertTextSpeed } from './utils';
 
 export const updateBGMVolumeMessage = (volume: number): NovelMessage => {
   return changeChannelVolume({
@@ -30,7 +29,7 @@ export const updateTextSpeedMessage = (textSpeed: number): NovelMessage => {
   const currentModel = getModel();
   return updateConfig({
     ...currentModel.config,
-    textAnimationSpeed: convertTextSpeed(textSpeed),
+    textAnimationSpeed: textSpeed,
   });
 };
 

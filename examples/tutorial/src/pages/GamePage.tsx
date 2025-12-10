@@ -81,6 +81,18 @@ export const GamePage = ({
         <NovelWidgetDriver widgets={model.ui} model={model} send={send} />
       </div>
 
+      {import.meta.env.MODE === 'development' &&
+        model.status.value === 'Error' && (
+          <div className="absolute inset-0 bg-red-100 bg-opacity-80 flex flex-col items-center justify-center p-4">
+            <h2 className="text-2xl font-bold text-red-800 mb-4">
+              エラーが発生しました
+            </h2>
+            <pre className="bg-white p-4 rounded-lg shadow-md max-w-full overflow-x-auto text-left text-red-700">
+              {model.status.error.message}
+            </pre>
+          </div>
+        )}
+
       {/* Menu buttons */}
       <div className="absolute bottom-4 right-4 z-50 flex gap-3">
         <button

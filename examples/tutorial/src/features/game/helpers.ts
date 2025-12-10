@@ -2,6 +2,7 @@ import type { NovelMessage } from '@ichi-h/tsuzuri-core';
 import {
   addImage,
   addText,
+  addTextBox,
   addTrack,
   addWidgets,
   clearTextBox as clearTextBoxMsg,
@@ -225,6 +226,12 @@ export const removeCharacter = (
   return removeWidgets([`${character}-container`]);
 };
 
+interface SpeechBubbleOptions {
+  fontSize?: 'xl' | '2xl' | '3xl';
+  bold?: boolean;
+  textSpeed?: number;
+}
+
 /**
  * Show speech bubble for character
  * This returns a single message that can be used in a sequence
@@ -232,8 +239,7 @@ export const removeCharacter = (
 export const showSpeechBubble = (
   character: 'zundamon' | 'metan',
   text: string,
-  fontSize: 'xl' | '2xl' | '3xl' = 'xl',
-  bold = false,
+  options?: SpeechBubbleOptions,
 ): NovelMessage => {
   const bubbleId = `${character}-bubble`;
   const bubbleSlotId = `${character}-bubble-slot`;
@@ -241,23 +247,21 @@ export const showSpeechBubble = (
   const bgColor =
     character === 'zundamon' ? 'bg-green-100/95' : 'bg-pink-100/95';
 
-  return addWidgets(
-    [
-      w.layout({
-        id: bubbleId,
-        className: `${COMMON_STYLES.speechBubble} ${bgColor} border-4 ${
-          character === 'zundamon' ? 'border-green-300' : 'border-pink-300'
-        } animate-fade-in`,
-      })([
-        w.text({
-          id: `${bubbleId}-text`,
-          content: text,
-          className: `${color} ${COMMON_STYLES.dialogText} ${bold ? 'font-bold' : ''} text-${fontSize}`,
-        }),
-      ]),
-    ],
-    bubbleSlotId,
-  );
+  return sequence([
+    addTextBox({
+      id: bubbleId,
+      layoutId: bubbleSlotId,
+      className: `${COMMON_STYLES.speechBubble} ${bgColor} border-4 ${
+        character === 'zundamon' ? 'border-green-300' : 'border-pink-300'
+      } animate-fade-in`,
+    }),
+    addText({
+      textBoxId: bubbleId,
+      content: text,
+      className: `${color} ${COMMON_STYLES.dialogText} ${options?.bold ? 'font-bold' : ''} text-${options?.fontSize ?? 'xl'}`,
+      speed: options?.textSpeed,
+    }),
+  ]);
 };
 
 /**
