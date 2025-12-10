@@ -369,7 +369,7 @@ const chapter1Intro: NovelMessage[] = [
     fadeOut(1000),
     delay(1000),
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
-    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smug, 'right'),
+    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.sunglasses, 'right'),
     playSE(SE.CHICKEN_CRY),
     showNarrationText('2週間後……', '6xl', true),
     delay(1000),
