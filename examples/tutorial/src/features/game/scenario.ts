@@ -111,6 +111,7 @@ import {
   showCenteredImage,
   showCharacter,
   showCharacterDialog2,
+  showExplanatoryImage,
   showNarrationText,
   showSpeechBubble,
   TEXTBOX_ID,
@@ -496,9 +497,6 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   // Initialize textbox layout and setup
   sequence([
     initTextBoxLayout(),
-    fadeIn(1000),
-    delay(1000),
-    playBGM('bgm-explanation', BGM.EXPLANATION, true),
     showCharacter(
       'zundamon',
       CHARACTER_IMAGES.zundamon.default,
@@ -506,10 +504,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
       'small',
     ),
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left', 'small'),
-  ]),
-
-  // Start explanation
-  sequence([
+    playBGM('bgm-explanation', BGM.EXPLANATION, true),
+    fadeIn(1000),
+    delay(1000),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -518,7 +515,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    showCenteredImage('img-elm-arch', IMAGES.elmArchitecture),
+    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture, 128),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -600,7 +597,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    showCenteredImage('img-game-ex1', IMAGES.gameExample1),
+    showExplanatoryImage('img-game-ex1', IMAGES.gameExample1),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -626,7 +623,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
 
   sequence([
     hideCenteredImage('img-game-ex1'),
-    showCenteredImage('img-game-ex2', IMAGES.gameExample2),
+    showExplanatoryImage('img-game-ex2', IMAGES.gameExample2),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -644,7 +641,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
 
   sequence([
     hideCenteredImage('img-game-ex2'),
-    showCenteredImage('img-elm-arch', IMAGES.elmArchitecture),
+    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -822,7 +819,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    showCenteredImage('img-elm-arch', IMAGES.elmArchitecture),
+    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -1004,7 +1001,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    showCenteredImage('img-scenario-ex1', IMAGES.scenarioExample1),
+    showExplanatoryImage('img-scenario-ex1', IMAGES.scenarioExample1, 128),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -1062,7 +1059,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
 
   sequence([
     hideCenteredImage('img-scenario-ex1'),
-    showCenteredImage('img-scenario-ex2', IMAGES.scenarioExample2),
+    showExplanatoryImage('img-scenario-ex2', IMAGES.scenarioExample2, 128),
     ...showCharacterDialog2(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,

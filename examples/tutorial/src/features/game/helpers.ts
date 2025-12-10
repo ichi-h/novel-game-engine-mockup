@@ -95,9 +95,9 @@ export const IMAGES = {
 
 // Common styles
 export const COMMON_STYLES = {
-  nameText: 'font-bold text-2xl mb-2 drop-shadow-md',
+  nameText: 'font-bold text-3xl mb-2 drop-shadow-md',
   dialogText: 'text-gray-800 leading-relaxed',
-  textBoxDialogText: 'text-white leading-relaxed',
+  textBoxDialogText: 'text-white text-2xl leading-relaxed',
   characterImage: 'drop-shadow-2xl select-none',
   speechBubble:
     'max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl',
@@ -123,7 +123,7 @@ export const initTextBoxLayout = (): NovelMessage => {
       w.layout({
         id: 'textbox-container',
         className:
-          'absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black/80 to-black/70 backdrop-blur-md px-8 py-6 shadow-2xl',
+          'absolute bottom-0 left-0 right-0 h-60 bg-gradient-to-t from-black/80 to-black/70 backdrop-blur-md px-8 py-6 shadow-2xl',
       })([
         w.textBox({
           id: TEXTBOX_ID,
@@ -370,6 +370,18 @@ export const showCenteredImage = (id: string, src: string): NovelMessage =>
     src,
     id,
     className: 'max-w-4xl max-h-[600px] object-contain',
+  });
+
+export const showExplanatoryImage = (
+  id: string,
+  src: string,
+  mt: number = 150,
+): NovelMessage =>
+  addImage({
+    layoutId: IMAGE_DISPLAY_ID,
+    src,
+    id,
+    className: `w-4xl max-h-[600px] object-contain mb-${mt}`,
   });
 
 /**
