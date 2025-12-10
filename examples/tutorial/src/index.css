@@ -10,17 +10,20 @@
   }
 }
 
-@theme {
-  --animate-goodbye-right: goodbye-right 0.5s ease-in-out forwards;
-  @keyframes goodbye-right {
-    0%{
-      transform: translateX(0px);
-    }
-    40% {
-      transform: translateX(-100px);
-    }
-    100% {
-      transform: translateX(2000px);
-    }
+@keyframes goodbye-right {
+  0% {
+    transform: translateX(0px);
+  }
+  40% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(2000px);
+  }
+}
+
+@layer utilities {
+  .animate-goodbye-right {
+    animation: goodbye-right 0.5s ease-in-out forwards;
   }
 }
