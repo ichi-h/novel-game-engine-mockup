@@ -93,7 +93,7 @@ export const IMAGES = {
 // Common styles
 export const COMMON_STYLES = {
   nameText: 'font-bold text-2xl mb-2 drop-shadow-md',
-  dialogText: 'text-gray-800 text-xl leading-relaxed',
+  dialogText: 'text-gray-800 leading-relaxed',
   characterImage: 'drop-shadow-2xl select-none',
   speechBubble:
     'max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl',
@@ -230,6 +230,8 @@ export const removeCharacter = (
 export const showSpeechBubble = (
   character: 'zundamon' | 'metan',
   text: string,
+  fontSize: 'xl' | '2xl' | '3xl' = 'xl',
+  bold = false,
 ): NovelMessage => {
   const bubbleId = `${character}-bubble`;
   const bubbleSlotId = `${character}-bubble-slot`;
@@ -248,7 +250,7 @@ export const showSpeechBubble = (
         w.text({
           id: `${bubbleId}-text`,
           content: text,
-          className: `${color} ${COMMON_STYLES.dialogText}`,
+          className: `${color} ${COMMON_STYLES.dialogText} ${bold ? 'font-bold' : ''} text-${fontSize}`,
         }),
       ]),
     ],
