@@ -12,17 +12,25 @@ export interface UpdateWidgetStyleMessage extends BaseMessage {
   type: 'UpdateWidgetStyle';
   widgetId: string;
   className: string;
+  method?: 'put' | 'add' | 'remove';
 }
 
 export const updateWidgetStyle = ({
   widgetId,
   className,
+  method,
 }: Omit<UpdateWidgetStyleMessage, 'type'>): UpdateWidgetStyleMessage => {
-  return {
+  const message: UpdateWidgetStyleMessage = {
     type: 'UpdateWidgetStyle',
     widgetId,
     className,
   };
+
+  if (method !== undefined) {
+    message.method = method;
+  }
+
+  return message;
 };
 
 /**
@@ -36,19 +44,40 @@ const updateWidgetClassName = (
   widgetId: string,
   className: string,
   widgets: NovelWidget[],
+  method: 'put' | 'add' | 'remove' = 'put',
 ): NovelWidget[] => {
+  const applyClassName = (currentClassName: string | undefined): string => {
+    if (method === 'add') {
+      return currentClassName ? `${currentClassName} ${className}` : className;
+    }
+    if (method === 'remove') {
+      if (!currentClassName) return '';
+      return currentClassName
+        .split(' ')
+        .filter((cls) => cls !== className)
+        .join(' ');
+    }
+    // method === 'put'
+    return className;
+  };
+
   return widgets.map((widget) => {
     if (widget.id === widgetId) {
       return {
         ...widget,
-        className,
+        className: applyClassName(widget.className),
       };
     }
 
     if (isLayout(widget)) {
       return {
         ...widget,
-        children: updateWidgetClassName(widgetId, className, widget.children),
+        children: updateWidgetClassName(
+          widgetId,
+          className,
+          widget.children,
+          method,
+        ),
       };
     }
 
@@ -56,7 +85,9 @@ const updateWidgetClassName = (
       return {
         ...widget,
         children: widget.children.map((text: TextWidget) =>
-          text.id === widgetId ? { ...text, className } : text,
+          text.id === widgetId
+            ? { ...text, className: applyClassName(text.className) }
+            : text,
         ),
       };
     }
@@ -75,6 +106,11 @@ export const handleUpdateWidgetStyle = <CustomState = unknown>(
 
   return {
     ...model,
-    ui: updateWidgetClassName(msg.widgetId, msg.className, model.ui),
+    ui: updateWidgetClassName(
+      msg.widgetId,
+      msg.className,
+      model.ui,
+      msg.method,
+    ),
   };
 };

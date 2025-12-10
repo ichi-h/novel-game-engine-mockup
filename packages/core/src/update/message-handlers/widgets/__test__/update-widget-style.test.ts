@@ -23,6 +23,57 @@ describe('updateWidgetStyle', () => {
         className: 'bg-blue-500',
       });
     });
+
+    test('creates message with method="put"', () => {
+      // Arrange & Act
+      const result = updateWidgetStyle({
+        widgetId: 'widget1',
+        className: 'bg-blue-500',
+        method: 'put',
+      });
+
+      // Assert
+      expect(result).toEqual({
+        type: 'UpdateWidgetStyle',
+        widgetId: 'widget1',
+        className: 'bg-blue-500',
+        method: 'put',
+      });
+    });
+
+    test('creates message with method="add"', () => {
+      // Arrange & Act
+      const result = updateWidgetStyle({
+        widgetId: 'widget1',
+        className: 'new-class',
+        method: 'add',
+      });
+
+      // Assert
+      expect(result).toEqual({
+        type: 'UpdateWidgetStyle',
+        widgetId: 'widget1',
+        className: 'new-class',
+        method: 'add',
+      });
+    });
+
+    test('creates message with method="remove"', () => {
+      // Arrange & Act
+      const result = updateWidgetStyle({
+        widgetId: 'widget1',
+        className: 'remove-this',
+        method: 'remove',
+      });
+
+      // Assert
+      expect(result).toEqual({
+        type: 'UpdateWidgetStyle',
+        widgetId: 'widget1',
+        className: 'remove-this',
+        method: 'remove',
+      });
+    });
   });
 });
 
@@ -223,5 +274,224 @@ describe('handleUpdateWidgetStyle - error cases', () => {
     // Verify original widget is unchanged
     const unchangedWidget = findById(model.ui, 'widget1');
     expect(unchangedWidget?.className).toBe('original-class');
+  });
+});
+
+describe('handleUpdateWidgetStyle - method variations', () => {
+  test('method="put" replaces className (default behavior)', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(
+      model.ui,
+      w.layout({ id: 'layout1', className: 'old-class another-class' })([]),
+    );
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'layout1',
+      className: 'new-class',
+      method: 'put',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'layout1');
+    expect(updatedWidget?.className).toBe('new-class');
+  });
+
+  test('method="add" adds className to existing classes', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(
+      model.ui,
+      w.layout({ id: 'layout1', className: 'existing-class' })([]),
+    );
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'layout1',
+      className: 'new-class',
+      method: 'add',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'layout1');
+    expect(updatedWidget?.className).toBe('existing-class new-class');
+  });
+
+  test('method="add" adds className when no existing className', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(model.ui, w.layout({ id: 'layout1' })([]));
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'layout1',
+      className: 'new-class',
+      method: 'add',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'layout1');
+    expect(updatedWidget?.className).toBe('new-class');
+  });
+
+  test('method="remove" removes specific className from list', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(
+      model.ui,
+      w.layout({
+        id: 'layout1',
+        className: 'class-a class-b class-c',
+      })([]),
+    );
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'layout1',
+      className: 'class-b',
+      method: 'remove',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'layout1');
+    expect(updatedWidget?.className).toBe('class-a class-c');
+  });
+
+  test('method="remove" removes all occurrences of className', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(
+      model.ui,
+      w.layout({
+        id: 'layout1',
+        className: 'class-a remove-me class-b remove-me class-c',
+      })([]),
+    );
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'layout1',
+      className: 'remove-me',
+      method: 'remove',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'layout1');
+    expect(updatedWidget?.className).toBe('class-a class-b class-c');
+  });
+
+  test('method="remove" returns empty string when removing non-existent class', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(model.ui, w.layout({ id: 'layout1' })([]));
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'layout1',
+      className: 'non-existent',
+      method: 'remove',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'layout1');
+    expect(updatedWidget?.className).toBe('');
+  });
+
+  test('method="add" works with nested widgets', () => {
+    // Arrange
+    const model = generateInitModel();
+    const childImage = w.img({
+      id: 'img1',
+      src: 'test.png',
+      className: 'existing-img-class',
+    });
+    model.ui = addWidget(model.ui, w.layout({ id: 'parent' })([childImage]));
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'img1',
+      className: 'added-class',
+      method: 'add',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'img1');
+    expect(updatedWidget?.className).toBe('existing-img-class added-class');
+  });
+
+  test('method="remove" works with text in text box', () => {
+    // Arrange
+    const model = generateInitModel();
+    const textWidget = w.text({
+      id: 'text1',
+      content: 'Hello',
+      className: 'text-red text-bold text-underline',
+    });
+    model.ui = addWidget(
+      model.ui,
+      w.layout({ id: 'parent' })([w.textBox({ id: 'textBox1' })([textWidget])]),
+    );
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'text1',
+      className: 'text-bold',
+      method: 'remove',
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedTextBox = findById(result.ui, 'textBox1');
+    if (updatedTextBox?.type === 'TextBox') {
+      const updatedText = updatedTextBox.children.find((t) => t.id === 'text1');
+      expect(updatedText?.className).toBe('text-red text-underline');
+    }
+  });
+
+  test('default behavior (no method specified) is "put"', () => {
+    // Arrange
+    const model = generateInitModel();
+    model.ui = addWidget(
+      model.ui,
+      w.layout({ id: 'layout1', className: 'old-class' })([]),
+    );
+
+    const msg: UpdateWidgetStyleMessage = {
+      type: 'UpdateWidgetStyle',
+      widgetId: 'layout1',
+      className: 'new-class',
+      // method is not specified, should default to 'put'
+    };
+
+    // Act
+    const result = handleUpdateWidgetStyle(model, msg);
+
+    // Assert
+    const updatedWidget = findById(result.ui, 'layout1');
+    expect(updatedWidget?.className).toBe('new-class');
   });
 });
