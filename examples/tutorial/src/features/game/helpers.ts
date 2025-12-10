@@ -9,6 +9,7 @@ import {
   removeChannel,
   removeWidgets,
   sequence,
+  updateWidgetProps,
   updateWidgetStyle,
   w,
 } from '@ichi-h/tsuzuri-core';
@@ -147,7 +148,7 @@ export const showCharacterDialog = (
  * Show character image
  */
 export const showCharacter = (
-  id: string,
+  id: 'zundamon' | 'metan',
   src: string,
   position: 'left' | 'right',
 ): NovelMessage => {
@@ -176,6 +177,16 @@ export const showCharacter = (
   );
 };
 
+export const changeCharacterExpression = (
+  id: 'zundamon' | 'metan',
+  src: string,
+): NovelMessage => {
+  return updateWidgetProps(id, {
+    widgetType: 'Image',
+    props: { src },
+  });
+};
+
 /**
  * Voice channel IDs for each character
  */
@@ -197,11 +208,11 @@ export const hideCharacter = (id: string): NovelMessage => {
 
 export const applyAnimation = (
   id: string,
-  animationClass: 'goodbye-right',
+  animation: 'goodbye-right',
 ): NovelMessage => {
   return updateWidgetStyle({
     widgetId: id,
-    className: `animate-${animationClass}`,
+    className: `animate-${animation}`,
     method: 'add',
   });
 };

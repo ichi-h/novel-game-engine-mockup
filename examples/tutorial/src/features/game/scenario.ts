@@ -74,6 +74,7 @@ import {
   BACKGROUNDS,
   CHARACTER_IMAGES,
   changeBackground,
+  changeCharacterExpression,
   hideCenteredImage,
   hideSpeechBubble,
   IMAGES,
@@ -99,7 +100,7 @@ const chapter1Intro: NovelMessage[] = [
     playBGM('bgm-tyrannosaurus', BGM.TYRANNOSAURUS_NEEDLE_ROOD, true),
     playSE(SE.EXPLOSION),
     // playSE('se-sword-swing', SE.SWORD_SWING, true), // Loop
-    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.default, 'right'),
+    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smile, 'right'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V001),
     showSpeechBubble('zundamon', 'うおーーーーーー！！！'),
   ]),
@@ -112,7 +113,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
-    showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
+    showCharacter('metan', CHARACTER_IMAGES.metan.speechless, 'left'),
     playCharacterVoice('metan', VOICE_METAN.V001),
     showSpeechBubble(
       'metan',
@@ -122,6 +123,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     // stopSE('se-sword-swing'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V003),
     showSpeechBubble('zundamon', 'めたん、聞いてほしいのだ！'),
@@ -129,12 +131,14 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V004),
     showSpeechBubble('zundamon', 'ノベルゲームが作りたいのだ！'),
   ]),
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.thinking),
     playCharacterVoice('metan', VOICE_METAN.V002),
     showSpeechBubble(
       'metan',
@@ -144,12 +148,14 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V005),
     showSpeechBubble('zundamon', 'よくぞ聞いてくれのだ！'),
   ]),
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smug),
     changeChannelVolume({
       channelId: 'bgm-tyrannosaurus',
       volume: 0,
@@ -161,12 +167,14 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
     playCharacterVoice('metan', VOICE_METAN.V003),
     showSpeechBubble('metan', 'なんか始まったぞおい。'),
   ]),
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V007),
     showSpeechBubble(
       'zundamon',
@@ -196,6 +204,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V010),
     showSpeechBubble(
       'zundamon',
@@ -205,6 +214,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V011),
     showSpeechBubble(
       'zundamon',
@@ -214,6 +224,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     removeChannel('bgm-heishi'),
     changeChannelVolume({
       channelId: 'bgm-tyrannosaurus',
@@ -234,6 +245,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     playSE(SE.TAIKO_DON),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V013),
     showSpeechBubble('zundamon', 'ない！'),
@@ -241,12 +253,14 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
     playCharacterVoice('metan', VOICE_METAN.V005),
     showSpeechBubble('metan', '音楽は？'),
   ]),
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.joke),
     playSE(SE.TAIKO_DON),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V014),
     showSpeechBubble('zundamon', 'ない！！'),
@@ -260,6 +274,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     playSE(SE.TAIKO_DON2),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V015),
     showSpeechBubble('zundamon', 'ないのだ！！！'),
@@ -267,12 +282,14 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.thinking),
     playCharacterVoice('metan', VOICE_METAN.V007),
     showSpeechBubble('metan', 'プログラミングは？'),
   ]),
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smug),
     playSE(SE.SOLEMN_ATMOSPHERE),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V016),
     showSpeechBubble('zundamon', 'それはできるのだ！！！！！'),
@@ -280,12 +297,14 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.speechless),
     playCharacterVoice('metan', VOICE_METAN.V008),
     showSpeechBubble('metan', 'はぁ。左様ですか……。'),
   ]),
 
   sequence([
     hideSpeechBubble('metan'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V017),
     showSpeechBubble(
       'zundamon',
@@ -295,8 +314,9 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
-    playSE(SE.PYUN_ESCAPE),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     applyAnimation('zundamon', 'goodbye-right'),
+    playSE(SE.PYUN_ESCAPE),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V018),
     showSpeechBubble('zundamon', 'じゃあな！'),
   ]),
@@ -323,7 +343,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
-    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.sunglasses, 'right'),
+    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smug, 'right'),
     // TODO: Add fade in animation
     playBGM('bgm-march', BGM.MARCH),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V019),
@@ -332,6 +352,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.speechless),
     playCharacterVoice('metan', VOICE_METAN.V010),
     showSpeechBubble(
       'metan',
@@ -347,6 +368,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
     playCharacterVoice('metan', VOICE_METAN.V011),
     showSpeechBubble('metan', '何が？'),
   ]),
@@ -358,6 +380,7 @@ const chapter1Intro: NovelMessage[] = [
   ]),
 
   sequence([
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
     playCharacterVoice('metan', VOICE_METAN.V012),
     showSpeechBubble('metan', 'えなにこれ。'),
   ]),
@@ -370,6 +393,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.speechless),
     playCharacterVoice('metan', VOICE_METAN.V013),
     showSpeechBubble('metan', 'いやわかるけど。なんの？'),
   ]),
@@ -382,6 +406,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
     playCharacterVoice('metan', VOICE_METAN.V014),
     showSpeechBubble('metan', '……はい？'),
   ]),
