@@ -93,7 +93,7 @@ export const IMAGES = {
 export const COMMON_STYLES = {
   nameText: 'font-bold text-2xl mb-2 drop-shadow-md',
   dialogText: 'text-gray-800 text-xl leading-relaxed',
-  characterImage: 'w-96 h-96 drop-shadow-2xl select-none',
+  characterImage: 'w-[600px] h-[600px] drop-shadow-2xl select-none',
   speechBubble:
     'max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl',
 } as const;
@@ -151,13 +151,29 @@ export const showCharacter = (
   src: string,
   position: 'left' | 'right',
 ): NovelMessage => {
-  const positionClass = position === 'left' ? 'left-20' : 'right-20';
-  return addImage({
-    layoutId: CHARACTER_LAYOUT_ID,
-    src,
-    id,
-    className: `absolute bottom-0 ${positionClass} ${COMMON_STYLES.characterImage} animate-fade-in`,
-  });
+  const character = id.includes('zundamon') ? 'zundamon' : 'metan';
+  const containerId = `${character}-container`;
+  const positionClass = position === 'left' ? 'left-32' : 'right-32';
+
+  return addWidgets(
+    [
+      w.layout({
+        id: containerId,
+        className: `absolute bottom-10 ${positionClass} flex flex-col-reverse items-center gap-4 animate-fade-in`,
+      })([
+        w.img({
+          id,
+          src,
+          className: COMMON_STYLES.characterImage,
+        }),
+        w.layout({
+          id: `${character}-bubble-slot`,
+          className: 'w-full flex justify-center min-h-0',
+        })([]),
+      ]),
+    ],
+    CHARACTER_LAYOUT_ID,
+  );
 };
 
 /**
@@ -171,7 +187,10 @@ const VOICE_CHANNEL_IDS = {
 /**
  * Remove character image
  */
-export const hideCharacter = (id: string): NovelMessage => removeWidgets([id]);
+export const hideCharacter = (id: string): NovelMessage => {
+  // Only remove the character image, keep the container and bubble-slot
+  return removeWidgets([id]);
+};
 
 /**
  * Show speech bubble for character
@@ -180,11 +199,10 @@ export const hideCharacter = (id: string): NovelMessage => removeWidgets([id]);
 export const showSpeechBubble = (
   character: 'zundamon' | 'metan',
   text: string,
-  position: 'left' | 'right',
 ): NovelMessage => {
   const bubbleId = `${character}-bubble`;
+  const bubbleSlotId = `${character}-bubble-slot`;
   const color = CHARACTER_COLORS[character];
-  const positionClass = position === 'left' ? 'left-24' : 'right-24';
   const bgColor =
     character === 'zundamon' ? 'bg-green-100/95' : 'bg-pink-100/95';
 
@@ -192,7 +210,7 @@ export const showSpeechBubble = (
     [
       w.layout({
         id: bubbleId,
-        className: `absolute bottom-96 ${positionClass} ${COMMON_STYLES.speechBubble} ${bgColor} border-4 ${
+        className: `${COMMON_STYLES.speechBubble} ${bgColor} border-4 ${
           character === 'zundamon' ? 'border-green-300' : 'border-pink-300'
         } animate-fade-in`,
       })([
@@ -203,7 +221,7 @@ export const showSpeechBubble = (
         }),
       ]),
     ],
-    SPEECH_BUBBLE_LAYOUT_ID,
+    bubbleSlotId,
   );
 };
 
@@ -236,7 +254,7 @@ export const showCenteredImage = (id: string, src: string): NovelMessage =>
     layoutId: IMAGE_DISPLAY_ID,
     src,
     id,
-    className: 'max-w-2xl max-h-96 object-contain animate-fade-in',
+    className: 'max-w-4xl max-h-[600px] object-contain animate-fade-in',
   });
 
 /**

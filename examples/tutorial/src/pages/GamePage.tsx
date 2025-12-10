@@ -1,5 +1,5 @@
 import { NovelWidgetDriver } from '@ichi-h/tsuzuri-driver';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { getModel, send, subscribe } from '../features/game/engine';
 import { scenario } from '../features/game/scenario';
 
@@ -20,13 +20,30 @@ export const GamePage = ({
   const model = useSyncExternalStore(subscribe, getModel);
 
   const next = () => {
+    if (
+      model.status.value === 'Delaying' ||
+      model.status.value === 'AwaitingAction'
+    ) {
+      return;
+    }
+
     const message = scenario[model.index];
-    console.log(message);
     if (!message) {
-      console.log('Scenario finished');
+      send({
+        type: 'ResetProperties',
+        properties: [
+          'animationTickets',
+          'ui',
+          'currentScenario',
+          'history',
+          'index',
+          'status',
+        ],
+      });
       toTitle();
       return;
     }
+
     send({ type: 'Next', message });
   };
 
@@ -39,6 +56,17 @@ export const GamePage = ({
     e.stopPropagation();
     onOpenConfig();
   };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Intentional
+  useEffect(() => next(), []);
+  useEffect(() => {
+    if (model.status.value === 'RequestingNext') {
+      const msg = scenario[model.index];
+      if (msg) {
+        send({ type: 'Next', message: msg });
+      }
+    }
+  }, [model]);
 
   return (
     <div className="relative w-screen h-screen">
@@ -54,22 +82,46 @@ export const GamePage = ({
       </div>
 
       {/* Menu buttons */}
-      <div className="absolute top-4 right-4 z-50 flex gap-2">
-        <button
-          type="button"
-          onClick={handleOpenConfig}
-          className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors text-gray-700 font-medium"
-          aria-label="設定を開く"
-        >
-          ⚙️ 設定
-        </button>
+      <div className="absolute bottom-4 right-4 z-50 flex gap-3">
         <button
           type="button"
           onClick={handleOpenSave}
-          className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-colors text-gray-700 font-medium"
+          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
           aria-label="セーブを開く"
         >
-          💾 セーブ
+          💾
+        </button>
+        <button
+          type="button"
+          onClick={() => {}}
+          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          aria-label="ロードを開く"
+        >
+          📂
+        </button>
+        <button
+          type="button"
+          onClick={() => {}}
+          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          aria-label="スキップモード切替"
+        >
+          ⏩
+        </button>
+        <button
+          type="button"
+          onClick={() => {}}
+          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          aria-label="ログを開く"
+        >
+          📜
+        </button>
+        <button
+          type="button"
+          onClick={handleOpenConfig}
+          className="w-12 h-12 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all text-2xl"
+          aria-label="設定を開く"
+        >
+          ⚙️
         </button>
       </div>
     </div>
