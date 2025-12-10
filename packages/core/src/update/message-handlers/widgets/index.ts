@@ -10,3 +10,7 @@ export { type AddTextBoxMessage, addTextBox } from './add-text-box';
 export { type AddWidgetsMessage, addWidgets } from './add-widgets';
 export { type ClearTextBoxMessage, clearTextBox } from './clear-text-box';
 export { type RemoveWidgetsMessage, removeWidgets } from './remove-widgets';
+export {
+  type UpdateWidgetStyleMessage,
+  updateWidgetStyle,
+} from './update-widget-style';
