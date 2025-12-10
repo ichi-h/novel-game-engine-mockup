@@ -14,3 +14,7 @@ export {
   type UpdateWidgetStyleMessage,
   updateWidgetStyle,
 } from './update-widget-style';
+export {
+  type UpdateWidgetPropsMessage,
+  updateWidgetProps,
+} from './update-widget-props';

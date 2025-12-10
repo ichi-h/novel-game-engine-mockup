@@ -42,6 +42,7 @@ import { handleAddWidgets } from './message-handlers/widgets/add-widgets';
 import { handleClearTextBox } from './message-handlers/widgets/clear-text-box';
 import { handleRemoveWidgets } from './message-handlers/widgets/remove-widgets';
 import { handleUpdateWidgetStyle } from './message-handlers/widgets/update-widget-style';
+import { handleUpdateWidgetProps } from './message-handlers/widgets/update-widget-props';
 import {
   builtInMiddlewares,
   type Middleware,
@@ -113,6 +114,8 @@ export const update =
           return handleRemoveWidgets(model, msg);
         case 'UpdateWidgetStyle':
           return handleUpdateWidgetStyle(model, msg);
+        case 'UpdateWidgetProps':
+          return handleUpdateWidgetProps(model, msg);
 
         // Mixer
         case 'AddTrack':

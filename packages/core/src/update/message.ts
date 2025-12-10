@@ -30,6 +30,7 @@ import type {
   TextAnimationCompletedMessage,
   UpdateConfigMessage,
   UpdateCustomStateMessage,
+  UpdateWidgetPropsMessage,
   UpdateWidgetStyleMessage,
 } from './message-handlers';
 
@@ -59,6 +60,7 @@ export type NovelMessage<CustomState = unknown> =
   | ClearTextBoxMessage
   | RemoveWidgetsMessage
   | UpdateWidgetStyleMessage
+  | UpdateWidgetPropsMessage
   // Mixer
   | AddTrackMessage
   | AddBusTrackMessage
