@@ -9,7 +9,6 @@ import {
   removeChannel,
   removeWidgets,
   sequence,
-  stopChannel,
   updateWidgetStyle,
   w,
 } from '@ichi-h/tsuzuri-core';
@@ -180,7 +179,7 @@ export const showCharacter = (
 /**
  * Voice channel IDs for each character
  */
-const VOICE_CHANNEL_IDS = {
+export const VOICE_CHANNEL_IDS = {
   zundamon: 'voice-zundamon',
   metan: 'voice-metan',
 } as const;
@@ -191,16 +190,26 @@ const VOICE_CHANNEL_IDS = {
 export const hideCharacter = (id: string): NovelMessage => {
   return updateWidgetStyle({
     widgetId: id,
-    className: 'animate-goodbye-right',
+    className: 'opacity-0',
     method: 'add',
   });
 };
 
-export const removeCharacterContainer = (
+export const applyAnimation = (
+  id: string,
+  animationClass: 'goodbye-right',
+): NovelMessage => {
+  return updateWidgetStyle({
+    widgetId: id,
+    className: `animate-${animationClass}`,
+    method: 'add',
+  });
+};
+
+export const removeCharacter = (
   character: 'zundamon' | 'metan',
 ): NovelMessage => {
-  const containerId = `${character}-container`;
-  return removeWidgets([containerId]);
+  return removeWidgets([`${character}-container`]);
 };
 
 /**
@@ -302,7 +311,7 @@ export const showCenteredImage = (id: string, src: string): NovelMessage =>
     layoutId: IMAGE_DISPLAY_ID,
     src,
     id,
-    className: 'max-w-4xl max-h-[600px] object-contain animate-fade-in',
+    className: 'max-w-4xl max-h-[600px] object-contain',
   });
 
 /**
@@ -324,32 +333,6 @@ export const playBGM = (id: string, src: string, loop = true): NovelMessage =>
     }),
     playChannel({ channelId: id }),
   ]);
-
-/**
- * Stop BGM
- */
-export const stopBGM = (id: string): NovelMessage =>
-  stopChannel({ channelId: id });
-
-/**
- * Play SE (Sound Effect)
- */
-export const playSE = (id: string, src: string, loop = false): NovelMessage =>
-  sequence([
-    addTrack({
-      id,
-      busTrackId: AUDIO_BUS_IDS.SE,
-      src,
-      ...(loop ? { loop: { start: 0, end: -1 } } : {}),
-    }),
-    playChannel({ channelId: id }),
-  ]);
-
-/**
- * Stop SE
- */
-export const stopSE = (id: string): NovelMessage =>
-  stopChannel({ channelId: id });
 
 /**
  * Play voice

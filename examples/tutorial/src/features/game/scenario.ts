@@ -70,23 +70,23 @@ export const initMessage: NovelMessage = sequence([
 import { BGM, SE, VOICE_METAN, VOICE_ZUNDAMON } from '../../constants/audio';
 // Import helpers and constants
 import {
+  applyAnimation,
   BACKGROUNDS,
   CHARACTER_IMAGES,
   changeBackground,
   hideCenteredImage,
-  hideCharacter,
   hideSpeechBubble,
   IMAGES,
   playBGM,
   playCharacterVoice,
-  playSE,
-  removeCharacterContainer,
+  removeCharacter,
   showCenteredImage,
   showCharacter,
   showSpeechBubble,
-  stopBGM,
+  VOICE_CHANNEL_IDS,
   // stopSE,
 } from './helpers';
+import { playSE } from './se';
 
 // ============================================================================
 // Chapter 1: Intro (イントロ)
@@ -97,7 +97,7 @@ const chapter1Intro: NovelMessage[] = [
     changeBackground('bg-room', BACKGROUNDS.room),
     delay(1000),
     playBGM('bgm-tyrannosaurus', BGM.TYRANNOSAURUS_NEEDLE_ROOD, true),
-    playSE('se-explosion', SE.EXPLOSION),
+    playSE(SE.EXPLOSION),
     // playSE('se-sword-swing', SE.SWORD_SWING, true), // Loop
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.default, 'right'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V001),
@@ -214,7 +214,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
-    stopBGM('bgm-heishi'),
+    removeChannel('bgm-heishi'),
     changeChannelVolume({
       channelId: 'bgm-tyrannosaurus',
       volume: 1.0,
@@ -234,7 +234,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    playSE('se-taiko-don', SE.TAIKO_DON),
+    playSE(SE.TAIKO_DON),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V013),
     showSpeechBubble('zundamon', 'ない！'),
   ]),
@@ -247,8 +247,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    removeChannel('se-taiko-don'),
-    playSE('se-taiko-don', SE.TAIKO_DON),
+    playSE(SE.TAIKO_DON),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V014),
     showSpeechBubble('zundamon', 'ない！！'),
   ]),
@@ -261,7 +260,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    playSE('se-taiko-don2', SE.TAIKO_DON2),
+    playSE(SE.TAIKO_DON2),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V015),
     showSpeechBubble('zundamon', 'ないのだ！！！'),
   ]),
@@ -274,7 +273,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    playSE('se-solemn', SE.SOLEMN_ATMOSPHERE),
+    playSE(SE.SOLEMN_ATMOSPHERE),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V016),
     showSpeechBubble('zundamon', 'それはできるのだ！！！！！'),
   ]),
@@ -296,15 +295,15 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
-    playSE('se-pyun-escape', SE.PYUN_ESCAPE),
-    hideCharacter('zundamon'),
+    playSE(SE.PYUN_ESCAPE),
+    applyAnimation('zundamon', 'goodbye-right'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V018),
     showSpeechBubble('zundamon', 'じゃあな！'),
   ]),
 
   sequence([
     hideSpeechBubble('zundamon'),
-    stopBGM('bgm-tyrannosaurus'),
+    removeChannel('bgm-tyrannosaurus'),
     playCharacterVoice('metan', VOICE_METAN.V009),
     showSpeechBubble(
       'metan',
@@ -314,10 +313,16 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    removeCharacterContainer('zundamon'),
+    removeCharacter('metan'),
+    removeCharacter('zundamon'),
+    removeChannel(VOICE_CHANNEL_IDS.metan),
     // TODO: Add fade out animation
-    playSE('se-chicken', SE.CHICKEN_CRY),
+    playSE(SE.CHICKEN_CRY),
     // TODO: Add text display for narration "2週間後……"
+  ]),
+
+  sequence([
+    showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.sunglasses, 'right'),
     // TODO: Add fade in animation
     playBGM('bgm-march', BGM.MARCH),
@@ -348,7 +353,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    playSE('se-spread-paper', SE.SPREAD_PAPER),
+    playSE(SE.SPREAD_PAPER),
     showCenteredImage('img-src', IMAGES.src),
   ]),
 
@@ -383,9 +388,9 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    stopBGM('bgm-march'),
+    removeChannel('bgm-march'),
     // TODO: Add screen blackout animation
-    playSE('se-man-yahoo', SE.MAN_YAHOO),
+    playSE(SE.MAN_YAHOO),
     // TODO: Add title text "関数型ノベルゲームエンジン "tsuzuri" 解説"
   ]),
 
