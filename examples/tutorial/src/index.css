@@ -9,3 +9,18 @@
     @apply grid place-items-center min-w-[320px] min-h-screen relative m-0;
   }
 }
+
+@theme {
+  --animate-goodbye-right: goodbye-right 0.5s ease-in-out forwards;
+  @keyframes goodbye-right {
+    0%{
+      transform: translateX(0px);
+    }
+    40% {
+      transform: translateX(-100px);
+    }
+    100% {
+      transform: translateX(2000px);
+    }
+  }
+}

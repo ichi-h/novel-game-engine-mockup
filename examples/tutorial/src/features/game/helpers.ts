@@ -10,6 +10,7 @@ import {
   removeWidgets,
   sequence,
   stopChannel,
+  updateWidgetStyle,
   w,
 } from '@ichi-h/tsuzuri-core';
 import scenarioExample1 from '../../assets/images/code/scenario_example_1.webp';
@@ -93,7 +94,7 @@ export const IMAGES = {
 export const COMMON_STYLES = {
   nameText: 'font-bold text-2xl mb-2 drop-shadow-md',
   dialogText: 'text-gray-800 text-xl leading-relaxed',
-  characterImage: 'w-[600px] h-[600px] drop-shadow-2xl select-none',
+  characterImage: 'drop-shadow-2xl select-none',
   speechBubble:
     'max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl',
 } as const;
@@ -188,8 +189,18 @@ const VOICE_CHANNEL_IDS = {
  * Remove character image
  */
 export const hideCharacter = (id: string): NovelMessage => {
-  // Only remove the character image, keep the container and bubble-slot
-  return removeWidgets([id]);
+  return updateWidgetStyle({
+    widgetId: id,
+    className: 'animate-goodbye-right',
+    method: 'add',
+  });
+};
+
+export const removeCharacterContainer = (
+  character: 'zundamon' | 'metan',
+): NovelMessage => {
+  const containerId = `${character}-container`;
+  return removeWidgets([containerId]);
 };
 
 /**
@@ -232,6 +243,43 @@ export const hideSpeechBubble = (
   character: 'zundamon' | 'metan',
 ): NovelMessage => {
   const bubbleId = `${character}-bubble`;
+  return removeWidgets([bubbleId]);
+};
+
+export const showExitSpeechBubble = (
+  character: 'zundamon' | 'metan',
+  text: string,
+  position: 'left' | 'right',
+): NovelMessage => {
+  const bubbleId = `${character}-exit-bubble`;
+  const color = CHARACTER_COLORS[character];
+  const bgColor =
+    character === 'zundamon' ? 'bg-green-100/95' : 'bg-pink-100/95';
+  const positionClass = position === 'left' ? 'left-32' : 'right-32';
+
+  return addWidgets(
+    [
+      w.layout({
+        id: bubbleId,
+        className: `absolute bottom-[35rem] ${positionClass} ${COMMON_STYLES.speechBubble} ${bgColor} border-4 ${
+          character === 'zundamon' ? 'border-green-300' : 'border-pink-300'
+        } animate-fade-in`,
+      })([
+        w.text({
+          id: `${bubbleId}-text`,
+          content: text,
+          className: `${color} ${COMMON_STYLES.dialogText}`,
+        }),
+      ]),
+    ],
+    SPEECH_BUBBLE_LAYOUT_ID,
+  );
+};
+
+export const hideExitSpeechBubble = (
+  character: 'zundamon' | 'metan',
+): NovelMessage => {
+  const bubbleId = `${character}-exit-bubble`;
   return removeWidgets([bubbleId]);
 };
 

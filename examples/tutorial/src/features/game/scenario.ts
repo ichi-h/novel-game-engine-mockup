@@ -80,6 +80,7 @@ import {
   playBGM,
   playCharacterVoice,
   playSE,
+  removeCharacterContainer,
   showCenteredImage,
   showCharacter,
   showSpeechBubble,
@@ -313,6 +314,7 @@ const chapter1Intro: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
+    removeCharacterContainer('zundamon'),
     // TODO: Add fade out animation
     playSE('se-chicken', SE.CHICKEN_CRY),
     // TODO: Add text display for narration "2週間後……"
