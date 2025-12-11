@@ -8,7 +8,8 @@
     "start": "NODE_ENV=production bun src/index.ts",
     "build": "bun run tsc && bun run build.ts --minify",
     "build:dev": "bun run tsc && bun run build.ts",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "deploy": "wrangler pages deploy dist/ --project-name tsuzuri-tutorial"
   },
   "dependencies": {
     "bun-plugin-tailwind": "^0.1.2",
@@ -19,8 +20,9 @@
     "@ichi-h/tsuzuri-core": "workspace:*"
   },
   "devDependencies": {
+    "@types/bun": "latest",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/bun": "latest"
+    "wrangler": "^4.54.0"
   }
 }
