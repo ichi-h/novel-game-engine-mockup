@@ -18,7 +18,7 @@ export type RouterState =
   | { page: 'title' }
   | { page: 'game' }
   | { page: 'save' }
-  | { page: 'load' }
+  | { page: 'load'; from: 'title' | 'game' }
   | { page: 'config'; from: 'title' | 'game' };
 
 export const Router = () => {
@@ -53,7 +53,7 @@ export const Router = () => {
 
   const handleContinue = () => {
     send(playSE(SE.DECISION_BUTTON));
-    setRouterState({ page: 'load' });
+    setRouterState({ page: 'load', from: 'title' });
   };
 
   const handleOpenSave = () => {
@@ -92,6 +92,20 @@ export const Router = () => {
     setRouterState({ page: 'config', from: 'game' });
   };
 
+  const handleOpenLoadFromGame = () => {
+    send(playSE(SE.DECISION_BUTTON));
+    setRouterState({ page: 'load', from: 'game' });
+  };
+
+  const handleBackToTitleFromGame = () => {
+    if (
+      window.confirm('タイトル画面に戻りますか？\n未保存のデータは失われます。')
+    ) {
+      send(playSE(SE.DECISION_BUTTON));
+      navigateWithFade({ page: 'title' });
+    }
+  };
+
   // Render page content based on router state
   const renderPage = () => {
     switch (routerState.page) {
@@ -111,7 +125,9 @@ export const Router = () => {
         return (
           <GamePage
             onOpenSave={handleOpenSave}
+            onOpenLoad={handleOpenLoadFromGame}
             onOpenConfig={handleOpenConfig}
+            onBackToTitle={handleBackToTitleFromGame}
             onGameEnd={handleGameEndToTitle}
           />
         );
@@ -120,7 +136,16 @@ export const Router = () => {
         return <SavePage onBack={handleBackToGame} />;
 
       case 'load':
-        return <LoadPage onLoad={handleLoadGame} onBack={handleBackToTitle} />;
+        return (
+          <LoadPage
+            onLoad={handleLoadGame}
+            onBack={
+              routerState.from === 'title'
+                ? handleBackToTitle
+                : handleBackToGame
+            }
+          />
+        );
 
       case 'config':
         return (

@@ -5,7 +5,9 @@ import { scenario } from '../features/game/scenario';
 
 interface GamePageProps {
   onOpenSave: () => void;
+  onOpenLoad: () => void;
   onOpenConfig: () => void;
+  onBackToTitle: () => void;
   onGameEnd: () => void;
 }
 
@@ -14,7 +16,9 @@ interface GamePageProps {
  */
 export const GamePage = ({
   onOpenSave,
+  onOpenLoad,
   onOpenConfig,
+  onBackToTitle,
   onGameEnd,
 }: GamePageProps) => {
   const model = useSyncExternalStore(subscribe, getModel);
@@ -54,9 +58,19 @@ export const GamePage = ({
     onOpenSave();
   };
 
+  const handleOpenLoad = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onOpenLoad();
+  };
+
   const handleOpenConfig = (e: React.MouseEvent) => {
     e.stopPropagation();
     onOpenConfig();
+  };
+
+  const handleBackToTitle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onBackToTitle();
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Intentional
@@ -109,19 +123,11 @@ export const GamePage = ({
         </button>
         <button
           type="button"
-          onClick={() => {}}
+          onClick={handleOpenLoad}
           className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
           aria-label="ロードを開く"
         >
           📂
-        </button>
-        <button
-          type="button"
-          onClick={() => {}}
-          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
-          aria-label="スキップモード切替"
-        >
-          ⏩
         </button>
         <button
           type="button"
@@ -138,6 +144,14 @@ export const GamePage = ({
           aria-label="設定を開く"
         >
           ⚙️
+        </button>
+        <button
+          type="button"
+          onClick={handleBackToTitle}
+          className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
+          aria-label="タイトルへ戻る"
+        >
+          🏠
         </button>
       </div>
     </div>
