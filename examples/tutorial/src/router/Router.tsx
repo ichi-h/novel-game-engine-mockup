@@ -100,12 +100,7 @@ export const Router = () => {
   };
 
   const handleBackToTitleFromGame = () => {
-    if (
-      window.confirm('タイトル画面に戻りますか？\n未保存のデータは失われます。')
-    ) {
-      send(playSE(SE.DECISION_BUTTON));
-      navigateWithFade({ page: 'title' });
-    }
+    navigateWithFade({ page: 'title' });
   };
 
   const handleOpenBacklog = () => {

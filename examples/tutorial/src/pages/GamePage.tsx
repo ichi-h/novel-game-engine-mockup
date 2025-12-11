@@ -1,5 +1,7 @@
 import { NovelWidgetDriver } from '@ichi-h/tsuzuri-driver';
 import { useEffect, useSyncExternalStore } from 'react';
+import { AUDIO_BUS_IDS, SE } from '@/constants/audio';
+import { playSE } from '@/features/game/se';
 import { getModel, send, subscribe } from '../features/game/engine';
 import { scenario } from '../features/game/scenario';
 
@@ -77,7 +79,49 @@ export const GamePage = ({
 
   const handleBackToTitle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onBackToTitle();
+
+    if (
+      window.confirm('タイトル画面に戻りますか？\n未保存のデータは失われます。')
+    ) {
+      send(playSE(SE.DECISION_BUTTON));
+
+      const bgmBus = model.mixer.value.channels.filter(
+        (ch) => ch.type === 'BusTrack' && ch.id === AUDIO_BUS_IDS.BGM,
+      )[0];
+      if (bgmBus && bgmBus.type === 'BusTrack') {
+        for (const ch of bgmBus.channels) {
+          if (ch.type === 'Track') {
+            send({
+              type: 'StopChannel',
+              channelId: ch.id,
+              fadeOutMs: 1000,
+            });
+            setTimeout(() => {
+              send({
+                type: 'RemoveChannel',
+                channelId: ch.id,
+              });
+            }, 1000);
+          }
+        }
+      }
+
+      setTimeout(() => {
+        send({
+          type: 'ResetProperties',
+          properties: [
+            'animationTickets',
+            'ui',
+            'currentScenario',
+            'history',
+            'index',
+            'status',
+          ],
+        });
+      }, 1000);
+
+      onBackToTitle();
+    }
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Intentional
