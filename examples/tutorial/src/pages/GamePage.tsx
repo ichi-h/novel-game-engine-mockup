@@ -58,7 +58,9 @@ export const GamePage = ({
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Intentional
-  useEffect(() => next(), []);
+  useEffect(() => {
+    model.index === 0 && next();
+  }, []);
   useEffect(() => {
     if (model.status.value === 'RequestingNext') {
       const msg = scenario[model.index];
