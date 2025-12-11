@@ -137,7 +137,10 @@ export const scenario: NovelMessage[] = [
     fadeIn(1000),
     delay(1000),
 
-    playBGM('bgm-tyrannosaurus', BGM.TYRANNOSAURUS_NEEDLE_ROOD, true),
+    playBGM('bgm-tyrannosaurus', BGM.TYRANNOSAURUS_NEEDLE_ROOD, {
+      start: 0,
+      end: -1,
+    }),
     playSE(SE.EXPLOSION),
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smile, 'right'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V001),
@@ -206,7 +209,7 @@ export const scenario: NovelMessage[] = [
       channelId: 'bgm-tyrannosaurus',
       volume: 0,
     }),
-    playBGM('bgm-heishi', BGM.HEISHI),
+    playBGM('bgm-heishi', BGM.HEISHI, { start: 0, end: -1 }),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V006),
     showSpeechBubble('zundamon', 'めたん。ノベルゲームとは、芸術なのだ。'),
   ]),
@@ -389,12 +392,12 @@ export const scenario: NovelMessage[] = [
   ]),
 
   sequence([
+    removeChannel(VOICE_CHANNEL_IDS.metan),
     fadeOut(1000),
     delay(1000),
     hideSpeechBubble('metan'),
     removeCharacter('metan'),
     removeCharacter('zundamon'),
-    removeChannel(VOICE_CHANNEL_IDS.metan),
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.sunglasses, 'right'),
     playSE(SE.CHICKEN_CRY),
@@ -501,7 +504,10 @@ export const scenario: NovelMessage[] = [
     delay(2000),
     hideNarrationText(),
 
-    playBGM('bgm-explanation', BGM.EXPLANATION, true),
+    playBGM('bgm-explanation', BGM.EXPLANATION, {
+      start: 998658,
+      end: 1939075,
+    }),
     fadeIn(1000),
     delay(1000),
     ...showCharacterDialog(

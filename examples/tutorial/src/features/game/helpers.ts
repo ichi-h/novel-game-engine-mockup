@@ -351,13 +351,17 @@ export const hideCenteredImage = (id: string): NovelMessage =>
 /**
  * Play BGM
  */
-export const playBGM = (id: string, src: string, loop = true): NovelMessage =>
+export const playBGM = (
+  id: string,
+  src: string,
+  loop?: { start: number; end: number },
+): NovelMessage =>
   sequence([
     addTrack({
       id,
       busTrackId: AUDIO_BUS_IDS.BGM,
       src,
-      ...(loop ? { loop: { start: 0, end: -1 } } : {}),
+      ...(loop ? { loop } : {}),
     }),
     playChannel({ channelId: id }),
   ]);
