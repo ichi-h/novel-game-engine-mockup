@@ -99,7 +99,7 @@ export const IMAGES = {
 export const COMMON_STYLES = {
   nameText: 'font-bold text-4xl mb-2 drop-shadow-md',
   dialogText: 'text-gray-800 leading-relaxed',
-  textBoxDialogText: 'text-white text-3xl leading-relaxed',
+  textBoxDialogText: 'text-white leading-relaxed',
   characterImage: 'drop-shadow-2xl select-none',
   speechBubble:
     'max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl',
@@ -156,13 +156,20 @@ export const showCharacterDialog = (
   color: string,
   text: string,
   textSpeed?: number,
+  fontSize: 'default' | 'large' | 'huge' = 'default',
 ): NovelMessage[] => [
   clearTextBox(),
   showCharacterName(name, color),
   addText({
     textBoxId: TEXTBOX_ID,
     content: text,
-    className: COMMON_STYLES.textBoxDialogText,
+    className: `${COMMON_STYLES.textBoxDialogText} ${
+      fontSize === 'huge'
+        ? 'text-5xl'
+        : fontSize === 'large'
+          ? 'text-4xl'
+          : 'text-3xl'
+    }`,
     speed: textSpeed,
   }),
 ];

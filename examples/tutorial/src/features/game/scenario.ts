@@ -292,7 +292,7 @@ export const scenario: NovelMessage[] = [
   sequence([
     hideSpeechBubble('metan'),
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
-    playSE(SE.TAIKO_DON),
+    playSE(SE.TAIKO_DON, 1.5),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V013),
     showSpeechBubble('zundamon', 'ない！', { textSpeed: 100 }),
   ]),
@@ -307,7 +307,7 @@ export const scenario: NovelMessage[] = [
   sequence([
     hideSpeechBubble('metan'),
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.joke),
-    playSE(SE.TAIKO_DON),
+    playSE(SE.TAIKO_DON, 1.5),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V014),
     showSpeechBubble('zundamon', 'ない！！', { textSpeed: 100 }),
   ]),
@@ -321,7 +321,7 @@ export const scenario: NovelMessage[] = [
   sequence([
     hideSpeechBubble('metan'),
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
-    playSE(SE.TAIKO_DON2),
+    playSE(SE.TAIKO_DON2, 1.5),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V015),
     showSpeechBubble('zundamon', 'ないのだ！！！', {
       textSpeed: 100,
@@ -339,7 +339,7 @@ export const scenario: NovelMessage[] = [
   sequence([
     hideSpeechBubble('metan'),
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smug),
-    playSE(SE.SOLEMN_ATMOSPHERE),
+    playSE(SE.SOLEMN_ATMOSPHERE, 2),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V016),
     showSpeechBubble('zundamon', 'それはできるのだ！！！！！', {
       fontSize: '3xl',
@@ -398,7 +398,7 @@ export const scenario: NovelMessage[] = [
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.sunglasses, 'right'),
     playSE(SE.CHICKEN_CRY),
-    showNarrationText('2週間後……', '6xl', true),
+    showNarrationText('２週間後……', '6xl', true),
     delay(1000),
     hideNarrationText(),
     fadeIn(1000),
@@ -433,7 +433,7 @@ export const scenario: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('metan'),
-    playSE(SE.SPREAD_PAPER),
+    playSE(SE.SPREAD_PAPER, 2),
     showCenteredImage('img-src', IMAGES.src),
   ]),
 
@@ -907,6 +907,7 @@ export const scenario: NovelMessage[] = [
       CHARACTER_COLORS.zundamon,
       '昨日めたんの体重が増えてショックだったときのf(2)は？',
       100,
+      'large',
     ),
   ]),
 
@@ -914,7 +915,13 @@ export const scenario: NovelMessage[] = [
     clearTextBox(),
     playSE(SE.VIOLIN_HORROR),
     changeCharacterExpression('metan', CHARACTER_IMAGES.metan.angry),
-    ...showCharacterDialog('めたん', CHARACTER_COLORS.metan, '殴るわよ？', 100),
+    ...showCharacterDialog(
+      'めたん',
+      CHARACTER_COLORS.metan,
+      '殴るわよ？',
+      100,
+      'huge',
+    ),
   ]),
 
   sequence([
@@ -1288,6 +1295,7 @@ export const scenario: NovelMessage[] = [
       CHARACTER_COLORS.zundamon,
       'これがノベルゲームなのだ！',
       0,
+      'huge',
     ),
   ]),
 
