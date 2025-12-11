@@ -35,6 +35,13 @@ export const initMessage: NovelMessage = sequence([
         className: 'absolute inset-0 z-0',
       })([]),
 
+      // Image display layer (for centered images)
+      w.layout({
+        id: IMAGE_DISPLAY_ID,
+        className:
+          'absolute inset-0 z-5 flex items-center justify-center pointer-events-none',
+      })([]),
+
       // Character display layer
       w.layout({
         id: CHARACTER_LAYOUT_ID,
@@ -45,13 +52,6 @@ export const initMessage: NovelMessage = sequence([
       w.layout({
         id: SPEECH_BUBBLE_LAYOUT_ID,
         className: 'absolute inset-0 z-20 pointer-events-none',
-      })([]),
-
-      // Image display layer (for centered images)
-      w.layout({
-        id: IMAGE_DISPLAY_ID,
-        className:
-          'absolute inset-0 z-15 flex items-center justify-center pointer-events-none',
       })([]),
 
       // Content layer for textbox mode
@@ -502,7 +502,7 @@ export const scenario: NovelMessage[] = [
   ]),
 
   sequence([
-    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture, '3xl', 100),
+    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture, 'xl', 50),
     ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -637,7 +637,7 @@ export const scenario: NovelMessage[] = [
 
   sequence([
     hideCenteredImage('img-game'),
-    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture),
+    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture, 'xl', 50),
     ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -830,7 +830,7 @@ export const scenario: NovelMessage[] = [
   ]),
 
   sequence([
-    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture),
+    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture, 'xl', 50),
     ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -1279,12 +1279,248 @@ export const scenario: NovelMessage[] = [
     ),
   ]),
 
+  // ============================================================================
+  // Chapter 3: おわり
+  // ============================================================================
+
   sequence([
     clearTextBox(),
     removeChannel('bgm-explanation'),
-    fadeOut(1000),
-    delay(1000),
+
+    // Cleanup Chapter 2 UI
+    removeCharacter('zundamon'),
+    removeCharacter('metan'),
+    removeWidgets(['textbox-container']),
+    // Switch back to speech bubble mode
+    addWidgets([
+      w.layout({
+        id: SPEECH_BUBBLE_LAYOUT_ID,
+        className: 'absolute inset-0 z-20 pointer-events-none',
+      })([]),
+    ]),
+    // Show game mock image
+    showExplanatoryImage('img-game', IMAGES.tutorial, 'xl', 50),
+
+    // Show characters again
+    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smile, 'right'),
+    showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
+    playSE(SE.LEVEL_UP),
+    playCharacterVoice('zundamon', VOICE_ZUNDAMON.V023),
+    showSpeechBubble('zundamon', 'っていうノベルゲームなのだ！', {
+      textSpeed: 100,
+    }),
   ]),
 
-  // TODO: Transition to next chapter (おわり)
+  sequence([
+    hideSpeechBubble('zundamon'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.angry),
+    playSE(SE.INSERT_TSUKKOMI),
+    playCharacterVoice('metan', VOICE_METAN.V015),
+    showSpeechBubble('metan', 'ややこしいわ！', { textSpeed: 100 }),
+  ]),
+
+  sequence([
+    playSE(SE.CHANCHAN),
+    fadeOut(0),
+    hideSpeechBubble('metan'),
+    hideCenteredImage('img-game'),
+    removeCharacter('zundamon'),
+    removeCharacter('metan'),
+    removeChannel(VOICE_CHANNEL_IDS.zundamon),
+    removeChannel(VOICE_CHANNEL_IDS.metan),
+    showNarrationText('おわり', '6xl'),
+  ]),
+
+  // Credits
+  sequence([
+    hideNarrationText(),
+
+    // Show credits
+    addWidgets([
+      w.layout({
+        id: 'credits-container',
+        className:
+          'absolute inset-0 z-50 flex items-center justify-center bg-black',
+      })([
+        w.layout({
+          id: 'credits',
+          className:
+            'max-w-6xl text-white text-base leading-relaxed p-8 overflow-y-auto grid grid-cols-3 gap-8',
+        })([
+          w.text({
+            id: 'credits-title',
+            content: 'クレジット',
+            className: 'text-4xl font-bold text-center mb-8 col-span-3',
+          }),
+
+          // Column 1: 音声・立ち絵
+          w.layout({
+            id: 'credits-column-1',
+            className: 'space-y-4',
+          })([
+            w.text({
+              id: 'credits-voice-title',
+              content: '音声',
+              className: 'text-2xl font-bold mb-2',
+            }),
+            w.text({
+              id: 'credits-voice-zundamon',
+              content: 'ずんだもん: VOICEVOX',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-voice-zundamon-link',
+              content: 'https://voicevox.hiroshiba.jp/product/zundamon',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-voice-metan',
+              content: '四国めたん: VOICEVOX',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-voice-metan-link',
+              content: 'https://voicevox.hiroshiba.jp/product/shikoku_metan',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-illust-title',
+              content: '立ち絵',
+              className: 'text-2xl font-bold mt-6 mb-2',
+            }),
+            w.text({
+              id: 'credits-illust-zundamon',
+              content: 'ずんだもん: 坂本アヒル 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-illust-zundamon-link',
+              content: 'https://seiga.nicovideo.jp/seiga/im10788496',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-illust-metan',
+              content: '四国めたん: 坂本アヒル 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-illust-metan-link',
+              content: 'https://seiga.nicovideo.jp/seiga/im10791276',
+              className: 'ml-8 text-sm',
+            }),
+          ]),
+
+          // Column 2: BGM・SE
+          w.layout({
+            id: 'credits-column-2',
+            className: 'space-y-4',
+          })([
+            w.text({
+              id: 'credits-bgm-title',
+              content: 'BGM',
+              className: 'text-2xl font-bold mb-2',
+            }),
+            w.text({
+              id: 'credits-bgm-1',
+              content: 'カラフルな積み木: こばっと 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-bgm-1-link',
+              content: 'https://dova-s.jp/bgm/play22528.html',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-bgm-2',
+              content: '暴竜ニードルード: MAKOOTO 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-bgm-2-link',
+              content: 'https://dova-s.jp/bgm/play20645.html',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-bgm-3',
+              content: '平氏: 伊藤ケイスケ 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-bgm-3-link',
+              content: 'https://dova-s.jp/bgm/play22894.html',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-bgm-4',
+              content: '進軍: 田中芳典 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-bgm-4-link',
+              content: 'https://dova-s.jp/bgm/play11346.html',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-bgm-5',
+              content: '解説しましょ: ichi-h',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-bgm-5-link',
+              content:
+                'https://soundcloud.com/ichi-h/eb2d8d78-0779-4e04-bafa-731e4a5a48d4',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-se-title',
+              content: 'SE',
+              className: 'text-2xl font-bold mt-6 mb-2',
+            }),
+            w.text({
+              id: 'credits-se',
+              content: '効果音ラボ 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-se-link',
+              content: 'https://soundeffect-lab.info',
+              className: 'ml-8 text-sm',
+            }),
+          ]),
+
+          // Column 3: 画像
+          w.layout({
+            id: 'credits-column-3',
+            className: 'space-y-4',
+          })([
+            w.text({
+              id: 'credits-image-title',
+              content: '画像',
+              className: 'text-2xl font-bold mb-2',
+            }),
+            w.text({
+              id: 'credits-image-bg',
+              content: '背景: みんちりえ 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-image-bg-link',
+              content: 'https://min-chi.material.jp',
+              className: 'ml-8 text-sm',
+            }),
+            w.text({
+              id: 'credits-image-src',
+              content: '素材: いらすとや 様',
+              className: 'ml-4',
+            }),
+            w.text({
+              id: 'credits-image-src-link',
+              content: 'https://www.irasutoya.com/',
+              className: 'ml-8 text-sm',
+            }),
+          ]),
+        ]),
+      ]),
+    ]),
+  ]),
 ];

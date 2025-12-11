@@ -20,6 +20,7 @@ import srcImage from '../../assets/images/code/src.webp';
 import elmArchitecture from '../../assets/images/elm/elm_architecture.webp';
 import gameExample1 from '../../assets/images/game/game_example_1.webp';
 import gameExample2 from '../../assets/images/game/game_example_2.webp';
+import tutorial from '../../assets/images/game/tutorial.webp';
 import metanAngry from '../../assets/images/metan/angry.webp';
 // Import character images - Metan
 import metanDefault from '../../assets/images/metan/defalt.webp';
@@ -91,6 +92,7 @@ export const IMAGES = {
   scenarioExample2: scenarioExample2,
   gameExample1: gameExample1,
   gameExample2: gameExample2,
+  tutorial: tutorial,
 } as const;
 
 // Common styles
