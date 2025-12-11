@@ -7,8 +7,6 @@ import {
   type Track,
 } from '@ichi-h/tsuzuri-core';
 
-// import { murmurhash3 } from '@ichi-h/tsuzuri-core';
-
 /**
  * Interface for managing audio channel state
  */
@@ -231,8 +229,8 @@ class MixerDriver {
 
     if (track.isLoop) {
       sourceNode.loop = true;
-      sourceNode.loopStart = track.isLoop.start;
-      sourceNode.loopEnd = track.isLoop.end;
+      sourceNode.loopStart = track.isLoop.start / state.audioBuffer.sampleRate;
+      sourceNode.loopEnd = track.isLoop.end / state.audioBuffer.sampleRate;
     }
 
     const startTime =
