@@ -6,15 +6,15 @@ import { playSE } from '@/features/game/se';
 import { buildConfigMessages } from '../features/config/applyConfig';
 import { useConfig } from '../features/config/useConfig';
 import { send } from '../features/game/engine';
-import { AudioConfirmPage } from '../pages/AudioConfirmPage';
 import { ConfigPage } from '../pages/ConfigPage';
 import { GamePage } from '../pages/GamePage';
+import { LoadingPage } from '../pages/LoadingPage';
 import { LoadPage } from '../pages/LoadPage';
 import { SavePage } from '../pages/SavePage';
 import { TitlePage } from '../pages/TitlePage';
 
 export type RouterState =
-  | { page: 'audio-confirm' }
+  | { page: 'loading' }
   | { page: 'title' }
   | { page: 'game' }
   | { page: 'save' }
@@ -24,7 +24,7 @@ export type RouterState =
 export const Router = () => {
   const { config } = useConfig();
   const [routerState, setRouterState] = useState<RouterState>({
-    page: 'audio-confirm',
+    page: 'loading',
   });
   const [isFading, setIsFading] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState<
@@ -38,7 +38,7 @@ export const Router = () => {
   }, []);
 
   // Navigation handlers
-  const handleAudioConfirm = () => {
+  const handleLoadingAndAudioConfirm = () => {
     send(playSE(SE.DECISION_BUTTON));
     navigateWithFade({ page: 'title' });
   };
@@ -95,8 +95,8 @@ export const Router = () => {
   // Render page content based on router state
   const renderPage = () => {
     switch (routerState.page) {
-      case 'audio-confirm':
-        return <AudioConfirmPage onConfirm={handleAudioConfirm} />;
+      case 'loading':
+        return <LoadingPage onComplete={handleLoadingAndAudioConfirm} />;
 
       case 'title':
         return (
@@ -134,7 +134,7 @@ export const Router = () => {
         );
 
       default:
-        return <AudioConfirmPage onConfirm={handleAudioConfirm} />;
+        return <LoadingPage onComplete={handleLoadingAndAudioConfirm} />;
     }
   };
 
