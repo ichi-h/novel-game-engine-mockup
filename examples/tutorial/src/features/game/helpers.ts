@@ -380,6 +380,7 @@ export const playCharacterVoice = (
     addTrack({
       id: VOICE_CHANNEL_IDS[character],
       busTrackId: AUDIO_BUS_IDS.VOICE,
+      volume: character === 'zundamon' ? 1.05 : 1.0,
       src,
     }),
     playChannel({ channelId: VOICE_CHANNEL_IDS[character] }),
