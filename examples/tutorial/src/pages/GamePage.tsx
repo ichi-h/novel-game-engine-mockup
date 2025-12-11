@@ -6,7 +6,7 @@ import { scenario } from '../features/game/scenario';
 interface GamePageProps {
   onOpenSave: () => void;
   onOpenConfig: () => void;
-  toTitle: () => void;
+  onGameEnd: () => void;
 }
 
 /**
@@ -15,7 +15,7 @@ interface GamePageProps {
 export const GamePage = ({
   onOpenSave,
   onOpenConfig,
-  toTitle,
+  onGameEnd,
 }: GamePageProps) => {
   const model = useSyncExternalStore(subscribe, getModel);
 
@@ -29,18 +29,20 @@ export const GamePage = ({
 
     const message = scenario[model.index];
     if (!message) {
-      send({
-        type: 'ResetProperties',
-        properties: [
-          'animationTickets',
-          'ui',
-          'currentScenario',
-          'history',
-          'index',
-          'status',
-        ],
-      });
-      toTitle();
+      setTimeout(() => {
+        send({
+          type: 'ResetProperties',
+          properties: [
+            'animationTickets',
+            'ui',
+            'currentScenario',
+            'history',
+            'index',
+            'status',
+          ],
+        });
+      }, 1000);
+      onGameEnd();
       return;
     }
 

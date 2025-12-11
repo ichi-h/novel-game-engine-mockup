@@ -70,6 +70,10 @@ export const Router = () => {
 
   const handleBackToTitle = () => {
     send(playSE(SE.CANCEL_BUTTON));
+    setRouterState({ page: 'title' });
+  };
+
+  const handleGameEndToTitle = () => {
     navigateWithFade({ page: 'title' });
   };
 
@@ -108,7 +112,7 @@ export const Router = () => {
           <GamePage
             onOpenSave={handleOpenSave}
             onOpenConfig={handleOpenConfig}
-            toTitle={handleBackToTitle}
+            onGameEnd={handleGameEndToTitle}
           />
         );
 
