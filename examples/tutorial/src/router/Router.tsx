@@ -1,5 +1,6 @@
 import { removeChannel, sequence } from '@ichi-h/tsuzuri-core';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { FadeTransition } from '@/components/FadeTransition';
 import { SE } from '@/constants/audio';
 import { playSE } from '@/features/game/se';
 import { buildConfigMessages } from '../features/config/applyConfig';
@@ -25,11 +26,21 @@ export const Router = () => {
   const [routerState, setRouterState] = useState<RouterState>({
     page: 'audio-confirm',
   });
+  const [isFading, setIsFading] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState<
+    (() => void) | null
+  >(null);
+
+  // Navigate with fade transition
+  const navigateWithFade = useCallback((newState: RouterState) => {
+    setIsFading(true);
+    setPendingNavigation(() => () => setRouterState(newState));
+  }, []);
 
   // Navigation handlers
   const handleAudioConfirm = () => {
     send(playSE(SE.DECISION_BUTTON));
-    setRouterState({ page: 'title' });
+    navigateWithFade({ page: 'title' });
   };
 
   const handleStartNewGame = () => {
@@ -37,7 +48,7 @@ export const Router = () => {
     send(playSE(SE.DECISION_BUTTON));
     send(removeChannel('title-bgm'));
     send(sequence(buildConfigMessages(config)));
-    setRouterState({ page: 'game' });
+    navigateWithFade({ page: 'game' });
   };
 
   const handleContinue = () => {
@@ -59,7 +70,7 @@ export const Router = () => {
 
   const handleBackToTitle = () => {
     send(playSE(SE.CANCEL_BUTTON));
-    setRouterState({ page: 'title' });
+    navigateWithFade({ page: 'title' });
   };
 
   const handleBackToGame = () => {
@@ -123,5 +134,21 @@ export const Router = () => {
     }
   };
 
-  return <>{renderPage()}</>;
+  return (
+    <>
+      {renderPage()}
+      <FadeTransition
+        isActive={isFading}
+        fadeOutDuration={1000}
+        fadeInDuration={1000}
+        onFadeOutComplete={() => {
+          pendingNavigation?.();
+        }}
+        onTransitionComplete={() => {
+          setIsFading(false);
+          setPendingNavigation(null);
+        }}
+      />
+    </>
+  );
 };
