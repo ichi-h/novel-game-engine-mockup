@@ -10,81 +10,14 @@ import {
   updateWidgetProps,
   w,
 } from '@ichi-h/tsuzuri-core';
-import { AUDIO_BUS_IDS } from '../../constants/audio';
+import {
+  AUDIO_BUS_IDS,
+  BGM,
+  SE,
+  VOICE_METAN,
+  VOICE_ZUNDAMON,
+} from '../../constants/audio';
 import { loadConfig } from '../config/loadConfig';
-
-const config = loadConfig();
-
-// Initial message to setup the game
-export const initMessage: NovelMessage = sequence([
-  // Create audio bus tracks for BGM, SE, and Voice
-  addBusTrack({ id: AUDIO_BUS_IDS.BGM, volume: config.bgmVolume }),
-  addBusTrack({ id: AUDIO_BUS_IDS.SE, volume: config.seVolume }),
-  addBusTrack({ id: AUDIO_BUS_IDS.VOICE, volume: config.voiceVolume }),
-
-  // Setup UI
-  addWidgets([
-    w.layout({
-      id: 'root',
-      className:
-        'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
-    })([
-      // Background layer
-      w.layout({
-        id: BG_LAYER_ID,
-        className: 'absolute inset-0 z-0',
-      })([]),
-
-      // Image display layer (for centered images)
-      w.layout({
-        id: IMAGE_DISPLAY_ID,
-        className:
-          'absolute inset-0 z-5 flex items-center justify-center pointer-events-none',
-      })([]),
-
-      // Character display layer
-      w.layout({
-        id: CHARACTER_LAYOUT_ID,
-        className: 'absolute inset-0 z-10',
-      })([]),
-
-      // Speech bubble layer
-      w.layout({
-        id: SPEECH_BUBBLE_LAYOUT_ID,
-        className: 'absolute inset-0 z-20 pointer-events-none',
-      })([]),
-
-      // Content layer for textbox mode
-      w.layout({
-        id: 'content-layer',
-        className:
-          'absolute inset-0 flex flex-col items-center justify-between p-4 z-30',
-      })([
-        w.layout({
-          id: TEXTBOX_ID,
-          className: 'w-full flex justify-center px-4 pb-4',
-        })([]),
-      ]),
-
-      // Fade overlay layer
-      w.layout({
-        id: FADE_OVERLAY_ID,
-        className:
-          'absolute inset-0 z-50 bg-black pointer-events-none opacity-0 transition-opacity',
-      })([]),
-
-      // Narration text layer (highest z-index, above fade overlay)
-      w.layout({
-        id: NARRATION_LAYER_ID,
-        className:
-          'absolute inset-0 z-60 flex items-center justify-center pointer-events-none',
-      })([]),
-    ]),
-  ]),
-]);
-
-import { BGM, SE, VOICE_METAN, VOICE_ZUNDAMON } from '../../constants/audio';
-// Import helpers and constants
 import {
   applyAnimation,
   BACKGROUNDS,
@@ -121,14 +54,89 @@ import {
 } from './helpers';
 import { playSE } from './se';
 
+const config = loadConfig();
+
+// Initial message to setup the game
+export const initMessage: NovelMessage = sequence([
+  // Create audio bus tracks for BGM, SE, and Voice
+  addBusTrack({ id: AUDIO_BUS_IDS.BGM, volume: config.bgmVolume }),
+  addBusTrack({ id: AUDIO_BUS_IDS.SE, volume: config.seVolume }),
+  addBusTrack({ id: AUDIO_BUS_IDS.VOICE, volume: config.voiceVolume }),
+]);
+
 // ============================================================================
 // Chapter 1: Intro (イントロ)
 // ============================================================================
 
 export const scenario: NovelMessage[] = [
   sequence([
-    changeBackground('bg-room', BACKGROUNDS.room),
+    // Setup UI
+    addWidgets([
+      w.layout({
+        id: 'root',
+        className:
+          'w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center relative overflow-hidden select-none',
+      })([
+        // Background layer
+        w.layout({
+          id: BG_LAYER_ID,
+          className: 'absolute inset-0 z-0',
+        })([]),
+
+        // Image display layer (for centered images)
+        w.layout({
+          id: IMAGE_DISPLAY_ID,
+          className:
+            'absolute inset-0 z-5 flex items-center justify-center pointer-events-none',
+        })([]),
+
+        // Character display layer
+        w.layout({
+          id: CHARACTER_LAYOUT_ID,
+          className: 'absolute inset-0 z-10',
+        })([]),
+
+        // Speech bubble layer
+        w.layout({
+          id: SPEECH_BUBBLE_LAYOUT_ID,
+          className: 'absolute inset-0 z-20 pointer-events-none',
+        })([]),
+
+        // Content layer for textbox mode
+        w.layout({
+          id: 'content-layer',
+          className:
+            'absolute inset-0 flex flex-col items-center justify-between p-4 z-30',
+        })([
+          w.layout({
+            id: TEXTBOX_ID,
+            className: 'w-full flex justify-center px-4 pb-4',
+          })([]),
+        ]),
+
+        // Fade overlay layer
+        w.layout({
+          id: FADE_OVERLAY_ID,
+          className:
+            'absolute inset-0 z-50 bg-black pointer-events-none opacity-0 transition-opacity',
+        })([]),
+
+        // Narration text layer (highest z-index, above fade overlay)
+        w.layout({
+          id: NARRATION_LAYER_ID,
+          className:
+            'absolute inset-0 z-60 flex items-center justify-center pointer-events-none',
+        })([]),
+      ]),
+    ]),
+
+    fadeOut(0),
     delay(1000),
+
+    changeBackground('bg-room', BACKGROUNDS.room),
+    fadeIn(1000),
+    delay(1000),
+
     playBGM('bgm-tyrannosaurus', BGM.TYRANNOSAURUS_NEEDLE_ROOD, true),
     playSE(SE.EXPLOSION),
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smile, 'right'),
@@ -216,7 +224,7 @@ export const scenario: NovelMessage[] = [
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V007),
     showSpeechBubble(
       'zundamon',
-      'これは単なるゲームではない。言葉と、音と、イラストが紡ぎだす総合芸術なのだ。',
+      'これは単なるゲームではない……言葉と、音と、イラストが紡ぎだす総合芸術なのだ。',
     ),
   ]),
 
@@ -475,9 +483,7 @@ export const scenario: NovelMessage[] = [
     fadeOut(0),
     playSE(SE.MAN_YAHOO),
     showNarrationText('関数型ノベルゲームエンジン "tsuzuri" 解説', '5xl'),
-    delay(3000),
 
-    hideNarrationText(),
     removeCharacter('zundamon'),
     removeCharacter('metan'),
     hideCenteredImage('img-src'),
@@ -491,6 +497,10 @@ export const scenario: NovelMessage[] = [
       'small',
     ),
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left', 'small'),
+
+    delay(2000),
+    hideNarrationText(),
+
     playBGM('bgm-explanation', BGM.EXPLANATION, true),
     fadeIn(1000),
     delay(1000),
@@ -1270,12 +1280,14 @@ export const scenario: NovelMessage[] = [
   ]),
 
   sequence([
+    playSE(SE.TAIKO_DON2),
     changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'これがノベルゲームなのだ！',
+      0,
     ),
   ]),
 
