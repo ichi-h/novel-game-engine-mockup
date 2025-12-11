@@ -133,6 +133,9 @@ export const scenario: NovelMessage[] = [
     fadeOut(0),
     delay(1000),
 
+    showCharacter('metan', CHARACTER_IMAGES.metan.hide, 'left'),
+    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.hide, 'right'),
+
     changeBackground('bg-room', BACKGROUNDS.room),
     fadeIn(1000),
     delay(1000),
@@ -142,7 +145,7 @@ export const scenario: NovelMessage[] = [
       end: -1,
     }),
     playSE(SE.EXPLOSION),
-    showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smile, 'right'),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V001),
     showSpeechBubble('zundamon', 'うおーーーーーー！！！', {
       fontSize: '3xl',
@@ -163,7 +166,7 @@ export const scenario: NovelMessage[] = [
 
   sequence([
     hideSpeechBubble('zundamon'),
-    showCharacter('metan', CHARACTER_IMAGES.metan.speechless, 'left'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.speechless),
     playCharacterVoice('metan', VOICE_METAN.V001),
     showSpeechBubble(
       'metan',
@@ -257,7 +260,7 @@ export const scenario: NovelMessage[] = [
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V010),
     showSpeechBubble(
       'zundamon',
-      'でもノベルゲームはそれだけではない！　なんとイラストも使えてしまうのだ！',
+      'でもノベルゲームはそれじゃない！　なんとイラストも使えてしまうのだ！',
     ),
   ]),
 

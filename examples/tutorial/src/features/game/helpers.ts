@@ -26,6 +26,7 @@ import metanAngry from '../../assets/images/metan/angry.webp';
 // Import character images - Metan
 import metanDefault from '../../assets/images/metan/defalt.webp';
 import metanDifficulty from '../../assets/images/metan/difficulty.webp';
+import metanHide from '../../assets/images/metan/hide.webp';
 import metanSmile from '../../assets/images/metan/smile.webp';
 import metanSpeechless from '../../assets/images/metan/speechless.webp';
 import metanSurprise from '../../assets/images/metan/surprise.webp';
@@ -37,6 +38,7 @@ import sakutaro from '../../assets/images/sakutaro.webp';
 // Import character images - Zundamon
 import zundamonDefault from '../../assets/images/zundamon/default.webp';
 import zundamonDifficulty from '../../assets/images/zundamon/difficulty.webp';
+import zundamonHide from '../../assets/images/zundamon/hide.webp';
 import zundamonJoke from '../../assets/images/zundamon/joke.webp';
 import zundamonSad from '../../assets/images/zundamon/sad.webp';
 import zundamonSmile from '../../assets/images/zundamon/smile.webp';
@@ -58,6 +60,7 @@ export const FADE_OVERLAY_ID = 'fade-overlay';
 // Character images
 export const CHARACTER_IMAGES = {
   zundamon: {
+    hide: zundamonHide,
     default: zundamonDefault,
     smile: zundamonSmile,
     thinking: zundamonThinking,
@@ -69,6 +72,7 @@ export const CHARACTER_IMAGES = {
     sunglasses: zundamonSunglasses,
   },
   metan: {
+    hide: metanHide,
     default: metanDefault,
     smile: metanSmile,
     thinking: metanThinking,
