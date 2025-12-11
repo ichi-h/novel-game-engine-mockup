@@ -61,9 +61,11 @@ export const TitlePage = ({
     <div className="w-screen h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 flex flex-col items-center justify-center">
       <div className="text-center mb-12">
         <h1 className="text-5xl font-bold text-gray-800 drop-shadow-lg mb-4">
-          📚 Tsuzuri チュートリアル 📚
+          📚 関数型ノベルゲームエンジン tsuzuri チュートリアル 📚
         </h1>
-        <p className="text-gray-600 text-lg">〜ノベルゲームを作ってみよう〜</p>
+        <p className="text-gray-600 text-3xl">
+          〜 キミもメッセージで駆動するのだ 〜
+        </p>
       </div>
 
       <div className="flex flex-col gap-4">
