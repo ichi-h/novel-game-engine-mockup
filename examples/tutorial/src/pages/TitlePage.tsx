@@ -40,6 +40,10 @@ export const TitlePage = ({
             src: BGM.COLORFUL_BLOCKS,
             busTrackId: AUDIO_BUS_IDS.BGM,
             volume: 1.0,
+            loop: {
+              start: 0,
+              end: -1,
+            },
           }),
           playChannel({
             channelId: 'title-bgm',
