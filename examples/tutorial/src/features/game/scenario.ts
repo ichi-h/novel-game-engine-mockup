@@ -484,7 +484,7 @@ export const scenario: NovelMessage[] = [
     hideSpeechBubble('metan'),
     removeChannel('bgm-march'),
     fadeOut(0),
-    playSE(SE.MAN_YAHOO),
+    playSE(SE.MAN_YAHOO, 1.5),
     showNarrationText('関数型ノベルゲームエンジン "tsuzuri" 解説', '5xl'),
 
     removeCharacter('zundamon'),
