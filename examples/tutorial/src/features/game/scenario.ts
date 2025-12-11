@@ -7,6 +7,7 @@ import {
   removeChannel,
   removeWidgets,
   sequence,
+  updateWidgetProps,
   w,
 } from '@ichi-h/tsuzuri-core';
 import { AUDIO_BUS_IDS } from '../../constants/audio';
@@ -110,7 +111,7 @@ import {
   SPEECH_BUBBLE_LAYOUT_ID,
   showCenteredImage,
   showCharacter,
-  showCharacterDialog2,
+  showCharacterDialog,
   showExplanatoryImage,
   showNarrationText,
   showSpeechBubble,
@@ -124,13 +125,12 @@ import { playSE } from './se';
 // Chapter 1: Intro (イントロ)
 // ============================================================================
 
-const chapter1Intro: NovelMessage[] = [
+export const scenario: NovelMessage[] = [
   sequence([
     changeBackground('bg-room', BACKGROUNDS.room),
     delay(1000),
     playBGM('bgm-tyrannosaurus', BGM.TYRANNOSAURUS_NEEDLE_ROOD, true),
     playSE(SE.EXPLOSION),
-    // playSE('se-sword-swing', SE.SWORD_SWING, true), // Loop
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.smile, 'right'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V001),
     showSpeechBubble('zundamon', 'うおーーーーーー！！！', {
@@ -163,7 +163,6 @@ const chapter1Intro: NovelMessage[] = [
   sequence([
     hideSpeechBubble('metan'),
     changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
-    // stopSE('se-sword-swing'),
     playCharacterVoice('zundamon', VOICE_ZUNDAMON.V003),
     showSpeechBubble('zundamon', 'めたん、聞いてほしいのだ！'),
   ]),
@@ -382,12 +381,12 @@ const chapter1Intro: NovelMessage[] = [
   ]),
 
   sequence([
+    fadeOut(1000),
+    delay(1000),
     hideSpeechBubble('metan'),
     removeCharacter('metan'),
     removeCharacter('zundamon'),
     removeChannel(VOICE_CHANNEL_IDS.metan),
-    fadeOut(1000),
-    delay(1000),
     showCharacter('metan', CHARACTER_IMAGES.metan.default, 'left'),
     showCharacter('zundamon', CHARACTER_IMAGES.zundamon.sunglasses, 'right'),
     playSE(SE.CHICKEN_CRY),
@@ -466,6 +465,10 @@ const chapter1Intro: NovelMessage[] = [
     showSpeechBubble('metan', '……はい？'),
   ]),
 
+  // ============================================================================
+  // Chapter 2: tsuzuriとは
+  // ============================================================================
+
   sequence([
     hideSpeechBubble('metan'),
     removeChannel('bgm-march'),
@@ -473,29 +476,13 @@ const chapter1Intro: NovelMessage[] = [
     playSE(SE.MAN_YAHOO),
     showNarrationText('関数型ノベルゲームエンジン "tsuzuri" 解説', '5xl'),
     delay(3000),
-  ]),
 
-  sequence([
     hideNarrationText(),
-    fadeOut(1000),
-    delay(1000),
-    // Cleanup chapter 1 elements
     removeCharacter('zundamon'),
     removeCharacter('metan'),
     hideCenteredImage('img-src'),
     removeWidgets([SPEECH_BUBBLE_LAYOUT_ID, TEXTBOX_ID]),
-  ]),
 
-  // TODO: Transition to next chapter (tsuzuriとは)
-];
-
-// ============================================================================
-// Chapter 2: tsuzuriとは
-// ============================================================================
-
-const chapter2TsuzuriIntro: NovelMessage[] = [
-  // Initialize textbox layout and setup
-  sequence([
     initTextBoxLayout(),
     showCharacter(
       'zundamon',
@@ -507,7 +494,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
     playBGM('bgm-explanation', BGM.EXPLANATION, true),
     fadeIn(1000),
     delay(1000),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'このノベルゲームエンジンを、僕は "tsuzuri" と呼んでいるのだ。',
@@ -515,8 +502,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture, 128),
-    ...showCharacterDialog2(
+    showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture, '3xl', 100),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'tsuzuriは関数型プログラミング、特にElm Architectureというソフトウェアアーキテクチャを強く意識して開発しているのだ。',
@@ -524,7 +511,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'tsuzuriではノベルゲームを実現するうえで必要なModelと呼ばれる状態と、Messageと呼ばれるゲームのイベントのようなもの。',
@@ -532,7 +519,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'またtsuzuriの内部では、Message発火時にModelの更新を担うUpdate関数というものも存在しているのだ。',
@@ -540,7 +527,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '実装者は、作りたいシナリオに合わせてMessageを組み合わせることで、自由にノベルゲームを制作することができるのだ！',
@@ -548,8 +536,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
     hideCenteredImage('img-elm-arch'),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'ちょっと待ってずんだもん。',
@@ -557,7 +546,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'どうしたのだ？',
@@ -565,7 +555,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.difficulty),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'さっぱりわからないわ。',
@@ -573,7 +564,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       '申し訳ないのだけれど、関数型プログラミングとか、Elm Architectureとか、あまりなじみがないわ。',
@@ -581,7 +572,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '大丈夫！　要はこういうことなのだ！',
@@ -589,7 +581,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'まず一番重要なこととして頭に入れて欲しいのは、tsuzuriではノベルゲームを『発行したMessageの集積結果』と捉えていることなのだ。',
@@ -597,8 +591,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    showExplanatoryImage('img-game-ex1', IMAGES.gameExample1),
-    ...showCharacterDialog2(
+    showExplanatoryImage('img-game', IMAGES.gameExample1, '3xl'),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '例えばこういったゲーム画面があったとするのだ。',
@@ -606,7 +600,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '今画面にはキャラクターがいて、背景があって、テキストボックスがあって、BGMが流れているのだ。',
@@ -614,7 +608,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'この状態から、ユーザーが画面をクリックしたとするのだ。',
@@ -622,9 +616,11 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    hideCenteredImage('img-game-ex1'),
-    showExplanatoryImage('img-game-ex2', IMAGES.gameExample2),
-    ...showCharacterDialog2(
+    updateWidgetProps('img-game', {
+      widgetType: 'Image',
+      props: { src: IMAGES.gameExample2 },
+    }),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'すると、テキストボックスの中身が変わったのだ。',
@@ -632,7 +628,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'tsuzuriではこれを、ユーザーのクリックというアクションによって、『テキストを進めるMessageが発行された』と考えるのだ。',
@@ -640,9 +636,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    hideCenteredImage('img-game-ex2'),
+    hideCenteredImage('img-game'),
     showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'このMessageが発行されると、ゲームの裏側にあるModelのうち、UIの表示に関する情報をUpdate関数が更新して、そのModelの変更に基づいてUIも更新されるのだ。',
@@ -650,7 +646,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'ほかの要素についても同じなのだ。キャラの立ち絵を変更するのもUI変化だし、BGMやSEを流すのは、音声操作のMessageによる状態変化と捉えられるのだ。',
@@ -658,7 +654,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'こう考えることで、いま目の前にあるゲームの状態は、過去に発行された大量のMessageの積み重ねによってできた結果と捉えることができるのだ！',
@@ -666,7 +663,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.thinking),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       '……逆に言えば、ノベルゲームを動かすのに必要なパラメータとしてのModelと、ノベルゲームで起こりうるイベントとしてのMessageさえわかってしまえば、ゲームエンジンは作れてしまうと。',
@@ -674,7 +673,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'そしてtsuzuriの利用者は、Messageを組み合わせてtsuzuriに与えてあげれば、その通りに動くゲームが作れる、ということかしら？',
@@ -682,7 +681,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'ほぼその理解であっているのだ！',
@@ -690,7 +690,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'とにかくMessageを投げてModelを更新、このメッセージ駆動でゲームを構築できるというのが、tsuzuriのコンセプトになっているのだ！',
@@ -698,8 +699,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.thinking),
     hideCenteredImage('img-elm-arch'),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'でもどうしてこんな作りにしたの？　ゲーム開発は詳しくないけど、少なくともこうした設計がメジャーだとは思えないわ。',
@@ -707,7 +709,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'メリットがいくつかあるのだ。',
@@ -715,7 +719,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '例えば、会話ログの構築が簡単になるのだ。',
@@ -723,7 +727,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'ノベルゲームでは、過去の会話ログをさかのぼって閲覧する機能がよくあるのだけれど、これは過去に発行したMessageから絞り込めば一瞬で作れるのだ！',
@@ -731,7 +735,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'ノベルゲームの現在の状態は、過去のMessageを積み重ねた結果だから、発行されたMessageを保持していれば、昔の状態は復元可能、ってことかしら？',
@@ -739,7 +743,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'その通りなのだ！',
@@ -747,7 +752,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'もちろん、文字通りすべてのMessageをゲームの最後まで保持し続けるのはさすがに厳しいと思うのだ。',
@@ -755,7 +761,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'でもノベルゲームにおいて、本当の意味で常に保持しておかなければならない情報は、特殊なギミックがない限り、実はそんなに多くないはずなのだ。',
@@ -763,7 +769,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'まぁゲーム自体、基本はシンプルな作りですからねぇ。',
@@ -771,7 +777,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'あとはセーブデータの管理がかなり楽なのだ。',
@@ -779,7 +785,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'tsuzuriにおいて、ゲームの状態は1つの大きなModelによって管理されているのだ。',
@@ -787,7 +793,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'つまり、このModelをどこかに保存するだけで、セーブのロジックはほぼ完成するのだ！',
@@ -795,7 +802,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.joke),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '「本当にそんなことできるの？」と思ったそこのキミ！　いい着眼点なのだ！',
@@ -803,7 +811,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.speechless),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'まだ何も言ってないです。',
@@ -811,7 +820,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '実は、ここには関数型プログラミングの考えが大きく反映されているのだ。',
@@ -820,7 +831,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
 
   sequence([
     showExplanatoryImage('img-elm-arch', IMAGES.elmArchitecture),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '例えば、さっきModel、Message、Update関数は紹介したけど、Elm Architectureには、ModelをUIに変換するView関数というのも存在するのだ。',
@@ -828,7 +839,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'このView関数は、Modelを受け取ってUIっぽいものを返却するのだけど、この関数は参照透過性が保証されているのだ。',
@@ -836,11 +847,13 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2('めたん', CHARACTER_COLORS.metan, 'さん……何？'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.difficulty),
+    ...showCharacterDialog('めたん', CHARACTER_COLORS.metan, 'さん……何？'),
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '参照透過性なのだ！',
@@ -848,8 +861,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     hideCenteredImage('img-elm-arch'),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '例えばめたん、f(x) = 2xという関数がある時に、f(2)を計算するとどうなるのだ？',
@@ -857,11 +871,12 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2('めたん', CHARACTER_COLORS.metan, 'え、4だけど。'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
+    ...showCharacterDialog('めたん', CHARACTER_COLORS.metan, 'え、4だけど。'),
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'じゃあ今日の天気がくもりのときのf(2)は？',
@@ -869,16 +884,19 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2('めたん', CHARACTER_COLORS.metan, 'いや4でしょ。'),
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.speechless),
+    ...showCharacterDialog('めたん', CHARACTER_COLORS.metan, 'いや4でしょ。'),
   ]),
 
   sequence([
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.joke),
     clearTextBox(),
     playSE(SE.HIRAMEKU2),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '昨日めたんの体重が増えてショックだったときのf(2)は？',
+      100,
     ),
   ]),
 
@@ -886,13 +904,14 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
     clearTextBox(),
     playSE(SE.VIOLIN_HORROR),
     changeCharacterExpression('metan', CHARACTER_IMAGES.metan.angry),
-    ...showCharacterDialog2('めたん', CHARACTER_COLORS.metan, '殴るわよ？'),
+    ...showCharacterDialog('めたん', CHARACTER_COLORS.metan, '殴るわよ？', 100),
   ]),
 
   sequence([
     clearTextBox(),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'そう、結果は変わらないのだ。',
@@ -900,7 +919,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '同じ引数を渡したときに、常に同じ計算結果が得られる。これが参照透過性なのだ。',
@@ -908,7 +927,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'そしてこの性質を、ゲームエンジン自体が持っているとしたらどうなるのだ？',
@@ -918,7 +937,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   sequence([
     clearTextBox(),
     changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'あっ……同じModelを引数として与えれば、同じ進行状況を再現できる……？',
@@ -927,9 +946,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
 
   sequence([
     clearTextBox(),
-    playSE(SE.QUIZ_CORRECT),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
     changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'ザッツコレクトなのだ！',
@@ -937,7 +956,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '一般的なElm Architectureでは、基本的にUIの再現のみしか考慮されていないのだ。',
@@ -945,7 +965,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'でもtsuzuriでは、Modelから実際の音声への変換もサポートしているから、BGMの再現も一発なのだ！',
@@ -953,7 +974,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'だからセーブではModelを保存するだけを考えればよいのだ！',
@@ -961,7 +982,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.sad),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'まぁtsuzuriではセーブやロードの機能を提供しているから、利用者がセーブについて考える必要はほぼないのだけどね……。',
@@ -969,7 +991,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.smile),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       '至れり尽くせりね。',
@@ -977,7 +1000,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.thinking),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'ところで、なんとなくtsuzuriの仕組みはわかってきたけど、実際にどうやってゲームを作ればいいのかしら？',
@@ -985,7 +1009,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'とても簡単なのだ！',
@@ -993,7 +1018,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '繰り返しになるけど、tsuzuriにおいてノベルゲームはMessageの集積なのだ。',
@@ -1001,8 +1028,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    showExplanatoryImage('img-scenario-ex1', IMAGES.scenarioExample1, 128),
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    showExplanatoryImage('img-scenario', IMAGES.scenarioExample1, '3xl', 50),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'だからこんな感じに、ゲームで起こることをMessageで表現してあげればいいのだ！',
@@ -1010,7 +1038,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '最初のinitMessageは、BGMの設定やレイアウトの初期化を行うMessageなのだ。',
@@ -1018,7 +1047,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '次のscenarioという配列は、文字通りゲームのシナリオを時系列で表現しているのだ。',
@@ -1026,7 +1055,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       '最初に作成したテキストボックスに、二つテキストを追加しているみたいね。',
@@ -1034,7 +1063,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.smile),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'あら、レイアウトやテキストボックスにTailwind CSSが使われているわね。これは便利そう。',
@@ -1042,7 +1072,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '各ウィジェットはクラス名を公開しているから、それを使うスタイリング方法であれば何でもOKなのだ！',
@@ -1050,7 +1081,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'シナリオができたら、ゲームに組み込むのだ。',
@@ -1058,9 +1091,12 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    hideCenteredImage('img-scenario-ex1'),
-    showExplanatoryImage('img-scenario-ex2', IMAGES.scenarioExample2, 128),
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    updateWidgetProps('img-scenario', {
+      widgetType: 'Image',
+      props: { src: IMAGES.scenarioExample2 },
+    }),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'シナリオの配列から、ユーザーのアクションに合わせて一つずつMessageをtsuzuriに投げれば、これで完成なのだ！',
@@ -1068,7 +1104,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'はやっ！　確かに、やっていることはかなりシンプルね。',
@@ -1076,7 +1113,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '実際にはもう少しコードを書くことになるけど、基本的な作りはこれだけなのだ！',
@@ -1084,7 +1122,7 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'シンプルなAPIで、TypeScriptの強力な型システムを持ちつつ、UIライブラリも非依存だから、ReactでもVueでもVanillaJSでも、好きに選択できるのはtsuzuriの強みなのだ！',
@@ -1092,7 +1130,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.smile),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'Web開発の知識がある方には、かなり扱いやすそうね。',
@@ -1100,8 +1139,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    hideCenteredImage('img-scenario-ex2'),
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.thinking),
+    hideCenteredImage('img-scenario'),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'でもずんだもん、逆にtsuzuriの弱点って何かあるの？',
@@ -1109,7 +1149,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'もちろんあるのだ。',
@@ -1117,7 +1158,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.thinking),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '一番大きいのは、何でも機能を提供しているゲームエンジンではないから、それ以外の実装はすべて自分でやる必要があるのだ。',
@@ -1125,7 +1168,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '例えば、他のノベルゲームエンジンなら、テンプレートが豊富にあったり、デザインがある程度整ったところから制作を始められたり、便利な機能もたくさん提供されているのだ。',
@@ -1133,7 +1177,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.thinking),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'でもtsuzuriは、そういったものを基本的に提供していないのだ。',
@@ -1141,7 +1186,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'tsuzuriの責務は、ノベルゲームにおける最も基本的な仕組みをモデリングすることだけに特化しているのだ。',
@@ -1149,15 +1195,15 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
-      'だから、自分でやらないといけないことは多いけど、逆にtsuzuriから強いる制約は少ないから、シナリオからUIまでかなり自由に構築できると思うのだ。',
+      'だから逆に言えば、自分でやらないといけないことは多いけど、tsuzuriから強いる制約は少ないから、シナリオからUIまでかなり自由に構築できると思うのだ。',
     ),
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       '使いこなすにはそれなりの知識や技術力が求められるけど、逆にあるなら自由にゲーム制作ができる、という感じね。',
@@ -1165,7 +1211,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'そういうことなのだ！',
@@ -1176,9 +1223,10 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
     clearTextBox(),
     fadeOut(500),
     delay(500),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
     fadeIn(500),
     delay(500),
-    ...showCharacterDialog2(
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '他にもUIライブラリ非依存の状態管理ライブラリを自作したり、オーディオ周りの宣言的な管理方法とかの、かなり尖ったこともやっているのだ。',
@@ -1186,7 +1234,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       '詳しいことは技術記事が上がっているから、そちらもチェックしてほしいのだ！',
@@ -1194,7 +1243,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.smile),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'ここまで凝っていると面白そうね、今度読んでみるわ。',
@@ -1202,7 +1252,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.default),
+    ...showCharacterDialog(
       'めたん',
       CHARACTER_COLORS.metan,
       'ところでずんだもん、ゲームエンジンはいいのだけど、肝心のノベルゲームは作っているの？',
@@ -1210,7 +1261,8 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.default),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'ん？　何を言ってるのだ？',
@@ -1218,7 +1270,9 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   sequence([
-    ...showCharacterDialog2(
+    changeCharacterExpression('metan', CHARACTER_IMAGES.metan.surprise),
+    changeCharacterExpression('zundamon', CHARACTER_IMAGES.zundamon.smile),
+    ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
       'これがノベルゲームなのだ！',
@@ -1233,10 +1287,4 @@ const chapter2TsuzuriIntro: NovelMessage[] = [
   ]),
 
   // TODO: Transition to next chapter (おわり)
-];
-
-// Scenario messages array - will be populated with actual scenario
-export const scenario: NovelMessage[] = [
-  ...chapter1Intro,
-  ...chapter2TsuzuriIntro,
 ];

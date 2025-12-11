@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@source inline('w-{3xs,2xs,xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl}');
+@source inline('mb-{0..300..50}');
+
 @layer base {
   :root {
     @apply text-[rgba(255,255,255,0.87)] bg-[#242424] font-sans;

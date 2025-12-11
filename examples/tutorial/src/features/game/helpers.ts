@@ -95,9 +95,9 @@ export const IMAGES = {
 
 // Common styles
 export const COMMON_STYLES = {
-  nameText: 'font-bold text-3xl mb-2 drop-shadow-md',
+  nameText: 'font-bold text-4xl mb-2 drop-shadow-md',
   dialogText: 'text-gray-800 leading-relaxed',
-  textBoxDialogText: 'text-white text-2xl leading-relaxed',
+  textBoxDialogText: 'text-white text-3xl leading-relaxed',
   characterImage: 'drop-shadow-2xl select-none',
   speechBubble:
     'max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl',
@@ -147,37 +147,22 @@ export const showCharacterName = (name: string, color: string): NovelMessage =>
   });
 
 /**
- * Show dialog text in textbox
- */
-export const showDialog = (text: string): NovelMessage =>
-  addText({
-    textBoxId: TEXTBOX_ID,
-    content: text,
-    className: COMMON_STYLES.textBoxDialogText,
-  });
-
-/**
  * Show character dialog in textbox (name + text)
  */
 export const showCharacterDialog = (
   name: string,
   color: string,
   text: string,
+  textSpeed?: number,
 ): NovelMessage[] => [
   clearTextBox(),
   showCharacterName(name, color),
-  showDialog(text),
-];
-
-// Chapter 2 specific helper (with clearTextBox for proper text replacement)
-export const showCharacterDialog2 = (
-  name: string,
-  color: string,
-  text: string,
-): NovelMessage[] => [
-  clearTextBox(),
-  showCharacterName(name, color),
-  showDialog(text),
+  addText({
+    textBoxId: TEXTBOX_ID,
+    content: text,
+    className: COMMON_STYLES.textBoxDialogText,
+    speed: textSpeed,
+  }),
 ];
 
 /**
@@ -202,7 +187,7 @@ export const showCharacter = (
     [
       w.layout({
         id: containerId,
-        className: `absolute bottom-10 ${positionClass} flex flex-col-reverse items-center gap-4 animate-fade-in ${scaleClass}`,
+        className: `absolute bottom-8 ${positionClass} flex flex-col-reverse items-center gap-4 animate-fade-in ${scaleClass}`,
       })([
         w.img({
           id,
@@ -297,7 +282,7 @@ export const showSpeechBubble = (
     addText({
       textBoxId: bubbleId,
       content: text,
-      className: `${color} ${COMMON_STYLES.dialogText} ${options?.bold ? 'font-bold' : ''} text-${options?.fontSize ?? 'xl'}`,
+      className: `${color} ${COMMON_STYLES.dialogText} ${options?.bold ? 'font-bold' : ''} text-${options?.fontSize ?? '2xl'}`,
       speed: options?.textSpeed,
     }),
   ]);
@@ -310,43 +295,6 @@ export const hideSpeechBubble = (
   character: 'zundamon' | 'metan',
 ): NovelMessage => {
   const bubbleId = `${character}-bubble`;
-  return removeWidgets([bubbleId]);
-};
-
-export const showExitSpeechBubble = (
-  character: 'zundamon' | 'metan',
-  text: string,
-  position: 'left' | 'right',
-): NovelMessage => {
-  const bubbleId = `${character}-exit-bubble`;
-  const color = CHARACTER_COLORS[character];
-  const bgColor =
-    character === 'zundamon' ? 'bg-green-100/95' : 'bg-pink-100/95';
-  const positionClass = position === 'left' ? 'left-32' : 'right-32';
-
-  return addWidgets(
-    [
-      w.layout({
-        id: bubbleId,
-        className: `absolute bottom-[35rem] ${positionClass} ${COMMON_STYLES.speechBubble} ${bgColor} border-4 ${
-          character === 'zundamon' ? 'border-green-300' : 'border-pink-300'
-        } animate-fade-in`,
-      })([
-        w.text({
-          id: `${bubbleId}-text`,
-          content: text,
-          className: `${color} ${COMMON_STYLES.dialogText}`,
-        }),
-      ]),
-    ],
-    SPEECH_BUBBLE_LAYOUT_ID,
-  );
-};
-
-export const hideExitSpeechBubble = (
-  character: 'zundamon' | 'metan',
-): NovelMessage => {
-  const bubbleId = `${character}-exit-bubble`;
   return removeWidgets([bubbleId]);
 };
 
@@ -375,13 +323,14 @@ export const showCenteredImage = (id: string, src: string): NovelMessage =>
 export const showExplanatoryImage = (
   id: string,
   src: string,
-  mt: number = 150,
+  w: '5xl' | '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs' = '4xl',
+  mt: number = 100,
 ): NovelMessage =>
   addImage({
     layoutId: IMAGE_DISPLAY_ID,
     src,
     id,
-    className: `w-4xl max-h-[600px] object-contain mb-${mt}`,
+    className: `w-${w} object-contain mb-${mt}`,
   });
 
 /**
@@ -400,19 +349,6 @@ export const playBGM = (id: string, src: string, loop = true): NovelMessage =>
       busTrackId: AUDIO_BUS_IDS.BGM,
       src,
       ...(loop ? { loop: { start: 0, end: -1 } } : {}),
-    }),
-    playChannel({ channelId: id }),
-  ]);
-
-/**
- * Play voice
- */
-export const playVoice = (id: string, src: string): NovelMessage =>
-  sequence([
-    addTrack({
-      id,
-      busTrackId: AUDIO_BUS_IDS.VOICE,
-      src,
     }),
     playChannel({ channelId: id }),
   ]);
