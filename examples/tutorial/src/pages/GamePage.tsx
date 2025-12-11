@@ -149,8 +149,8 @@ export const GamePage = ({
         {/* Render novel widgets */}
         <NovelWidgetDriver widgets={model.ui} model={model} send={send} />
       </div>
-
-      {import.meta.env.MODE === 'development' &&
+      {import.meta.env &&
+        import.meta.env.MODE === 'development' &&
         model.status.value === 'Error' && (
           <div className="absolute inset-0 bg-red-100 bg-opacity-80 flex flex-col items-center justify-center p-4">
             <h2 className="text-2xl font-bold text-red-800 mb-4">
@@ -161,7 +161,6 @@ export const GamePage = ({
             </pre>
           </div>
         )}
-
       {/* Menu buttons */}
       <div className="absolute bottom-4 right-4 z-50 flex gap-3">
         <button
