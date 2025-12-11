@@ -46,7 +46,6 @@ export const LoadingPage = ({ onComplete }: LoadingPageProps) => {
             <p className="text-gray-300 text-lg mb-2">
               {progress.loaded} / {progress.total} アセット
             </p>
-            <p className="text-gray-400 text-sm">{progress.percentage}%</p>
           </div>
         ) : (
           // 音声確認表示

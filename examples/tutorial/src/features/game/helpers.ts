@@ -142,6 +142,7 @@ export const initTextBoxLayout = (): NovelMessage => {
  */
 export const showCharacterName = (name: string, color: string): NovelMessage =>
   addText({
+    id: `character-name-${name}`,
     textBoxId: TEXTBOX_ID,
     content: name,
     className: `${color} ${COMMON_STYLES.nameText}`,

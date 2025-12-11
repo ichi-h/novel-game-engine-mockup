@@ -6,6 +6,7 @@ import { playSE } from '@/features/game/se';
 import { buildConfigMessages } from '../features/config/applyConfig';
 import { useConfig } from '../features/config/useConfig';
 import { send } from '../features/game/engine';
+import { BacklogPage } from '../pages/BacklogPage';
 import { ConfigPage } from '../pages/ConfigPage';
 import { GamePage } from '../pages/GamePage';
 import { LoadingPage } from '../pages/LoadingPage';
@@ -19,7 +20,8 @@ export type RouterState =
   | { page: 'game' }
   | { page: 'save' }
   | { page: 'load'; from: 'title' | 'game' }
-  | { page: 'config'; from: 'title' | 'game' };
+  | { page: 'config'; from: 'title' | 'game' }
+  | { page: 'backlog'; from: 'game' };
 
 export const Router = () => {
   const { config } = useConfig();
@@ -106,6 +108,11 @@ export const Router = () => {
     }
   };
 
+  const handleOpenBacklog = () => {
+    send(playSE(SE.DECISION_BUTTON));
+    setRouterState({ page: 'backlog', from: 'game' });
+  };
+
   // Render page content based on router state
   const renderPage = () => {
     switch (routerState.page) {
@@ -127,6 +134,7 @@ export const Router = () => {
             onOpenSave={handleOpenSave}
             onOpenLoad={handleOpenLoadFromGame}
             onOpenConfig={handleOpenConfig}
+            onOpenBacklog={handleOpenBacklog}
             onBackToTitle={handleBackToTitleFromGame}
             onGameEnd={handleGameEndToTitle}
           />
@@ -157,6 +165,9 @@ export const Router = () => {
             }
           />
         );
+
+      case 'backlog':
+        return <BacklogPage onBack={handleBackToGame} />;
 
       default:
         return <LoadingPage onComplete={handleLoadingAndAudioConfirm} />;

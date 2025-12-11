@@ -7,6 +7,7 @@ interface GamePageProps {
   onOpenSave: () => void;
   onOpenLoad: () => void;
   onOpenConfig: () => void;
+  onOpenBacklog: () => void;
   onBackToTitle: () => void;
   onGameEnd: () => void;
 }
@@ -18,6 +19,7 @@ export const GamePage = ({
   onOpenSave,
   onOpenLoad,
   onOpenConfig,
+  onOpenBacklog,
   onBackToTitle,
   onGameEnd,
 }: GamePageProps) => {
@@ -66,6 +68,11 @@ export const GamePage = ({
   const handleOpenConfig = (e: React.MouseEvent) => {
     e.stopPropagation();
     onOpenConfig();
+  };
+
+  const handleOpenBacklog = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onOpenBacklog();
   };
 
   const handleBackToTitle = (e: React.MouseEvent) => {
@@ -131,9 +138,9 @@ export const GamePage = ({
         </button>
         <button
           type="button"
-          onClick={() => {}}
+          onClick={handleOpenBacklog}
           className="w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all text-2xl saturate-0 opacity-50 hover:opacity-100 hover:saturate-100"
-          aria-label="ログを開く"
+          aria-label="バックログを開く"
         >
           📜
         </button>
