@@ -62,7 +62,7 @@ export const LoadingPage = ({ onComplete }: LoadingPageProps) => {
               onClick={onComplete}
               className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-xl rounded-full hover:from-green-600 hover:to-emerald-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
             >
-              確認してゲームを開始
+              はじめる
             </button>
           </div>
         )}
