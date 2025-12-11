@@ -18,6 +18,7 @@ import scenarioExample1 from '../../assets/images/code/scenario_example_1.webp';
 import scenarioExample2 from '../../assets/images/code/scenario_example_2.webp';
 import srcImage from '../../assets/images/code/src.webp';
 import elmArchitecture from '../../assets/images/elm/elm_architecture.webp';
+import backlog from '../../assets/images/game/backlog.webp';
 import gameExample1 from '../../assets/images/game/game_example_1.webp';
 import gameExample2 from '../../assets/images/game/game_example_2.webp';
 import tutorial from '../../assets/images/game/tutorial.webp';
@@ -92,6 +93,7 @@ export const IMAGES = {
   scenarioExample2: scenarioExample2,
   gameExample1: gameExample1,
   gameExample2: gameExample2,
+  backlog: backlog,
   tutorial: tutorial,
 } as const;
 

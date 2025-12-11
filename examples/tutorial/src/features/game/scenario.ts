@@ -743,6 +743,7 @@ export const scenario: NovelMessage[] = [
   ]),
 
   sequence([
+    showExplanatoryImage('img-backlog', IMAGES.backlog, '3xl'),
     ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
@@ -793,6 +794,7 @@ export const scenario: NovelMessage[] = [
   ]),
 
   sequence([
+    hideCenteredImage('img-backlog'),
     ...showCharacterDialog(
       'ずんだもん',
       CHARACTER_COLORS.zundamon,
