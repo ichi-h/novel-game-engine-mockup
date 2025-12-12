@@ -12,8 +12,8 @@
   ],
   "private": true,
   "scripts": {
-    "build": "bun run tsc && bun run build.ts --minify",
-    "build:dev": "bun run tsc && bun run build.ts",
+    "build": "bun run tsc && vite build",
+    "build:dev": "bun run tsc && vite build --mode development",
     "tsc": "tsc --noEmit"
   },
   "type": "module",

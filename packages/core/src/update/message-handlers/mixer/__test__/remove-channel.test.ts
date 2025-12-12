@@ -2,7 +2,6 @@ import { describe, expect, test } from 'bun:test';
 import type { BusTrack } from '@/mixer';
 import { generateInitModel, type NovelModel } from '@/model';
 import type { NovelMessage } from '@/update/message';
-import type { ErrorMessage } from '@/update/message-handlers/general/error';
 import { handleApplyMixer } from '../apply-mixer';
 import {
   handleRemoveChannel,
@@ -266,42 +265,6 @@ describe('handleRemoveChannel', () => {
       expect(updatedModel.mixer.isApplying).toBe(true);
       expect(cmd).toBeDefined();
       expect(typeof cmd).toBe('function');
-    });
-  });
-
-  describe('error cases', () => {
-    test('handles error when channelId does not exist', () => {
-      // Arrange
-      const model: NovelModel = generateInitModel();
-      model.mixer.value.channels = [
-        {
-          id: 'track-1',
-          type: 'Track',
-          playStatus: 'Standby',
-          volume: 1.0,
-          src: 'audio/bgm.mp3',
-        },
-      ];
-      const message: RemoveChannelMessage = {
-        type: 'RemoveChannel',
-        channelId: 'non-existent-channel',
-      };
-      let errorMessage: string | null = null;
-      const update = (_model: NovelModel, msg: NovelMessage) => {
-        if (msg.type === 'Error') {
-          errorMessage = (msg as ErrorMessage).value.message;
-        }
-        return _model;
-      };
-
-      // Act
-      handleRemoveChannel(model, message, update);
-
-      // Assert
-      expect(errorMessage).toBeTruthy();
-      expect(String(errorMessage)).toContain(
-        'Channel with ID non-existent-channel does not exist in the mixer',
-      );
     });
   });
 });

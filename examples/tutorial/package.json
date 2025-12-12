@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.ts",
+    "dev": "vite",
     "start": "NODE_ENV=production bun src/index.ts",
-    "build": "bun run tsc && bun run build.ts --minify",
-    "build:dev": "bun run tsc && bun run build.ts",
+    "build": "bun run tsc && vite build",
+    "build:dev": "bun run build",
     "tsc": "tsc --noEmit",
     "deploy": "wrangler pages deploy dist/ --project-name tsuzuri-tutorial"
   },
@@ -20,9 +20,12 @@
     "@ichi-h/tsuzuri-core": "workspace:*"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "@types/bun": "latest",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.1.2",
+    "vite": "^7.2.7",
     "wrangler": "^4.54.0"
   }
 }

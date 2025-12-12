@@ -7,8 +7,8 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "bun run tsc && bun run build.ts --minify",
-    "build:dev": "bun run tsc && bun run build.ts",
+    "build": "bun run tsc && vite build",
+    "build:dev": "bun run tsc && vite build --mode development",
     "tsc": "tsc --noEmit"
   },
   "exports": {
@@ -19,7 +19,7 @@
   "files": [
     "dist"
   ],
-  "peerDependencies": {
+  "dependencies": {
     "@ichi-h/tsuzuri-core": "workspace:*",
     "react": "^19",
     "react-dom": "^19"
