@@ -1,7 +1,17 @@
 {
   "name": "@ichi-h/tsuzuri-core",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "bun run tsc && vite build",
+    "build:dev": "bun run tsc && vite build --mode development",
+    "tsc": "tsc --noEmit"
+  },
   "exports": {
     "types": "./dist/index.d.ts",
     "import": "./dist/index.js",
@@ -9,13 +19,5 @@
   },
   "files": [
     "dist"
-  ],
-  "private": true,
-  "scripts": {
-    "build": "bun run tsc && vite build",
-    "build:dev": "bun run tsc && vite build --mode development",
-    "tsc": "tsc --noEmit"
-  },
-  "type": "module",
-  "types": "./dist/index.d.ts"
+  ]
 }

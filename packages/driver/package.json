@@ -1,7 +1,8 @@
 {
   "name": "@ichi-h/tsuzuri-driver",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
+  "private": false,
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -19,7 +20,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "@ichi-h/tsuzuri-core": "workspace:*",
     "react": "^19",
     "react-dom": "^19"
